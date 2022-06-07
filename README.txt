@@ -1,4 +1,5 @@
 
+
 MRI Raw Experimental Data Pipeline (as of 06/07/2022)
 -------------------------------------------
 1. Open MATLAB and add all folders and subfolders to path
