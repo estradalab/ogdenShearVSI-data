@@ -1,0 +1,75 @@
+function out=matrix_satrec_polyfit(varargin)
+%out=matrix_satrec_polyfit(indata,taxis[,options?])
+%fits the recovery vs time to linear plus quadratic terms
+%to get the ratio (spindensity/Tau) for each tissue.
+
+
+indata=varargin{1};
+taxis=varargin{2};
+
+if ndims(indata) == 3;                          %one slice, multiple times
+        out = matrix_satrec_polyfit_3d(indata,taxis);
+elseif ndims(indata) ==4;                       %multislice, multiple times
+    [ntd nph nsl nti] = size(indata);
+    out.amplitude=zeros(ntd,nph,nsl);
+    out.Tau=zeros(ntd,nph,nsl);
+    
+    for ns=1:nsl;
+        oout= matrix_satrec_polyfit_3d(squeeze(indata(:,:,ns,:)),taxis);
+        out.amplitude(:,:,ns)=oout.amplitude(:,:);
+        out.Tau(:,:,ns)=oout.Tau(:,:);
+    end
+end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% saturation recovery poly fit linear plus quadratic term:
+function out=matrix_satrec_polyfit_3d(varargin)
+
+
+incube=varargin{1};
+taxis=varargin{2};
+[tmax,tmaxind]=max(taxis);
+[tmin,tminind]=min(taxis);
+
+if ndims(incube) == 3;
+    %third dimension is the echotime dimension
+    phasemat=incube(:,:,tmaxind)./abs(incube(:,:,tmaxind)); %phase of the image with the shortest wait time
+    phincube=zeros(size(incube));
+    
+    %1. rotate the phase
+    for nt=1:numel(taxis);
+         phincube(:,:,nt)= +incube(:,:,nt)./phasemat;
+    end
+    
+    %.calculate the coefficients of the time matrix
+    for jj=1:4;
+        t(jj)=sum(taxis.
+    
+    %3. iteratively fit and update the amplitude guess
+    Y=zeros(size(phincube));
+    niter=10;
+    for jj=1:niter;
+        for nt=1:numel(taxis);
+            Y(:,:,nt)=-(real(phincube(:,:,nt))-a0);
+        end
+        %[F,Tau] = matrix_fit(cat(3, a0,Y),[0 taxis]);
+        [F,Tau] = matrix_fit(Y,taxis);
+        mesh(F-a0);
+        set(gca,'clim',[-30000 30000],'zlim',[-30000 30000]);
+        title(num2str(jj));
+        pause(0.2);
+        
+        %update the amplitude guess%%%%%
+        if jj==1;
+            a0 = F;
+        else
+            a0=(a0+F)/2;
+        end
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    end
+end
+
+out.amplitude=F;
+out.Tau=Tau;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

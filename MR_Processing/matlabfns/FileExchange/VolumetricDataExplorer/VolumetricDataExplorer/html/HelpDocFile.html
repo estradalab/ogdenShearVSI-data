@@ -1,0 +1,658 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Volumetric Data Explorer</title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-06-05"><meta name="DC.source" content="HelpDocFile.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Volumetric Data Explorer</h1><!--introduction--><p>This app provides an interactive environment to explore higher dimensional data using some of MATLAB's abilities for volumetric visualization and animation. It was originally designed for data that was measured in a 3D grid of data points, for example temperature or wind speed taken at each point in a 3D space. If this data is taken over time, it can also be animated. However any data that fits the form <tt>v = f(x,y,z)</tt> or <tt>v = f(x,y,z,t)</tt> can be used.</p><p>Authored by Adam Filion</p><p>Copyright 2013-2016, The MathWorks, Inc.</p><p>Version 2.0.0</p><p><img vspace="5" hspace="5" src="WholeGUI.png" alt=""> </p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Installation</a></li><li><a href="#2">Importing Data</a></li><li><a href="#8">Slice Panel</a></li><li><a href="#9">Isosurface Panel</a></li><li><a href="#10">Control Panel</a></li><li><a href="#11">Options Menu</a></li><li><a href="#12">Animation &amp; Recording Options Window</a></li><li><a href="#13">Toolbar</a></li><li><a href="#14">Acknowledgements</a></li><li><a href="#15">Release Notes</a></li></ul></div><h2>Installation<a name="1"></a></h2><p>This app requires that the GUI Layout Toolbox from the MATLAB File Exchange be installed and available. Your version of MATLAB will change which files need to be installed and how.</p><div><ul><li>For R2014a and earlier, download and unzip the files from the following location and ensure they are on the MATLAB path: <a href="http://www.mathworks.com/matlabcentral/fileexchange/27758-gui-layout-toolbox">http://www.mathworks.com/matlabcentral/fileexchange/27758-gui-layout-toolbox</a></li><li>For R2014b and later, you can either download the toolbox file and install it, or download and unzip the zip file and ensure it is on the MATLAB path: <a href="http://www.mathworks.com/matlabcentral/fileexchange/47982-gui-layout-toolbox">http://www.mathworks.com/matlabcentral/fileexchange/47982-gui-layout-toolbox</a></li></ul></div><h2>Importing Data<a name="2"></a></h2><p>This app allows you to import custom data from your workspace, or use sample data sets to try out the visualization capabilities.</p><p><img vspace="5" hspace="5" src="ImportDataMenu.png" alt=""> </p><p><b>Importing From Workspace</b></p><p><img vspace="5" hspace="5" src="ImportWorkspaceMenu.png" alt=""> </p><p><i>Gridded Data</i></p><p>DataExplorer can work with 4D and 5D measurements, contained in variables that are arranged as 3D or 4D grids respectively. The first three dimensions denote the locations in the 3D space, while the 4th dimension (if available) denotes which sample this data came from. For example, if we have a 3D array of measurement locations 15 wide (X-axis) by 10 high (Y-axis) by 20 deep (Z-axis), and we take 30 samples over time, then we are working with 5D data as we have three spacial measurements, one for time, and one measurement for e.g. temperature. The <tt>data</tt> is then expected to be a matrix of measurement values of size 10x15x20x30, so Y-by-X-by-Z-by-t (4D matrix). The order is due to the fact that indicies in MATLAB go by row first then column followed by higher dimensions, so the row (Y dimension) is first.</p><p>You can optionally specify the X, Y and Z values to be used with the axes when visualizing the data. You must specify all three, and they must either all be 1D vectors of appropriate size of points in monotonically increasing order, or all be 3D martricies of the values, such as what is returned by <tt>meshgrid</tt>. If you do not specify X, Y, and Z data, then DataExplorer will use default axes of <tt>1:length(dim)</tt>, where <tt>dim</tt> is the particular dimension. Assuming the selected data was of valid dimensions, the axes will be labeled according to the names of the variables selected from the workspace.</p><p>You may also optionally specify a time vector. If you do, this will display the time associated with each measurement sample during animation, and you can specify a new starting point by the time in addition to the sample number (see Animation section for more details).</p><p><i>Non-gridded Data</i></p><p>The Data Explorer app can also import data from the workspace that has not been arranged in a grid. In this case it expects the selected data, along with the X, Y, and Z variables (and optionally time) to be column vectors of the same size, where each row corresponds to an observation. For example it might look something like:</p><p><img vspace="5" hspace="5" src="SampleData.png" alt=""> </p><p>All imported data must be of type <tt>double</tt>.</p><p><b>Example Data</b></p><p>Several sample data sets can be generated to use in DataExplorer.</p><p><i>Oscillating Ellipsoid</i></p><p>This option generates a 4D grid of points evaluated for the equation of an oscillating ellipsoid of the form:</p><p><img src="HelpDocFile_eq10035100164591044053.png" alt="$x^2/(5-4cos(t)) + y^2 + z^2/(5+4cos(t))$"></p><p><i>Fluid Flow</i></p><p>This option generates data from a modified version of MATLAB's built-in <tt>flow</tt> command. The modified version accepts time as an additional input vector, which is used to vary parameters <tt>A</tt> and <tt>nu</tt> according to <tt>A = 2*sin(2*t)+4;</tt> and <tt>nu = cos(2*t)+1.5;</tt> to create a time varying data set. Enter <tt>doc flow</tt> and <tt>edit flow</tt> at the command prompt for more information.</p><p><b>Importing Using the Functional Syntax</b></p><p>You can also use DataExplorer's underlying class to import data and set up the app programatically for the data to be visualized, v, the dimensional values, x y and z, and the time vector, t. It can be used with the following syntax:</p><p><tt>&gt;&gt; DataExplorer(v);</tt>              Specify data only</p><p><tt>&gt;&gt; DataExplorer(x,y,z,v);</tt>        Specify dimensions and data</p><p><tt>&gt;&gt; DataExplorer(x,y,z,v,t);</tt>      Specify dimensions, data and time</p><p><tt>&gt;&gt; DataExplorer([],[],[],v,t);</tt>   Specify data and time, but not dimensions</p><p>Each one of these will generate a new DataExplorer window with the new data. The behavior is the same as if starting DataExplorer with no inputs using <tt>&gt;&gt; DataExplorer</tt>, and then loading in the data using the Import Data -&gt; Import from Workspace menu.</p><h2>Slice Panel<a name="8"></a></h2><p>The Slice panel of DataExplorer shows 3 different slices through <tt>data</tt>. A slice is created by holding one of x, y, or z constant at a certain value, and interpolating values along the resulting surface. You can adjust the slice position through the sliders or by entering values into the text boxes. Only slice locations that are inside the range of the data are valid and will be created. Slice locations can be changed outside of or during animation.</p><p>Note that a slightly modified version of the built-in <tt>slice</tt> command was used and is included in DataExplorer. Also note that you can animate the slice sliders by going to Options -&gt; Animation &amp; Recording Options. See the doc section Animation &amp; Recording Options further down.</p><p><img vspace="5" hspace="5" src="SlicePanel.png" alt=""> </p><h2>Isosurface Panel<a name="9"></a></h2><p>Most people are familiar with contour lines, which are lines on a 2D figure (e.g. a map) that show where constant values (e.g. elevation) exist. The 3D equivalent is called an isosurface, which is a surface in 3D space that follows a constant value.</p><p>The Isosurface panel shows two isosurfaces. By default the first is green and the second blue, but these can change when setting the Options -&gt; Dynamic ISO Color menu option. You can set the ISO Level for the surface, which is the value it will follow, and the Alpha (transparency) property in the text boxes. The ISO Level can also be changed through the sliders. When you import a new data set from Workspace, DataExplorer will set initial ISO Levels to be 1/3 and 2/3 of the way between max and min values for the total data set. The Alpha value must be between zero and one. Setting the Alpha value outside of this range will disable that isosurface. Disabling one or both isosurfaces will speed up animation. These can be updated outside of or during animation.</p><p>Note that you can animate the isosurface sliders by going to Options -&gt; Animation &amp; Recording Options. See the doc section Animation &amp; Recording Options further down.</p><p><img vspace="5" hspace="5" src="ISOSurfacePanel.png" alt=""> </p><h2>Control Panel<a name="10"></a></h2><p>The Controls panel lets you control the animation of the samples. If the input <tt>data</tt> is 3D instead of 4D, meaning there is only one sample to animate on, then the Controls panel is disabled. Note that disabling one or both of the isosurfaces by setting their alpha value outside the range of 0-1 or deselecting them in the Animation &amp; Recording Options window will speed up animation.</p><p><img vspace="5" hspace="5" src="ControlsPane.png" alt=""> </p><p><b>Delay panel</b></p><p>The Delay panel allows the user to specify a delay in seconds for MATLAB to wait before visualizing the next sample. This uses the <tt>pause</tt> command to slow the rate of animation. It can be changed either through the <tt>+</tt> or <tt>-</tt> buttons, or by entering a value in the text box. This value cannot be negative, and it can be modified outside of or during animation.</p><p><b>PLAY Button</b></p><p>Clicking the <tt>PLAY</tt> button will begin animating by samples at the current sample, and change it to a <tt>STOP</tt> button. Clicking on <tt>STOP</tt> stops the animation. If the current sample is the final sample, clicking <tt>PLAY</tt> will restart the animation at the first sample. While the animation is active, the ANIMATE Button, Display panel and Play Bar are disabled.</p><p><b>ANIMATE Button</b></p><p>Clicking the <tt>ANIMATE</tt> button will animate based on the options set in the Animation &amp; Recording Options window. When active, all other options in the app are disabled. Turning it on will begin the animation and change the button to read <tt>STOP ANIMATION</tt>. Clicking <tt>STOP ANIMATION</tt> will halt the animation and change it back to <tt>ANIMATE</tt> button. Selecting the button again will restart the animation from the original starting point.</p><p><b>RECORD Button</b></p><p>Clicking the <tt>RECORD</tt> button will open a connection to a file to record to, and change it to read <tt>STOP RECORDING</tt>. Options controlling the filename, format, framerate, when frames are recorded, and which section to record are set in the Options -&gt; Animation &amp; Recording Options window. Click <tt>STOP RECORDING</tt> to close the connection to the file. If you select <tt>RECORD</tt> multiple times without changing the file name, it will overwrite the existing file, NOT add to it.</p><p><b>Display panel</b></p><p>The Display panel shows which sample (the index of the 4th dimension of <tt>data</tt>) is currently being visualized. If you selected a time vector when importing <tt>data</tt>, it will also show the corresponding time value. You can modify either the current sample or current time to display through their text boxes. The current sample must be a positive integer in the range of <tt>1:length(data(1,1,1,:))</tt>. The current time must be a value contained in the time vector selected when importing. If it is not, it will be rounded to the nearest one. When the <tt>PLAY</tt> button is clicked, these options are disabled until the animation stops, but their values will update while animating.</p><p><b>Play Bar</b></p><p>The Play Bar allows you to interactively scroll through the different samples of <tt>data</tt>. The Display pane will update to show the current value when interacting with the Play Bar. The Play Bar is disabled during animation.</p><h2>Options Menu<a name="11"></a></h2><p><img vspace="5" hspace="5" src="OptionsMenu.png" alt=""> </p><p><b>Save/Load Options</b></p><p><i>Save current configuration:</i> Save the current options configuration to a .mat file in the app's directory. Note that 'default' and 'factory' are reserved names for options configuration files. If the user attempts to save to them, the app will warn the user and will not save. It will save the following options and information:</p><div><ul><li>Link Rotation (on/off)</li><li>Equalize Axes (on/off)</li><li>Loop Animation (on/off)</li><li>Colorbar (on/off)</li><li>Colormap to use, can save custom colormaps</li><li>Font Size to use</li><li>Beep on Warning (on/off)</li><li>Dynamic ISO Color (on/off)</li><li>All options set in Animation &amp; Recording Options</li></ul></div><p>Note that it does NOT save the axes names, which is the only portion of the Options menu it does not save. This is so custom axes names will be used when importing different sets of data from the workspace.</p><p><i>Load saved configuration:</i> Load previously saved options file. This will set all of the settings listed above for the currently loaded <tt>data</tt>.</p><p><i>Delete saved configuration:</i> Delete a previously saved options file. Note that the default and factory preferences files cannot be deleted.</p><p><i>Set current as default:</i> Set the current options to the default that is used when loading a set of data.</p><p><i>Restore factory defaults:</i> Restore current and default options to the original version.</p><p><b>Link Rotation</b></p><p>Links the rotation of the two axes when using the rotate tool so you view them from the same angle. It is on by default.</p><p><b>Equalize Axes</b></p><p>Sets the aspect ratio so that the data units are the same in every direction.</p><p><b>Loop PLAY Button</b></p><p>Enabling this option will cause the animation when using the PLAY button to loop back to the beginning when it reaches the last sample. This option is disabled if imported <tt>data</tt> cannot be animated by samples.</p><p><b>Animation &amp; Recording Options</b></p><p>Opens the Animation &amp; Recording Options window for setting options for the ANIMATE button and RECORD button. This option has its own documentation section further down.</p><p><b>Add Colorbars</b></p><p>Creates colorbars for the slices, and also for isosurfaces if the Dynamic ISO Color option is on. The limits for the colorbar are set to be the min and max of the enitre data set. This is so the colorbar does not change at each time step, giving a better appreciation for how values are changing over time.</p><p><b>Set Colormap</b></p><p>Allows the user to change the colormap to another built-in colormap, specify a variable in the workspace that contains a custom colormap,or open the colormap editor to interactively build custom colormaps.</p><p>Note that changes made with the interactive colormap editor are not automatically applied to the Isosurface panel, you must update something in the app that causes it to update the Isosurface plot after applying the new colormap. For example, moving one of the sliders.</p><p><b>Set Font Size</b></p><p>Opens a dialog box where you can enter a new font size used in the edit boxes. This can make it easier to see large numbers or long decimals that may not fit in the text boxes with larger font sizes.</p><p><b>Set Axes Names</b></p><p>Opens a menu that allows the user to specify custom names for the axes. When importing data from the workspace, assuming valid X, Y and Z variables are selected, the axes names will automatically be set to the variable names from the workspace.</p><p><b>Beep on Warning</b></p><p>Toggles whether MATLAB will audibly beep when issuing app specific warnings regarding invalid data or settings. This is on by default.</p><p><b>Dynamic ISO Color</b></p><p>Turning this option on will color the isosurfaces according to the color in the app's colormap that maps to their value. This causes both the Slice and Isosurface panels to show the same color for the same value. If colorbars are turned on, it will only show a colorbar for the isosurface plot if this option is on. This is to avoid potential confusion on the meaning of the default colors. Turning it off will set the colors to the default colors, green and blue. This option is off by default.</p><h2>Animation &amp; Recording Options Window<a name="12"></a></h2><p>This window is opened through the Options -&gt; Animation &amp; Recording Options menu selection. It allows the user to set options for the ANIMATE and RECORD buttons. While this window is open, everything else in the app is disabled. It has eight sections:</p><p><img vspace="5" hspace="5" src="AnimateRecord.png" alt=""> </p><p><b>Animate By</b></p><p>This section allows the user to select whether the ANIMATE button will animate according to sample values or slice/iso values. Use the radio buttons to select either Samples or Slice/ISO to animate by. There is also a checkbox which enables repeating. Turning it on and entering a positive integer will cause the animation to repeat after completing. If you want the animation to play until manually stopped, enter <tt>inf</tt> in this section.</p><p><b>Samples To Animate</b></p><p>Here the user can enter an expression for the sample values to animate. Standard MATLAB expressions are supported, such as <tt>1:2:100</tt>. A variable for the length of samples, <tt>slength</tt>, can also be used. For example, the default expression is <tt>1:slength</tt>, which starts at the first sample, and increases by 1 until it reaches the last sample. If the results of the expression are invalid for samples, the app will warn and return to the previous expression.</p><p><b>Slice Values To Animate</b></p><p>This section contains checkboxes which turn the various slices on and off, along with text boxes to enter expressions for what slice values to evaluate. If a scalar value is entered, then that slice will be held constant when using the ANIMATE button. All non-scalar expressions for both slices and iso must result in the same size. There are six special variables that can be used:</p><div><ul><li><tt>minx</tt>, <tt>maxx</tt> : the minimum and maximum x-axis values</li><li><tt>miny</tt>, <tt>maxy</tt> : the minimum and maximum y-axis values</li><li><tt>minz</tt>, <tt>maxz</tt> : the minimum and maximum z-axis values</li></ul></div><p>For example the following expressions could be used:</p><div><ul><li><tt>[minx:maxx, maxx:-1:minx]</tt> will animate the X slice starting with an x value of <tt>minx</tt> and increasing by 1 until <tt>maxx</tt> is reached, then reversing direction and decreasing by -1 back to <tt>minx</tt></li><li><tt>linspace(minz,maxz,20)</tt> will animate the Z slice from <tt>minz</tt> to <tt>maxz</tt> in 20 equally spaced steps</li></ul></div><p>If any of the evaluated expressions are invalid, the app will warn and return to the previous expression. When the OK button is selected, it will check sizes for the slice and iso expressions. If they are unequal in size, it will warn and not close the window.</p><p><b>ISO Values To Animate</b></p><p>Exactly the same as the Slice Values section, except for the special variables that can be used:</p><div><ul><li><tt>mind</tt>, <tt>maxd</tt> : minimum and maximum data values</li></ul></div><p>For example, <tt>mind:0.1:maxd</tt> will animate the isosurface starting with the suface made by the minimum data value and increasing that value by 0.1 until the maximum data value is reached.</p><p><b>Recording Mode</b></p><p>This toggles between the two recording modes used when the RECORD button is on. In <tt>Manual</tt> mode, every change to plots will cause a new frame to be recorded. In <tt>Specified</tt> mode, only the animation specified in the Animation &amp; Recording Options window will be recorded, meaning it will only record when the ANIMATE button is used. This allows you to set up one animation with the ANIMATE button, run it, then set up another animation and record it to the same file.</p><p><b>Area To Record</b></p><p>Here you can specify which section of the app you want to record. <tt>Whole App</tt> records the entire window. <tt>Plot Panels Only</tt> will ignore the Controls section and the menu and toolbar above. <tt>Slice Panel Only</tt> will only record the slice panel, and similarly <tt>ISO Panel Only</tt> will only record the isosurface panel.</p><p>Note that with some Windows settings the recording area may not behave correctly. If what is captured in the recording file does not match the intended area, go into the Windows Control Panel and then (on Windows 7) -&gt; Appearance -&gt; Display and set the display to 100%. You may need to log out of Windows and log back in for this to take effect and fix the problem.</p><p><b>File Options</b></p><p>Here you can specify the name of the file (excluding extension), the frame rate, and what format the file should take, either .avi or .mp4.</p><p><b>Close Window</b></p><p>If you select OK, the app will check that the size of all the nonscalar values for the slices and isosurfaces match in size. If they do not, then it will warn and do nothing. Otherwise it will save the options for use and close the Animation &amp; Recording Options window.</p><p>If you select Cancel, the window will close and all changes will be discarded. Selecting Help will bring up the help doc.</p><h2>Toolbar<a name="13"></a></h2><p>The toolbar contains a few utilites for exploring your data. These are the same as the ones in the standard figure window.</p><p><img vspace="5" hspace="5" src="Toolbar.png" alt=""> </p><h2>Acknowledgements<a name="14"></a></h2><p>Several submissions from the MATLAB File Exchange were used in building DataExplorer:</p><p>The very helpful and powerful <i>GUI Layout Toolbox</i> by Ben Tordoff, without which this app never would have gotten finished: <a href="http://www.mathworks.com/matlabcentral/fileexchange/27758-gui-layout-toolbox">http://www.mathworks.com/matlabcentral/fileexchange/27758-gui-layout-toolbox</a></p><p>The <tt>uigetvariables</tt> command by Michelle Hirsh, used for the dialog box for importing data from the workspace: <a href="http://www.mathworks.com/matlabcentral/fileexchange/37679-uigetvariables-dialog-to-pass-variables-from-workspace-into-gui">http://www.mathworks.com/matlabcentral/fileexchange/37679-uigetvariables-dialog-to-pass-variables-from-workspace-into-gui</a></p><p>And the <tt>screencapture</tt> command by Yair Altman, used for capturing the figure for recording purposes: <a href="http://www.mathworks.com/matlabcentral/fileexchange/24323-ScreenCapture">http://www.mathworks.com/matlabcentral/fileexchange/24323-ScreenCapture</a></p><h2>Release Notes<a name="15"></a></h2><p>V 2.0.0</p><div><ul><li>The GUI Layout Toolbox is no longer packaged with the app due to it now existing in 2 versions, one for R2014a and earlier and one for R2014b and later. See the Installation section above.</li><li>App will now issue more helpful error message when starting without GUI Layout Toolbox available, and will not attempt to open figure window.</li><li>Added ANIMATE button to Controls panel. This allows for predefined animations, including animating the sliders for slices and isosurfaces.</li><li>Added RECORD button to Controls panel. This allows the user to turn recording on and off easier.</li><li>Options for the ANIMATE and RECORD buttons are set in the new Options -&gt; Animation &amp; Recording Options window. There is a new section in the documentation describing this window and the options available.</li><li>Options -&gt; Add Colorbars will now only add a colorbar to the isosurface plot if the Options -&gt; Dynamic ISO Color option is on so as to avoid confusion on the meaning of the default isosurface colors.</li><li>Turning an isosurface off by setting its alpha value to negative will no longer result in a warning.</li><li>When importing 1D data from workspace, only columns are now supported to avoid errors with underlying functions.</li><li>Several minor bug fixes and enhancements</li><li>Many minor updates to documentation</li></ul></div><p>V 1.6.1</p><div><ul><li>Fixed bug when importing 3D variable from workspace. Same bug that was fixed in V 1.5.1 for 4D variable.</li></ul></div><p>V 1.6.0</p><div><ul><li>Added ability to open the standard figure colormap editor to allow easy building of custom colormaps. This option can be found in Options -&gt; Set Colormap -&gt; Open Colormap Editor.</li><li>Disabled the Options menu until data is imported.</li></ul></div><p>V 1.5.1</p><div><ul><li>Fixed error with R2013b, using the 'Enable' option for the underlying uiextras.HBox and uiextras.VBox from GUI Layout Toolbox is no longer available.</li></ul></div><p>V 1.5.0</p><div><ul><li>Clarified in help doc the order of the dimensions of the data imported from workspace. The size/organization of the input matrix should be Y-by-X-by-Z-by-t, NOT X-by-Y-by-Z-by-t. This is because the order of dimensions in a MATLAB matrix is row-by-column-by-higherdimensions</li><li>Modified the sliders to have continuous callbacks. They should now update while dragging, not only when released.</li><li>Set figure's renderer to OpenGL manually in case the user's MATLAB doesn't do that automatically. This ensures transparency is available.</li><li>Removed unnecessary warnings. User should no longer be warned about incorrect/missing variables when not selecting optional inputs, such as time.</li></ul></div><p>V 1.4.0</p><div><ul><li>Added menu option Dynamic ISO Color, which will color isosurfaces according to the color their value maps to in the app's colormap.</li><li>The Options -&gt; Colorbars menu options will now create a colorbar for both axes.</li><li>Sliders for the ISO Level values were added.</li></ul></div><p>V 1.3.1</p><div><ul><li>Fixed bug in import behavior. Imported data now restricted to type <tt>double</tt>, which is the only data type supported by all of the built-in functions and options in the app.</li></ul></div><p>V 1.3.0</p><div><ul><li>Added ability to specify frame rate in recorded file</li><li>Fixed Help menu option so it will bring up help doc on non-Windows systems</li></ul></div><p>V 1.2.0</p><div><ul><li>Added options for saving/loading options configurations</li><li>Reordered menu options</li><li>Reenabled save button on toolbar for saving figure screenshots</li><li>Several minor bug fixes</li><li>Minor clarifications in help doc</li><li>Added release notes in help doc</li></ul></div><p>V 1.1.0</p><div><ul><li>Uses new version of <tt>uigetvariables</tt> command from Scott Hirsch, allows for automatically naming axes according to imported workspace variable names</li><li>Updated name of FEX submission to 'Volumetric Data Explorer' to give more accurate representation of app's capabilities</li><li>Minor bug fix when setting menu options</li></ul></div><p>V 1.0.1</p><p>Bug fix when importing data from workspace</p><p>V 1.0.0</p><p>Original Release, developed on R2013a</p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Volumetric Data Explorer
+% This app provides an interactive environment to explore higher
+% dimensional data using some of MATLAB's abilities for volumetric
+% visualization and animation. It was originally designed for data that was
+% measured in a 3D grid of data points, for example temperature or wind
+% speed taken at each point in a 3D space. If this data is taken over time,
+% it can also be animated. However any data that fits the form |v =
+% f(x,y,z)| or |v = f(x,y,z,t)| can be used.
+%
+% Authored by Adam Filion
+%
+% Copyright 2013-2016, The MathWorks, Inc.
+%
+% Version 2.0.0
+%
+% <<WholeGUI.png>>
+
+%% Installation
+%
+% This app requires that the GUI Layout Toolbox from the MATLAB File
+% Exchange be installed and available. Your version of MATLAB will change
+% which files need to be installed and how.
+% 
+% * For R2014a and earlier, download and unzip the files from the following
+% location and ensure they are on the MATLAB path:
+% <http://www.mathworks.com/matlabcentral/fileexchange/27758-gui-layout-toolbox>
+% * For R2014b and later, you can either download the toolbox file and
+% install it, or download and unzip the zip file and ensure it is on the
+% MATLAB path:
+% <http://www.mathworks.com/matlabcentral/fileexchange/47982-gui-layout-toolbox>
+
+%% Importing Data
+%
+% This app allows you to import custom data from your workspace, or use
+% sample data sets to try out the visualization capabilities.
+%
+% <<ImportDataMenu.png>>
+
+%%
+% *Importing From Workspace*
+%
+% <<ImportWorkspaceMenu.png>>
+%
+% _Gridded Data_
+%
+% DataExplorer can work with 4D and 5D measurements, contained in variables
+% that are arranged as 3D or 4D grids respectively. The first three
+% dimensions denote the locations in the 3D space, while the 4th dimension
+% (if available) denotes which sample this data came from. For example, if
+% we have a 3D array of measurement locations 15 wide (X-axis) by 10 high
+% (Y-axis) by 20 deep (Z-axis), and we take 30 samples over time, then we
+% are working with 5D data as we have three spacial measurements, one for
+% time, and one measurement for e.g. temperature. The |data| is then
+% expected to be a matrix of measurement values of size 10x15x20x30, so
+% Y-by-X-by-Z-by-t (4D matrix). The order is due to the fact that indicies
+% in MATLAB go by row first then column followed by higher dimensions, so
+% the row (Y dimension) is first.
+%
+% You can optionally specify the X, Y and Z values to be used with the axes
+% when visualizing the data. You must specify all three, and they must
+% either all be 1D vectors of appropriate size of points in monotonically
+% increasing order, or all be 3D martricies of the values, such as what is
+% returned by |meshgrid|. If you do not specify X, Y, and Z data, then
+% DataExplorer will use default axes of |1:length(dim)|, where |dim| is the
+% particular dimension. Assuming the selected data was of valid dimensions,
+% the axes will be labeled according to the names of the variables selected
+% from the workspace.
+%
+% You may also optionally specify a time vector. If you do, this will
+% display the time associated with each measurement sample during
+% animation, and you can specify a new starting point by the time in
+% addition to the sample number (see Animation section for more details).
+%
+% _Non-gridded Data_
+%
+% The Data Explorer app can also import data from the workspace that has
+% not been arranged in a grid. In this case it expects the selected data,
+% along with the X, Y, and Z variables (and optionally time) to be column
+% vectors of the same size, where each row corresponds to an observation.
+% For example it might look something like:
+%
+% <<SampleData.png>>
+%
+% All imported data must be of type |double|.
+%
+
+
+%%
+% *Example Data*
+%
+% Several sample data sets can be generated to use in DataExplorer.
+
+%%
+% _Oscillating Ellipsoid_
+%
+% This option generates a 4D grid of points evaluated for the equation of
+% an oscillating ellipsoid of the form:
+%
+% $x^2/(5-4cos(t)) + y^2 + z^2/(5+4cos(t))$
+%
+
+%%
+% _Fluid Flow_
+%
+% This option generates data from a modified version of MATLAB's built-in
+% |flow| command. The modified version accepts time as an additional input
+% vector, which is used to vary parameters |A| and |nu| according to |A =
+% 2*sin(2*t)+4;| and |nu = cos(2*t)+1.5;| to create a time varying data
+% set. Enter |doc flow| and |edit flow| at the command prompt for more
+% information.
+%
+
+%%
+% *Importing Using the Functional Syntax*
+%
+% You can also use DataExplorer's underlying class to import data and set
+% up the app programatically for the data to be visualized, v, the
+% dimensional values, x y and z, and the time vector, t. It can be used
+% with the following syntax:
+%
+% |>> DataExplorer(v);|              Specify data only
+%
+% |>> DataExplorer(x,y,z,v);|        Specify dimensions and data
+%
+% |>> DataExplorer(x,y,z,v,t);|      Specify dimensions, data and time
+%
+% |>> DataExplorer([],[],[],v,t);|   Specify data and time, but not
+% dimensions
+%
+% Each one of these will generate a new DataExplorer window with the new
+% data. The behavior is the same as if starting DataExplorer with no inputs
+% using |>> DataExplorer|, and then loading in the data using the Import
+% Data -> Import from Workspace menu.
+
+
+%% Slice Panel
+%
+% The Slice panel of DataExplorer shows 3 different slices through |data|.
+% A slice is created by holding one of x, y, or z constant at a certain
+% value, and interpolating values along the resulting surface. You can
+% adjust the slice position through the sliders or by entering values into
+% the text boxes. Only slice locations that are inside the range of the
+% data are valid and will be created. Slice locations can be changed
+% outside of or during animation.
+%
+% Note that a slightly modified version of the built-in |slice| command was
+% used and is included in DataExplorer. Also note that you can animate the
+% slice sliders by going to Options -> Animation & Recording Options. See
+% the doc section Animation & Recording Options further down.
+%
+% <<SlicePanel.png>>
+
+%% Isosurface Panel
+%
+% Most people are familiar with contour lines, which are lines on a 2D
+% figure (e.g. a map) that show where constant values (e.g. elevation)
+% exist. The 3D equivalent is called an isosurface, which is a surface in
+% 3D space that follows a constant value.
+%
+% The Isosurface panel shows two isosurfaces. By default the first is green
+% and the second blue, but these can change when setting the Options ->
+% Dynamic ISO Color menu option. You can set the ISO Level for the surface,
+% which is the value it will follow, and the Alpha (transparency) property
+% in the text boxes. The ISO Level can also be changed through the sliders.
+% When you import a new data set from Workspace, DataExplorer will set
+% initial ISO Levels to be 1/3 and 2/3 of the way between max and min
+% values for the total data set. The Alpha value must be between zero and
+% one. Setting the Alpha value outside of this range will disable that
+% isosurface. Disabling one or both isosurfaces will speed up animation.
+% These can be updated outside of or during animation.
+%
+% Note that you can animate the isosurface sliders by going to Options ->
+% Animation & Recording Options. See the doc section Animation & Recording
+% Options further down.
+%
+% <<ISOSurfacePanel.png>>
+
+%% Control Panel
+%
+% The Controls panel lets you control the animation of the samples. If the
+% input |data| is 3D instead of 4D, meaning there is only one sample to
+% animate on, then the Controls panel is disabled. Note that disabling one
+% or both of the isosurfaces by setting their alpha value outside the range
+% of 0-1 or deselecting them in the Animation & Recording Options window
+% will speed up animation.
+%
+% <<ControlsPane.png>>
+%
+% *Delay panel*
+% 
+% The Delay panel allows the user to specify a delay in seconds for MATLAB
+% to wait before visualizing the next sample. This uses the |pause| command
+% to slow the rate of animation. It can be changed either through the |+|
+% or |-| buttons, or by entering a value in the text box. This value cannot
+% be negative, and it can be modified outside of or during animation.
+%
+% *PLAY Button*
+%
+% Clicking the |PLAY| button will begin animating by samples at the current
+% sample, and change it to a |STOP| button. Clicking on |STOP| stops the
+% animation. If the current sample is the final sample, clicking |PLAY|
+% will restart the animation at the first sample. While the animation is
+% active, the ANIMATE Button, Display panel and Play Bar are disabled.
+%
+% *ANIMATE Button*
+%
+% Clicking the |ANIMATE| button will animate based on the options set in
+% the Animation & Recording Options window. When active, all other options
+% in the app are disabled. Turning it on will begin the animation and
+% change the button to read |STOP ANIMATION|. Clicking |STOP ANIMATION|
+% will halt the animation and change it back to |ANIMATE| button. Selecting
+% the button again will restart the animation from the original starting
+% point.
+%
+% *RECORD Button*
+%
+% Clicking the |RECORD| button will open a connection to a file to record
+% to, and change it to read |STOP RECORDING|. Options controlling the
+% filename, format, framerate, when frames are recorded, and which section
+% to record are set in the Options -> Animation & Recording Options window.
+% Click |STOP RECORDING| to close the connection to the file. If you select
+% |RECORD| multiple times without changing the file name, it will overwrite
+% the existing file, NOT add to it.
+%
+% *Display panel*
+%
+% The Display panel shows which sample (the index of the 4th dimension of
+% |data|) is currently being visualized. If you selected a time vector when
+% importing |data|, it will also show the corresponding time value. You can
+% modify either the current sample or current time to display through their
+% text boxes. The current sample must be a positive integer in the range of
+% |1:length(data(1,1,1,:))|. The current time must be a value contained in
+% the time vector selected when importing. If it is not, it will be rounded
+% to the nearest one. When the |PLAY| button is clicked, these options are
+% disabled until the animation stops, but their values will update while
+% animating.
+%
+% *Play Bar*
+%
+% The Play Bar allows you to interactively scroll through the different
+% samples of |data|. The Display pane will update to show the current value
+% when interacting with the Play Bar. The Play Bar is disabled during
+% animation.
+%
+
+%% Options Menu
+%
+% <<OptionsMenu.png>>
+%
+% *Save/Load Options*
+%
+% _Save current configuration:_ Save the current options configuration to a
+% .mat file in the app's directory. Note that 'default' and 'factory' are
+% reserved names for options configuration files. If the user attempts to
+% save to them, the app will warn the user and will not save. It will save
+% the following options and information:
+%
+% * Link Rotation (on/off)
+% * Equalize Axes (on/off)
+% * Loop Animation (on/off)
+% * Colorbar (on/off)
+% * Colormap to use, can save custom colormaps
+% * Font Size to use
+% * Beep on Warning (on/off)
+% * Dynamic ISO Color (on/off)
+% * All options set in Animation & Recording Options
+%
+% Note that it does NOT save the axes names, which is the only portion of
+% the Options menu it does not save. This is so custom axes names will be
+% used when importing different sets of data from the workspace.
+%
+% _Load saved configuration:_ Load previously saved options file. This will
+% set all of the settings listed above for the currently loaded |data|.
+%
+% _Delete saved configuration:_ Delete a previously saved options file.
+% Note that the default and factory preferences files cannot be deleted.
+%
+% _Set current as default:_ Set the current options to the default that is
+% used when loading a set of data.
+%
+% _Restore factory defaults:_ Restore current and default options to the
+% original version.
+%
+% *Link Rotation*
+%
+% Links the rotation of the two axes when using the rotate tool so you view
+% them from the same angle. It is on by default.
+%
+% *Equalize Axes*
+%
+% Sets the aspect ratio so that the data units are the same in every
+% direction.
+%
+% *Loop PLAY Button*
+%
+% Enabling this option will cause the animation when using the PLAY button
+% to loop back to the beginning when it reaches the last sample. This
+% option is disabled if imported |data| cannot be animated by samples.
+%
+% *Animation & Recording Options*
+%
+% Opens the Animation & Recording Options window for setting options for
+% the ANIMATE button and RECORD button. This option has its own
+% documentation section further down.
+%
+% *Add Colorbars*
+%
+% Creates colorbars for the slices, and also for isosurfaces if the Dynamic
+% ISO Color option is on. The limits for the colorbar are set to be the min
+% and max of the enitre data set. This is so the colorbar does not change
+% at each time step, giving a better appreciation for how values are
+% changing over time.
+%
+% *Set Colormap*
+%
+% Allows the user to change the colormap to another built-in colormap,
+% specify a variable in the workspace that contains a custom colormap,or
+% open the colormap editor to interactively build custom colormaps.
+%
+% Note that changes made with the interactive colormap editor are not
+% automatically applied to the Isosurface panel, you must update something
+% in the app that causes it to update the Isosurface plot after applying
+% the new colormap. For example, moving one of the sliders.
+%
+% *Set Font Size*
+%
+% Opens a dialog box where you can enter a new font size used in the edit
+% boxes. This can make it easier to see large numbers or long decimals that
+% may not fit in the text boxes with larger font sizes.
+%
+% *Set Axes Names*
+%
+% Opens a menu that allows the user to specify custom names for the axes.
+% When importing data from the workspace, assuming valid X, Y and Z
+% variables are selected, the axes names will automatically be set to the
+% variable names from the workspace.
+%
+% *Beep on Warning*
+%
+% Toggles whether MATLAB will audibly beep when issuing app specific
+% warnings regarding invalid data or settings. This is on by default.
+%
+% *Dynamic ISO Color*
+%
+% Turning this option on will color the isosurfaces according to the color
+% in the app's colormap that maps to their value. This causes both the
+% Slice and Isosurface panels to show the same color for the same value. If
+% colorbars are turned on, it will only show a colorbar for the isosurface
+% plot if this option is on. This is to avoid potential confusion on the
+% meaning of the default colors. Turning it off will set the colors to the
+% default colors, green and blue. This option is off by default.
+
+%% Animation & Recording Options Window
+%
+% This window is opened through the Options -> Animation & Recording
+% Options menu selection. It allows the user to set options for the ANIMATE
+% and RECORD buttons. While this window is open, everything else in the app
+% is disabled. It has eight sections:
+%
+% <<AnimateRecord.png>>
+%
+% *Animate By*
+%
+% This section allows the user to select whether the ANIMATE button will
+% animate according to sample values or slice/iso values. Use the radio
+% buttons to select either Samples or Slice/ISO to animate by. There is
+% also a checkbox which enables repeating. Turning it on and entering a
+% positive integer will cause the animation to repeat after completing. If
+% you want the animation to play until manually stopped, enter |inf| in
+% this section.
+%
+% *Samples To Animate*
+%
+% Here the user can enter an expression for the sample values to animate.
+% Standard MATLAB expressions are supported, such as |1:2:100|. A variable
+% for the length of samples, |slength|, can also be used. For example, the
+% default expression is |1:slength|, which starts at the first sample, and
+% increases by 1 until it reaches the last sample. If the results of the
+% expression are invalid for samples, the app will warn and return to the
+% previous expression.
+%
+% *Slice Values To Animate*
+%
+% This section contains checkboxes which turn the various slices on and
+% off, along with text boxes to enter expressions for what slice values to
+% evaluate. If a scalar value is entered, then that slice will be held
+% constant when using the ANIMATE button. All non-scalar expressions for
+% both slices and iso must result in the same size. There are six special
+% variables that can be used:
+% 
+% * |minx|, |maxx| : the minimum and maximum x-axis values
+% * |miny|, |maxy| : the minimum and maximum y-axis values
+% * |minz|, |maxz| : the minimum and maximum z-axis values
+%
+% For example the following expressions could be used:
+%
+% * |[minx:maxx, maxx:-1:minx]| will animate the X slice starting with an x
+% value of |minx| and increasing by 1 until |maxx| is reached, then
+% reversing direction and decreasing by -1 back to |minx|
+% * |linspace(minz,maxz,20)| will animate the Z slice from |minz| to |maxz|
+% in 20 equally spaced steps
+% 
+% If any of the evaluated expressions are invalid, the app will warn and
+% return to the previous expression. When the OK button is selected, it
+% will check sizes for the slice and iso expressions. If they are unequal
+% in size, it will warn and not close the window.
+%
+% *ISO Values To Animate*
+%
+% Exactly the same as the Slice Values section, except for the special
+% variables that can be used:
+%
+% * |mind|, |maxd| : minimum and maximum data values
+%
+% For example, |mind:0.1:maxd| will animate the isosurface starting with
+% the suface made by the minimum data value and increasing that value by
+% 0.1 until the maximum data value is reached.
+%
+% *Recording Mode*
+%
+% This toggles between the two recording modes used when the RECORD button
+% is on. In |Manual| mode, every change to plots will cause a new frame to
+% be recorded. In |Specified| mode, only the animation specified in the
+% Animation & Recording Options window will be recorded, meaning it will
+% only record when the ANIMATE button is used. This allows you to set up
+% one animation with the ANIMATE button, run it, then set up another
+% animation and record it to the same file.
+%
+% *Area To Record*
+%
+% Here you can specify which section of the app you want to record. |Whole
+% App| records the entire window. |Plot Panels Only| will ignore the
+% Controls section and the menu and toolbar above. |Slice Panel Only| will
+% only record the slice panel, and similarly |ISO Panel Only| will only
+% record the isosurface panel.
+%
+% Note that with some Windows settings the recording area may not behave
+% correctly. If what is captured in the recording file does not match the
+% intended area, go into the Windows Control Panel and then (on Windows 7)
+% -> Appearance -> Display and set the display to 100%. You may need to log
+% out of Windows and log back in for this to take effect and fix the
+% problem.
+%
+% *File Options*
+%
+% Here you can specify the name of the file (excluding extension), the
+% frame rate, and what format the file should take, either .avi or .mp4.
+%
+% *Close Window*
+%
+% If you select OK, the app will check that the size of all the nonscalar
+% values for the slices and isosurfaces match in size. If they do not, then
+% it will warn and do nothing. Otherwise it will save the options for use
+% and close the Animation & Recording Options window.
+%
+% If you select Cancel, the window will close and all changes will be
+% discarded. Selecting Help will bring up the help doc.
+%
+
+%% Toolbar
+%
+% The toolbar contains a few utilites for exploring your data. These are
+% the same as the ones in the standard figure window.
+%
+% <<Toolbar.png>>
+
+%% Acknowledgements
+%
+% Several submissions from the MATLAB File Exchange were used in building
+% DataExplorer:
+%
+% The very helpful and powerful _GUI Layout Toolbox_ by Ben Tordoff,
+% without which this app never would have gotten finished:
+% <http://www.mathworks.com/matlabcentral/fileexchange/27758-gui-layout-toolbox>
+%
+% The |uigetvariables| command by Michelle Hirsh, used for the dialog box
+% for importing data from the workspace:
+% <http://www.mathworks.com/matlabcentral/fileexchange/37679-uigetvariables-dialog-to-pass-variables-from-workspace-into-gui>
+%
+% And the |screencapture| command by Yair Altman, used for capturing the
+% figure for recording purposes:
+% <http://www.mathworks.com/matlabcentral/fileexchange/24323-ScreenCapture>
+
+%% Release Notes
+%
+% V 2.0.0
+%
+% * The GUI Layout Toolbox is no longer packaged with the app due to it now
+% existing in 2 versions, one for R2014a and earlier and one for R2014b and
+% later. See the Installation section above.
+% * App will now issue more helpful error message when starting without GUI
+% Layout Toolbox available, and will not attempt to open figure window.
+% * Added ANIMATE button to Controls panel. This allows for predefined
+% animations, including animating the sliders for slices and isosurfaces.
+% * Added RECORD button to Controls panel. This allows the user to turn
+% recording on and off easier.
+% * Options for the ANIMATE and RECORD buttons are set in the new Options
+% -> Animation & Recording Options window. There is a new section in the
+% documentation describing this window and the options available.
+% * Options -> Add Colorbars will now only add a colorbar to the isosurface
+% plot if the Options -> Dynamic ISO Color option is on so as to avoid
+% confusion on the meaning of the default isosurface colors.
+% * Turning an isosurface off by setting its alpha value to negative will
+% no longer result in a warning.
+% * When importing 1D data from workspace, only columns are now supported
+% to avoid errors with underlying functions.
+% * Several minor bug fixes and enhancements
+% * Many minor updates to documentation
+%
+% V 1.6.1
+%
+% * Fixed bug when importing 3D variable from workspace. Same bug that was
+% fixed in V 1.5.1 for 4D variable.
+%
+% V 1.6.0
+%
+% * Added ability to open the standard figure colormap editor to allow easy
+% building of custom colormaps. This option can be found in Options -> Set
+% Colormap -> Open Colormap Editor.
+% * Disabled the Options menu until data is imported.
+%
+% V 1.5.1
+%
+% * Fixed error with R2013b, using the 'Enable' option for the underlying
+% uiextras.HBox and uiextras.VBox from GUI Layout Toolbox is no longer
+% available.
+%
+% V 1.5.0
+%
+% * Clarified in help doc the order of the dimensions of the data imported
+% from workspace. The size/organization of the input matrix should be
+% Y-by-X-by-Z-by-t, NOT X-by-Y-by-Z-by-t. This is because the order of
+% dimensions in a MATLAB matrix is row-by-column-by-higherdimensions
+% * Modified the sliders to have continuous callbacks. They should now
+% update while dragging, not only when released.
+% * Set figure's renderer to OpenGL manually in case the user's MATLAB
+% doesn't do that automatically. This ensures transparency is available.
+% * Removed unnecessary warnings. User should no longer be warned about
+% incorrect/missing variables when not selecting optional inputs, such as
+% time.
+%
+% V 1.4.0
+%
+% * Added menu option Dynamic ISO Color, which will color isosurfaces
+% according to the color their value maps to in the app's colormap.
+% * The Options -> Colorbars menu options will now create a colorbar for
+% both axes.
+% * Sliders for the ISO Level values were added.
+%
+% V 1.3.1
+%
+% * Fixed bug in import behavior. Imported data now restricted to type
+% |double|, which is the only data type supported by all of the built-in
+% functions and options in the app.
+%
+% V 1.3.0
+%
+% * Added ability to specify frame rate in recorded file
+% * Fixed Help menu option so it will bring up help doc on non-Windows
+% systems
+%
+% V 1.2.0
+%
+% * Added options for saving/loading options configurations
+% * Reordered menu options
+% * Reenabled save button on toolbar for saving figure screenshots
+% * Several minor bug fixes
+% * Minor clarifications in help doc
+% * Added release notes in help doc
+%
+% V 1.1.0
+%
+% * Uses new version of |uigetvariables| command from Scott Hirsch, allows
+% for automatically naming axes according to imported workspace variable
+% names
+% * Updated name of FEX submission to 'Volumetric Data Explorer' to give
+% more accurate representation of app's capabilities
+% * Minor bug fix when setting menu options
+%
+% V 1.0.1
+%
+% Bug fix when importing data from workspace
+%
+% V 1.0.0
+% 
+% Original Release, developed on R2013a
+##### SOURCE END #####
+--></body></html>

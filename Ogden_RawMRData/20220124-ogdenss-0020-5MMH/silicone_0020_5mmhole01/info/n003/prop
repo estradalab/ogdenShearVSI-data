@@ -1,0 +1,8 @@
+type LIB
+status Completed
+title ogden_ge3d
+exp ogden_ge3d
+lock on
+time null
+macro xmrtpar
+data 0852_ogden_ge3d_01

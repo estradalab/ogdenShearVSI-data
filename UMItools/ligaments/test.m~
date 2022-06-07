@@ -1,0 +1,19 @@
+% testing the shape fit
+
+%define a test shape, deformed egg with bumps
+theta=[0:1000]/1000*2*pi;
+R=cos(theta)+2*sin(theta)+ 0.3*cos(3*theta).^2 +5;
+x=5*R.*cos(theta)+0.1*randn(size(theta))+10;
+y=R.*sin(theta)+0.1*randn(size(theta));
+
+x=x:
+
+phi=pi/4;
+
+xyprime=[x' y']*[cos(phi) sin(phi); -sin(phi) cos(phi)]; 
+
+%call the fitting function, with optional 'plot' to overlay 
+%data and fit, geostruct contains fit and data about the shape
+nharmonics=10;
+[xfit,yfit]=ligafit(x,y,nharmonics,'plot');
+

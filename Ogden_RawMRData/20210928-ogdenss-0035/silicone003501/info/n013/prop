@@ -1,0 +1,8 @@
+type LIB
+status Completed
+title lig_stems_RO_mTE wiggle=3.5mm lambda=3mm
+exp lig_stems_RO_mTE
+lock on
+time null
+macro xmrtpar
+data 1936_lig_stems_RO_mTE_wiggle_3.5mm_lambda_3mm01

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE template>
+<template>
+    <action type="LIB" id="n004" status="Completed" lock="on" title="scout" exp="scout" time="null" macro="xmrtpar" data="1244_scout_01" />
+    <action type="LIB" id="n001" status="Completed" lock="on" title="spuls" exp="spuls" time="null" macro="xmrtpar" data="1246_spuls_01" />
+    <action type="LIB" id="n002" status="Completed" lock="on" title="ogden_gems reference 32 slices" exp="ogden_gems" time="null" macro="xmrtpar" data="1248_ogden_gems_reference_32_slices01" />
+    <action type="LIB" id="n013" status="Completed" lock="on" title="scout" exp="scout" time="null" macro="xmrtpar" data="1307_scout_01" />
+    <action type="LIB" id="n003" status="Completed" lock="on" title="ogden_gems reference 32 slices" exp="ogden_gems" time="null" macro="xmrtpar" data="1309_ogden_gems_reference_32_slices01" />
+    <action type="LIB" id="n012" status="Completed" lock="on" title="ogden_stems_noalt_RO wiggle=5mm lambda=2mm" exp="ogden_stems_noalt_RO" time="null" macro="xmrtpar" data="1336_ogden_stems_noalt_RO_wiggle_5mm_lambda_2mm01" />
+    <action type="LIB" id="n005" status="Completed" lock="on" title="ogden_stems_noalt_PE wiggle=5mm lambda=2mm" exp="ogden_stems_noalt_PE" time="null" macro="xmrtpar" data="1402_ogden_stems_noalt_PE_wiggle_5mm_lambda_2mm01" />
+    <action type="LIB" id="n006" status="Completed" lock="on" title="ogden_stems_noalt_SL wiggle=5mm lambda=2mm" exp="ogden_stems_noalt_SL" time="null" macro="xmrtpar" data="1429_ogden_stems_noalt_SL_wiggle_5mm_lambda_2mm01" />
+    <action type="LIB" id="n008" status="Completed" lock="on" title="ogden_stems_noalt_RO wiggle=2.5mm lambda=2mm" exp="ogden_stems_noalt_RO" time="null" macro="xmrtpar" data="1456_ogden_stems_noalt_RO_wiggle_2.5mm_lambda_2mm01" />
+    <action type="LIB" id="n009" status="Completed" lock="on" title="ogden_stems_noalt_PE wiggle=2.5mm lambda=2mm" exp="ogden_stems_noalt_PE" time="null" macro="xmrtpar" data="1521_ogden_stems_noalt_PE_wiggle_2.5mm_lambda_2mm01" />
+    <action type="LIB" id="n010" status="Completed" lock="on" title="ogden_stems_noalt_SL wiggle=2.5mm lambda=2mm" exp="ogden_stems_noalt_SL" time="null" macro="xmrtpar" data="1546_ogden_stems_noalt_SL_wiggle_2.5mm_lambda_2mm01" />
+    <action type="LIB" id="n007" status="Completed" lock="on" title="ogden_ge3d" exp="ogden_ge3d" time="null" macro="xmrtpar" data="1554_ogden_ge3d_01" />
+    <action type="LIB" id="n011" status="Completed" lock="on" title="scout translation" exp="scout" time="null" macro="xmrtpar" data="1602_scout_translation01" />
+    <action type="LIB" id="n014" status="Completed" lock="on" title="ogden_gems reference 32 slices" exp="ogden_gems" time="null" macro="xmrtpar" data="1603_ogden_gems_reference_32_slices01" />
+    <action type="LIB" id="n017" status="Completed" lock="on" title="ogden_stems_noalt_SL translation=5mm lambda=2mm" exp="ogden_stems_noalt_SL" time="null" macro="xmrtpar" data="1630_ogden_stems_noalt_SL_translation_5mm_lambda_2mm01" />
+    <action type="LIB" id="n018" status="Completed" lock="on" title="ogden_stems_noalt_RO translation=5mm lambda=2mm" exp="ogden_stems_noalt_RO" time="null" macro="xmrtpar" data="1657_ogden_stems_noalt_RO_translation_5mm_lambda_2mm01" />
+    <action type="LIB" id="n015" status="Completed" lock="on" title="ogden_stems_noalt_PE translation=5mm lambda=2mm" exp="ogden_stems_noalt_PE" time="null" macro="xmrtpar" data="1723_ogden_stems_noalt_PE_translation_5mm_lambda_2mm01" />
+    <action type="LIB" id="n016" status="Completed" lock="on" title="ogden_ge3d post translation" exp="ogden_ge3d" time="null" macro="xmrtpar" data="1731_ogden_ge3d_post_translation01" />
+</template>

@@ -1,0 +1,8 @@
+type LIB
+status Completed
+title lig_gems
+exp lig_gems
+lock on
+time null
+macro xmrtpar
+data 1814_lig_gems_01

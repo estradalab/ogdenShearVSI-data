@@ -1,0 +1,226 @@
+function h=lig_survey_coronal_devel(varargin)
+% lig_survey_coronal(filename,varargin)
+
+if ischar(varargin{1});
+    P=load(varargin{1});  
+end
+
+if isstruct(varargin{1});
+    P=varargin{1};  
+end
+
+
+L=P.Lagrange;
+
+%%
+hf=0;
+mask=P.mask_hr.*P.mask; %and the masks of the GE3D data and the DESTE data
+
+%identify a default center of the sample, using the mask;
+si=size(mask);
+mc1=round(si(1)/2);
+testslice=squeeze(mask(mc1,:,:));
+mc2=round(sum(testslice,2)'*(1:si(2))'/sum(testslice(:)));
+mc3=round((1:si(3))*sum(testslice,1)'/sum(testslice(:)));
+mask(mask==0)=NaN;
+cmap=jet(256);
+
+if any(strcmp(varargin,'ind'));
+    dummy=find(strcmp(varargin,'ind'));
+    slivec=varargin{dummy+1};
+else
+    slivec=mc3+(-21:3:21);
+end
+
+
+%% top view Lagrangian strains
+for sli=slivec;
+    Lagrangian_derivatives_flag=true;
+    if Lagrangian_derivatives_flag;
+        hf=hf+1;
+        h(hf)=figure('position',[10 10 1900 950]);
+        set(gcf,'PaperPositionMode','manual','colormap',cmap,'PaperOrientation','landscape');
+        for enc=1:3;
+            tsubplot(3,5,1+(enc-1)*5,8);
+            imagesc(P.axis2,P.axis1,angle(P.data(:,:,sli,enc)).*mask(:,:,sli),[-pi pi]);
+            axis image
+            %grid on
+            set(gca, 'XColor', 'k','Ycolor','k','gridlinestyle','-');%,'Yticklabel','','Xticklabel','');
+            %ylabel(['slice ' num2str(sli)]);
+            colorbar;
+            switch enc
+                case 1
+                    title(['phase (ud)']);
+                case 2
+                    title(['phase (lr)']);
+                case 3
+                    title(['phase (io)']);
+            end
+            
+            
+            for jj=enc:3;
+                tsubplot(3,5,jj+1+(enc-1)*5,8);
+                %imagesc(P.axis2,P.axis1,blur(P.strains(:,:,sli,enc,jj)),[-0.2 0.2]);
+                imagesc(P.axis2,P.axis1,(L(:,:,sli,enc,jj)).*mask(:,:,sli),[-0.20 0.20]);
+                axis image
+                %grid on
+                set(gca, 'XColor', 'k','Ycolor','k','gridlinestyle','-','Yticklabel','','Xticklabel','');
+                title(['L ' num2str(enc) num2str(jj)],'color','k');
+                hc=colorbar;
+%                 pv=get(hc,'Position');
+%                 pv(3)=0.005;
+%                 set(hc,'Position',pv);
+            end
+            
+            
+            %plot an axial cut, with a line indicating the slice
+            tsubplot(3,5,15,8);
+            % plot the magnitudes in the 5th column
+            MM=permute(squeeze(log10(P.HIRES.magnitude(mc1,:,:)).*mask(mc1,:,:)),[2 1]);
+            imagesc(P.HIRES.axis2,P.HIRES.axis3,MM);
+            axis image
+            set(gca, 'XColor', 'k','Ycolor','k','gridlinestyle','-','YDir','normal');%,'Yticklabel','','Xticklabel',''
+            title(['log(|HIRES|), slide#' num2str(hf)]);
+            hold on;
+            plot([P.HIRES.axis2(1) P.HIRES.axis2(end)],P.HIRES.axis3(sli)*[1 1],'w'); 
+            xlabel('dir2 (mm)');
+            ylabel('dir3 (mm)');
+            colorbar;
+            
+            
+            % plot the magnitudes in the 5th column
+            tsubplot(3,5,5,8);
+            imagesc(P.HIRES.axis2,P.HIRES.axis1,log10(P.HIRES.magnitude(:,:,sli)).*mask(:,:,sli));
+            axis image
+            grid on
+            set(gca, 'XColor', 'k','Ycolor','k','gridlinestyle','-','Yticklabel','','Xticklabel','');
+            title('log(|HIRES|)');
+            colorbar;
+            
+            % plot the magnitudes in the 5th column
+            tsubplot(3,5,10,8);
+            imagesc(P.axis2,P.axis1,log10(abs(P.data(:,:,sli,1))).*mask(:,:,sli));
+            axis image
+            grid on
+            set(gca, 'XColor', 'k','Ycolor','k','gridlinestyle','-','Yticklabel','','Xticklabel','');
+            title('log(|DESTE|)');
+            colorbar;
+            orient landscape     
+            
+            
+            
+        end
+    end
+    % plot the high resolution data at maximal resolution
+    tsubplot(2,4,6,8);
+    imagesc(P.HIRES.orig_data.pars.axis2,P.HIRES.orig_data.pars.axis1,log10(abs(P.HIRES.orig_data.image(:,:,sli,1))));
+    set(gca,'position', [0.1500    0.0400    0.300    0.600])
+    axis image;
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    %now plot the black and white background picture for flipping back and
+    %forth
+    
+    background_flag=true;
+    if background_flag;
+        
+        ax1=P.HIRES.orig_data.pars.axis2;
+        ax2=P.HIRES.orig_data.pars.axis1;
+        picbw=(abs(P.HIRES.orig_data.image(:,:,sli,1)));
+        clim=[0 20000];
+        
+        hf=hf+1;
+        h(hf)=figure('position',[10 10 1900 950]);
+        set(gcf,'PaperPositionMode','manual','colormap',cmap,'PaperOrientation','landscape');
+        for enc=1:3;
+            tsubplot(3,5,1+(enc-1)*5,8);
+            imagesc(ax1,ax2,picbw,[clim(1) clim(2)]);
+            axis image
+            %grid on
+            set(gca, 'XColor', 'k','Ycolor','k','gridlinestyle','-');%,'Yticklabel','','Xticklabel','');
+            %ylabel(['slice ' num2str(sli)]);
+            colorbar;
+            switch enc
+                case 1
+                    title(['phase (ud)']);
+                case 2
+                    title(['phase (lr)']);
+                case 3
+                    title(['phase (io)']);
+            end
+            
+            
+            for jj=enc:3;
+                tsubplot(3,5,jj+1+(enc-1)*5,8);
+                %imagesc(P.axis2,P.axis1,blur(P.strains(:,:,sli,enc,jj)),[-0.2 0.2]);
+                imagesc(ax1,ax2,picbw,[clim(1) clim(2)]);
+                axis image
+                %grid on
+                set(gca, 'XColor', 'k','Ycolor','k','gridlinestyle','-','Yticklabel','','Xticklabel','');
+                title(['L ' num2str(enc) num2str(jj)],'color','k');
+                hc=colorbar;
+%                 pv=get(hc,'Position');
+%                 pv(3)=0.005;
+%                 set(hc,'Position',pv);
+            end
+            
+            
+            %plot an axial cut, with a line indicating the slice
+            tsubplot(3,5,15,8);
+            % plot the magnitudes in the 5th column
+            MM=permute(squeeze(log10(P.HIRES.magnitude(mc1,:,:)).*mask(mc1,:,:)),[2 1]);
+            imagesc(P.HIRES.axis2,P.HIRES.axis3,MM);
+            axis image
+            set(gca, 'XColor', 'k','Ycolor','k','gridlinestyle','-','YDir','normal');%,'Yticklabel','','Xticklabel',''
+            title(['log(|HIRES|), slide#' num2str(hf)]);
+            hold on;
+            plot([P.HIRES.axis2(1) P.HIRES.axis2(end)],P.HIRES.axis3(sli)*[1 1],'w'); 
+            xlabel('dir2 (mm)');
+            ylabel('dir3 (mm)');
+            colorbar;
+            
+            
+            % plot the magnitudes in the 5th column
+            tsubplot(3,5,5,8);
+            imagesc(ax1,ax2,picbw,[clim(1) clim(2)]);
+            axis image
+            grid on
+            set(gca, 'XColor', 'k','Ycolor','k','gridlinestyle','-','Yticklabel','','Xticklabel','');
+            title('log(|HIRES|)');
+            colorbar;
+            
+            % plot the magnitudes in the 5th column
+            tsubplot(3,5,10,8);
+            imagesc(ax1,ax2,picbw,[clim(1) clim(2)]);
+            axis image
+            grid on
+            set(gca, 'XColor', 'k','Ycolor','k','gridlinestyle','-','Yticklabel','','Xticklabel','');
+            title('log(|DESTE|)');
+            colorbar;
+            orient landscape     
+            
+            
+            
+        end
+    end
+    % plot the high resolution data at maximal resolution
+    tsubplot(2,4,6,8);
+    imagesc(ax1,ax2,picbw,[clim(1) clim(2)]);
+    set(gca,'position', [0.1500    0.0400    0.300    0.600])
+    axis image;
+    
+    colormap(gray)
+    
+    
+    
+end
+
+
+if any(strcmp(varargin,'pdf'));
+    if ischar(varargin{1});
+        [a filename c]=fileparts(varargin{1});
+        pdfappend(h,[filename '.pdf'],'size',[10 8]);
+    end
+end

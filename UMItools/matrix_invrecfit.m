@@ -1,0 +1,141 @@
+function out=matrix_invrecfit(indata,taxis,varargin)
+%out=matrix_invrecfit(indata,taxis,['oddeven'])
+%indata:        3D or 4D stack of image matrices (the same slice) acquired at different times (last dimension
+%taxis:         times after which the images were acquired
+%'oddeven':     option to average odd even slices, eliminates funky systematics
+%'convergence': option to monitor the convergence of the amplitude plot
+%
+%out.T1, out.amplitude contain the fitted results 
+
+options=varargin;
+
+
+if isstruct(indata);
+    indata=squeeze(indata.image);
+else
+    indata=squeeze(indata);
+end
+
+if ndims(indata) == 3;                          %one slice, multiple times
+    out = matrix_invrecfit_3d(indata,taxis,options{:});
+elseif ndims(indata) ==4;                       %multislice, multiple times
+    [ntd nph nsl nti] = size(indata);
+    out.amplitude=zeros(ntd,nph,nsl);
+    out.T1=zeros(ntd,nph,nsl);
+    for ns=1:nsl;
+        oout= matrix_invrecfit_3d(squeeze(indata(:,:,ns,:)),taxis,options{:});
+        out.amplitude(:,:,ns)=oout.amplitude(:,:);
+        out.T1(:,:,ns)=oout.T1(:,:);
+        out.error(:,:,ns)=oout.error(:,:);
+    end
+end
+out.T1(abs(out.T1(:))>5)=0;
+
+function out=matrix_invrecfit_3d(incube,taxis,varargin)
+%out=matrix_invrecfit_3d(incube,taxis,weighting)
+%fit to exponential recovery
+%incube: nro X npe (x numslices) X numel(taxis) is a stack of images acquired at different times
+%the times passed down in the taxis.
+%out is structure with fields 'amplitude' and 'T1', result of a pixelwise
+%
+%the inversion recovery  ' y= a*(1-2*exp(bt)) '
+%can't be done by straight linear regression, so this routine implements an
+%iterative linear regression, where an initial amplitude matrix a is
+%guessed, then updated iteratively
+
+options=varargin;
+
+[taxis,sortindex]=sort(taxis); %sort by ascending times
+incube=incube(:,:,sortindex);  %sort by ascending times
+
+[tmax,tmaxind]=max(taxis);
+[tmin,tminind]=min(taxis);
+
+%Third dimension is the echotime dimension
+phase_matrix=incube(:,:,tminind)./abs(incube(:,:,tminind)); %phase of the image with the shortest wait time
+phased_incube=zeros(size(incube));
+
+%1. rotate the phase, short times are positive, long times negative
+for nt=1:numel(taxis);
+    phased_incube(:,:,nt)= incube(:,:,nt)./phase_matrix; %rotate signal into the imaginary axis
+end
+
+%2. generate a starting guess for the amplitude, using the two shortest
+%times and interpolating backwards
+a0= abs(phased_incube(:,:,1) - (phased_incube(:,:,2)-phased_incube(:,:,1))/(taxis(2)-taxis(1)) * taxis(1));
+a0_init=a0; %this will be the reference against which updated amplitudes are measured
+TR=10;%default if TR is invoked without time
+
+TRT1correction=zeros(size(a0));
+
+
+%3. iteratively fit and update the amplitude guess
+si=size(phased_incube);
+Y=zeros(size(phased_incube));
+
+niter=40;
+for jj=1:niter;
+    for nt=1:numel(taxis);
+        Y(:,:,nt)= phased_incube(:,:,nt)+a0+TRT1correction;
+    end
+    outY=matrix_expfit(Y,taxis,options{:});
+    
+    if any(strcmp(options,'TR'));
+        ind=find(strcmp(options,'TR'));
+        TR=options{ind+1};
+        TRT1correction=outY.amplitude.*exp(-TR./abs(outY.Tau));
+        
+        checkmatrix=TRT1correction>a0_init/2;
+        TRT1correction(checkmatrix)=0;
+        a0(checkmatrix)=a0_init(checkmatrix); %reset where amplitude threatens to run away
+    end
+    
+    F=outY.amplitude/2;
+    if any(strcmp(options,'convergence'));
+        subplot(1,3,1);
+       imagesc(F-a0);
+        clim=1e3*[-1 1];
+        set(gca,'clim',clim,'zlim',clim); title(num2str(jj)); pause(0.1);
+        
+        subplot(1,3,2);
+        imagesc(outY.error.amplitude); 
+        set(gca,'clim',[0 0.5]);
+        
+        
+        subplot(1,3,3);
+        imagesc(outY.error.Tau); 
+        set(gca,'clim',[0 0.5]);
+    end
+    
+    %update the amplitude guess%%%%%
+    if jj==1;
+        a0 = F/2;
+    else
+        a0=(a0+F)/2;
+    end
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    %update the TR correction
+    if any(strcmp(options,'TR'));
+        if jj== 1;
+            first_TRT1=TRT1correction;
+            old_TRT1=TRT1correction;
+        elseif jj>= niter-2;
+            TRT1correction=(old_TRT1+TRT1correction)/2;
+            old_TRT1=TRT1correction;
+        else
+            TRT1correction=(first_TRT1+TRT1correction)/2;
+            old_TRT1=TRT1correction;
+        end
+    end
+    
+end
+
+
+%F(checkmatrix)=0;
+%outY.Tau(checkmatrix)=0;
+
+out.amplitude=F;
+out.T1=outY.Tau;
+out.error=outY.error;
+

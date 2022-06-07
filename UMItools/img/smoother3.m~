@@ -1,0 +1,24 @@
+function smoother3(fname , sz)
+% function smoother (fname , sz)
+%
+% uses Matlab's smooth3 function on a time series
+%  sz is the number of voxels in the kernel
+%
+% this is the same as smoother2 but in NIFTI format
+%
+%[p fname ext vr] = fileparts(fname);
+	
+[data h] = read_nii_img(fname);
+odata = zeros(size(data));
+
+for t=1:size(data,1)
+	in = reshape(data(t,:), h.dim(2), h.dim(3), h.dim(4)) ;
+    if h.dim(4)==1
+        in(:,:,2:3)=in;
+
+    end
+	tmp = smooth3(in, 'gaussian', [ sz sz slsz ]);
+	odata(t,:) = tmp(:);
+end
+
+write_nii(['s' fname '.nii'], odata, h, 0);

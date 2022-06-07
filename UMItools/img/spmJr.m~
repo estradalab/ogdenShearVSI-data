@@ -1,0 +1,70 @@
+function spmJr (root, DesMat, contrast, mask)
+
+% spmJr (path, file_root, Desmat [,mask])
+%
+
+all_data = read_img_series(root);
+fprintf('\n Done reading the data. crunching ...');
+hnames = dir(sprintf('%s*.hdr',root));
+h = read_hdr(hnames(1).name);
+tmap = zeros( 1,size(all_data, 2));
+zmap = zeros( 1,size(all_data, 2));
+Tol = 10^(-16);
+df = size(all_data,1) - size(DesMat,2)+1;
+
+warning off
+
+if ~exist('mask')
+    for pix=1:size(all_data,2)
+        [t, beta_est, vBeta]  = myLinReg(DesMat,all_data(:,pix),contrast);
+        if isnan(t)
+            t=0;
+        end
+        tmap(pix) = t;
+     %   zmap(pix) = spm_t2z(t,df,  Tol);
+
+    end
+
+else
+    fprintf('Reading the mask...');
+    mask=read_img(mask);
+    for pix=1:size(all_data,2)
+        t=0; beta_est=0; vBeta=0;
+        if  mask(pix)~=0
+            [t, beta_est, vBeta]  = myLinReg(DesMat,all_data(:,pix),contrast);
+            if isnan(t)
+                t=0;
+            end
+            tmap(pix) = t;
+       %     zmap(pix) = spm_t2z(t,df,  Tol);
+        end
+    end
+end
+
+
+zmap = spm_t2z(tmap,df);
+ 
+ 
+% make sure that we write stats maps as floats.
+outh = h;
+outh.datatype=16;
+outh.bits = 32;
+outh.glmax = max(tmap(:));
+outh.glmin = min(tmap(:));
+
+write_hdr('Tmap.hdr',outh);
+write_img_data('Tmap.img', tmap, outh);
+
+outh.glmax = max(zmap(:));
+outh.glmin = min(zmap(:));
+write_hdr('Zmap.hdr',outh);
+write_img_data('Zmap.img', zmap, outh);
+
+warning on
+
+return
+
+
+
+
+

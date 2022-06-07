@@ -1,0 +1,354 @@
+2018-06-18T13:19:29.145-04:00| vmx| I125: Log for VMware Player pid=8540 version=14.0.0 build=build-6661328 option=Release
+2018-06-18T13:19:29.145-04:00| vmx| I125: The process is 64-bit.
+2018-06-18T13:19:29.145-04:00| vmx| I125: Host codepage=windows-1252 encoding=windows-1252
+2018-06-18T13:19:29.145-04:00| vmx| I125: Host is Windows 7 Enterprise, 64-bit Service Pack 1 (Build 7601)
+2018-06-18T13:19:28.606-04:00| vmx| I125: VTHREAD initialize main thread 1 "vmx" host id 8468
+2018-06-18T13:19:28.608-04:00| vmx| I125: LOCALE windows-1252 -> NULL User=409 System=409
+2018-06-18T13:19:28.608-04:00| vmx| I125: Msg_SetLocaleEx: HostLocale=windows-1252 UserLocale=NULL
+2018-06-18T13:19:28.609-04:00| vmx| I125: FILE: FileCreateDirectoryRetry: Non-retriable error encountered (C:\ProgramData\VMware): Cannot create a file when that file already exists (183)
+2018-06-18T13:19:28.609-04:00| vmx| I125: FILE: FileCreateDirectoryRetry: Non-retriable error encountered (C:\ProgramData\VMware\VMware Workstation): Cannot create a file when that file already exists (183)
+2018-06-18T13:19:28.609-04:00| vmx| I125: FILE: FileCreateDirectoryRetry: Non-retriable error encountered (C:\ProgramData\VMware): Cannot create a file when that file already exists (183)
+2018-06-18T13:19:28.609-04:00| vmx| I125: FILE: FileCreateDirectoryRetry: Non-retriable error encountered (C:\ProgramData\VMware\VMware Workstation): Cannot create a file when that file already exists (183)
+2018-06-18T13:19:28.610-04:00| vmx| I125: FILE: FileCreateDirectoryRetry: Non-retriable error encountered (C:\ProgramData\VMware): Cannot create a file when that file already exists (183)
+2018-06-18T13:19:28.610-04:00| vmx| I125: FILE: FileCreateDirectoryRetry: Non-retriable error encountered (C:\ProgramData\VMware\VMware Workstation): Cannot create a file when that file already exists (183)
+2018-06-18T13:19:28.611-04:00| vmx| I125: DictionaryLoad: Cannot open file "C:\Users\jbestrad\AppData\Roaming\VMware\config.ini": The system cannot find the file specified.
+2018-06-18T13:19:28.611-04:00| vmx| I125: Msg_Reset:
+2018-06-18T13:19:28.611-04:00| vmx| I125: [msg.dictionary.load.openFailed] Cannot open file "C:\Users\jbestrad\AppData\Roaming\VMware\config.ini": The system cannot find the file specified.
+2018-06-18T13:19:28.611-04:00| vmx| I125: ----------------------------------------
+2018-06-18T13:19:28.611-04:00| vmx| I125: ConfigDB: Failed to load C:\Users\jbestrad\AppData\Roaming\VMware\config.ini
+2018-06-18T13:19:28.612-04:00| vmx| I125: OBJLIB-LIB: Objlib initialized.
+2018-06-18T13:19:28.612-04:00| vmx| I125: FILE: FileCreateDirectoryRetry: Non-retriable error encountered (C:\ProgramData\VMware): Cannot create a file when that file already exists (183)
+2018-06-18T13:19:28.612-04:00| vmx| I125: FILE: FileCreateDirectoryRetry: Non-retriable error encountered (C:\ProgramData\VMware\VMware Player): Cannot create a file when that file already exists (183)
+2018-06-18T13:19:28.612-04:00| vmx| I125: DictionaryLoad: Cannot open file "C:\ProgramData\VMware\VMware Player\config.ini": The system cannot find the file specified.
+2018-06-18T13:19:28.612-04:00| vmx| I125: [msg.dictionary.load.openFailed] Cannot open file "C:\ProgramData\VMware\VMware Player\config.ini": The system cannot find the file specified.
+2018-06-18T13:19:28.612-04:00| vmx| I125: PREF Optional preferences file not found at C:\ProgramData\VMware\VMware Player\config.ini. Using default values.
+2018-06-18T13:19:28.612-04:00| vmx| I125: FILE: FileCreateDirectoryRetry: Non-retriable error encountered (C:\ProgramData\VMware): Cannot create a file when that file already exists (183)
+2018-06-18T13:19:28.612-04:00| vmx| I125: FILE: FileCreateDirectoryRetry: Non-retriable error encountered (C:\ProgramData\VMware\VMware Player): Cannot create a file when that file already exists (183)
+2018-06-18T13:19:28.612-04:00| vmx| I125: FILE: FileCreateDirectoryRetry: Non-retriable error encountered (C:\ProgramData\VMware): Cannot create a file when that file already exists (183)
+2018-06-18T13:19:28.612-04:00| vmx| I125: FILE: FileCreateDirectoryRetry: Non-retriable error encountered (C:\ProgramData\VMware\VMware Player): Cannot create a file when that file already exists (183)
+2018-06-18T13:19:28.613-04:00| vmx| I125: DictionaryLoad: Cannot open file "C:\ProgramData\VMware\VMware Player\settings.ini": The system cannot find the file specified.
+2018-06-18T13:19:28.613-04:00| vmx| I125: [msg.dictionary.load.openFailed] Cannot open file "C:\ProgramData\VMware\VMware Player\settings.ini": The system cannot find the file specified.
+2018-06-18T13:19:28.613-04:00| vmx| I125: PREF Optional preferences file not found at C:\ProgramData\VMware\VMware Player\settings.ini. Using default values.
+2018-06-18T13:19:28.613-04:00| vmx| I125: DictionaryLoad: Cannot open file "C:\ProgramData\VMware\VMware Player\config.ini": The system cannot find the file specified.
+2018-06-18T13:19:28.613-04:00| vmx| I125: [msg.dictionary.load.openFailed] Cannot open file "C:\ProgramData\VMware\VMware Player\config.ini": The system cannot find the file specified.
+2018-06-18T13:19:28.613-04:00| vmx| I125: PREF Optional preferences file not found at C:\ProgramData\VMware\VMware Player\config.ini. Using default values.
+2018-06-18T13:19:28.613-04:00| vmx| I125: DictionaryLoad: Cannot open file "C:\Users\jbestrad\AppData\Roaming\VMware\config.ini": The system cannot find the file specified.
+2018-06-18T13:19:28.613-04:00| vmx| I125: [msg.dictionary.load.openFailed] Cannot open file "C:\Users\jbestrad\AppData\Roaming\VMware\config.ini": The system cannot find the file specified.
+2018-06-18T13:19:28.613-04:00| vmx| I125: PREF Optional preferences file not found at C:\Users\jbestrad\AppData\Roaming\VMware\config.ini. Using default values.
+2018-06-18T13:19:28.613-04:00| vmx| I125: FILE: FileLockDynaLink: Further process validation tools are: available
+2018-06-18T13:19:29.138-04:00| vmx| I125: lib/ssl: OpenSSL using FIPS_drbg for RAND
+2018-06-18T13:19:29.138-04:00| vmx| I125: lib/ssl: protocol list tls1.2
+2018-06-18T13:19:29.138-04:00| vmx| I125: lib/ssl: protocol list tls1.2 (openssl flags 0x17000000)
+2018-06-18T13:19:29.138-04:00| vmx| I125: lib/ssl: cipher list !aNULL:kECDH+AESGCM:ECDH+AESGCM:RSA+AESGCM:kECDH+AES:ECDH+AES:RSA+AES
+2018-06-18T13:19:29.138-04:00| vmx| I125: FILE: FileCreateDirectoryRetry: Non-retriable error encountered (C:\ProgramData\VMware): Cannot create a file when that file already exists (183)
+2018-06-18T13:19:29.138-04:00| vmx| I125: FILE: FileCreateDirectoryRetry: Non-retriable error encountered (C:\ProgramData\VMware): Cannot create a file when that file already exists (183)
+2018-06-18T13:19:29.138-04:00| vmx| I125: FILE: FileCreateDirectoryRetry: Non-retriable error encountered (C:\ProgramData\VMware): Cannot create a file when that file already exists (183)
+2018-06-18T13:19:29.138-04:00| vmx| I125: FILE: FileCreateDirectoryRetry: Non-retriable error encountered (C:\ProgramData\VMware): Cannot create a file when that file already exists (183)
+2018-06-18T13:19:29.139-04:00| vmx| I125: FILE: FileCreateDirectoryRetry: Non-retriable error encountered (C:\ProgramData\VMware): Cannot create a file when that file already exists (183)
+2018-06-18T13:19:29.141-04:00| vmx| I125: FILE: FileCreateDirectoryRetry: Non-retriable error encountered (C:\Users): Cannot create a file when that file already exists (183)
+2018-06-18T13:19:29.141-04:00| vmx| I125: FILE: FileCreateDirectoryRetry: Non-retriable error encountered (C:\Users\jbestrad): Cannot create a file when that file already exists (183)
+2018-06-18T13:19:29.142-04:00| vmx| I125: FILE: FileCreateDirectoryRetry: Non-retriable error encountered (C:\Users\jbestrad\AppData): Cannot create a file when that file already exists (183)
+2018-06-18T13:19:29.142-04:00| vmx| I125: FILE: FileCreateDirectoryRetry: Non-retriable error encountered (C:\Users\jbestrad\AppData\Local): Cannot create a file when that file already exists (183)
+2018-06-18T13:19:29.143-04:00| vmx| I125: FILE: FileCreateDirectoryRetry: Non-retriable error encountered (C:\Users\jbestrad\AppData\Local\Temp): Cannot create a file when that file already exists (183)
+2018-06-18T13:19:29.143-04:00| vmx| I125: FILE: FileCreateDirectoryRetry: Non-retriable error encountered (C:\Users\jbestrad\AppData\Local\Temp\vmware-jbestrad): Cannot create a file when that file already exists (183)
+2018-06-18T13:19:29.146-04:00| vmx| I125: Hostname=me-arrudalab7.adsroot.itcs.umich.edu
+2018-06-18T13:19:29.156-04:00| vmx| I125: IP=fe80::e921:8336:4ee1:abc6%12
+2018-06-18T13:19:29.156-04:00| vmx| I125: IP=fe80::e4b6:5c77:fb95:cfc0%22
+2018-06-18T13:19:29.156-04:00| vmx| I125: IP=fe80::e4fd:3a1:56f7:dead%23
+2018-06-18T13:19:29.156-04:00| vmx| I125: IP=2002:8dd4:8d0b::8dd4:8d0b
+2018-06-18T13:19:29.156-04:00| vmx| I125: IP=141.212.141.11
+2018-06-18T13:19:29.156-04:00| vmx| I125: IP=192.168.117.1
+2018-06-18T13:19:29.156-04:00| vmx| I125: IP=192.168.23.1
+2018-06-18T13:19:29.156-04:00| vmx| I125: IP=10.254.254.253
+2018-06-18T13:19:29.177-04:00| vmx| I125: System uptime 614736949 us
+2018-06-18T13:19:29.177-04:00| vmx| I125: Command line: "C:\Program Files (x86)\VMware\VMware Player\x64\vmware-vmx.exe" "-T" "querytoken" "-ssnapshot.numRollingTiers=0" "-sRemoteDisplay.vnc.enabled=FALSE" "-s" "vmx.stdio.keep=TRUE" "-#" "product=4;name=VMware Player;version=14.0.0;buildnumber=6661328;licensename=VMware Player;licenseversion=14.0;" "-@" "pipe=\\.\pipe\vmx0e400ca59ced2428;msgs=ui" "C:\Users\jbestrad\FSLVm7_64\FSLVm7_64.vmwarevm\FSLVm7_64.vmx"
+2018-06-18T13:19:29.177-04:00| vmx| I125: Msg_SetLocaleEx: HostLocale=windows-1252 UserLocale=NULL
+2018-06-18T13:19:29.221-04:00| vmx| I125: WQPoolAllocPoll : pollIx = 1, signalHandle = 360
+2018-06-18T13:19:29.222-04:00| vmx| I125: WQPoolAllocPoll : pollIx = 2, signalHandle = 324
+2018-06-18T13:19:29.223-04:00| vmx| I125: VigorTransport listening on fd 444
+2018-06-18T13:19:29.223-04:00| vmx| I125: Vigor_Init 1
+2018-06-18T13:19:29.223-04:00| vmx| I125: Connecting 'ui' to pipe '\\.\pipe\vmx0e400ca59ced2428' with user '(null)'
+2018-06-18T13:19:29.224-04:00| vmx| I125: VMXVmdb: Local connection timeout: 60000 ms.
+2018-06-18T13:19:29.294-04:00| vmx| I125: VmdbAddConnection: cnxPath=/db/connection/#1/, cnxIx=1
+2018-06-18T13:19:29.294-04:00| vmx| I125: Vix: [8468 mainDispatch.c:490]: VMAutomation: Initializing VMAutomation.
+2018-06-18T13:19:29.295-04:00| vmx| I125: Vix: [8468 mainDispatch.c:746]: VMAutomationOpenListenerSocket() listening
+2018-06-18T13:19:29.303-04:00| vmx| I125: Vix: [8468 mainDispatch.c:4234]: VMAutomation_ReportPowerOpFinished: statevar=0, newAppState=1870, success=1 additionalError=0
+2018-06-18T13:19:29.303-04:00| vmx| I125: Transitioned vmx/execState/val to poweredOff
+2018-06-18T13:19:29.303-04:00| vmx| I125: Vix: [8468 mainDispatch.c:4234]: VMAutomation_ReportPowerOpFinished: statevar=1, newAppState=1873, success=1 additionalError=0
+2018-06-18T13:19:29.303-04:00| vmx| I125: Vix: [8468 mainDispatch.c:4234]: VMAutomation_ReportPowerOpFinished: statevar=2, newAppState=1877, success=1 additionalError=0
+2018-06-18T13:19:29.303-04:00| vmx| I125: Vix: [8468 mainDispatch.c:4234]: VMAutomation_ReportPowerOpFinished: statevar=3, newAppState=1881, success=1 additionalError=0
+2018-06-18T13:19:29.314-04:00| vmx| I125: IOPL_VBSRunning: Failed to connect to WMI namespace[error=0x8004100e]
+2018-06-18T13:19:29.314-04:00| vmx| I125: HD: host version is 6.1.7601
+2018-06-18T13:19:29.314-04:00| vmx| I125: HD: addr fffff8000313fcc0
+2018-06-18T13:19:29.315-04:00| vmx| I125: HD: fffff80003212100
+2018-06-18T13:19:29.315-04:00| vmx| I125: IOCTL_VMX86_SET_MEMORY_PARAMS already set
+2018-06-18T13:19:29.317-04:00| vmx| I125: FeatureCompat: No EVC masks.
+2018-06-18T13:19:29.321-04:00| vmx| I125: Common: mask 0 = 0xffffffffffffffff
+2018-06-18T13:19:29.321-04:00| vmx| I125: Common: mask 1 = 0xffffffffffffffff
+2018-06-18T13:19:29.321-04:00| vmx| I125: hostCPUID vendor: GenuineIntel
+2018-06-18T13:19:29.321-04:00| vmx| I125: hostCPUID family: 0x6 model: 0x1a stepping: 0x5
+2018-06-18T13:19:29.321-04:00| vmx| I125: hostCPUID codename: Nehalem (Core i7)
+2018-06-18T13:19:29.321-04:00| vmx| I125: hostCPUID name: Intel(R) Xeon(R) CPU           E5506  @ 2.13GHz
+2018-06-18T13:19:29.321-04:00| vmx| I125: hostCPUID level 00000000, 0: 0x0000000b 0x756e6547 0x6c65746e 0x49656e69
+2018-06-18T13:19:29.321-04:00| vmx| I125: hostCPUID level 00000001, 0: 0x000106a5 0x00100800 0x009ce3bd 0xbfebfbff
+2018-06-18T13:19:29.321-04:00| vmx| I125: hostCPUID level 00000002, 0: 0x55035a01 0x00f0b0e3 0x00000000 0x09ca212c
+2018-06-18T13:19:29.321-04:00| vmx| I125: hostCPUID level 00000003, 0: 0x00000000 0x00000000 0x00000000 0x00000000
+2018-06-18T13:19:29.321-04:00| vmx| I125: hostCPUID level 00000004, 0: 0x1c004121 0x01c0003f 0x0000003f 0x00000000
+2018-06-18T13:19:29.321-04:00| vmx| I125: hostCPUID level 00000004, 1: 0x1c004122 0x00c0003f 0x0000007f 0x00000000
+2018-06-18T13:19:29.321-04:00| vmx| I125: hostCPUID level 00000004, 2: 0x1c004143 0x01c0003f 0x000001ff 0x00000000
+2018-06-18T13:19:29.321-04:00| vmx| I125: hostCPUID level 00000004, 3: 0x1c03c163 0x03c0003f 0x00000fff 0x00000002
+2018-06-18T13:19:29.321-04:00| vmx| I125: hostCPUID level 00000004, 4: 0x00000000 0x00000000 0x00000000 0x00000000
+2018-06-18T13:19:29.321-04:00| vmx| I125: hostCPUID level 00000005, 0: 0x00000040 0x00000040 0x00000003 0x00001120
+2018-06-18T13:19:29.321-04:00| vmx| I125: hostCPUID level 00000006, 0: 0x00000001 0x00000002 0x00000001 0x00000000
+2018-06-18T13:19:29.321-04:00| vmx| I125: hostCPUID level 00000007, 0: 0x00000000 0x00000000 0x00000000 0x00000000
+2018-06-18T13:19:29.321-04:00| vmx| I125: hostCPUID level 00000008, 0: 0x00000000 0x00000000 0x00000000 0x00000000
+2018-06-18T13:19:29.321-04:00| vmx| I125: hostCPUID level 00000009, 0: 0x00000000 0x00000000 0x00000000 0x00000000
+2018-06-18T13:19:29.321-04:00| vmx| I125: hostCPUID level 0000000a, 0: 0x07300403 0x00000044 0x00000000 0x00000603
+2018-06-18T13:19:29.321-04:00| vmx| I125: hostCPUID level 0000000b, 0: 0x00000001 0x00000001 0x00000100 0x00000000
+2018-06-18T13:19:29.321-04:00| vmx| I125: hostCPUID level 0000000b, 1: 0x00000004 0x00000004 0x00000201 0x00000000
+2018-06-18T13:19:29.321-04:00| vmx| I125: hostCPUID level 0000000b, 2: 0x00000000 0x00000000 0x00000002 0x00000000
+2018-06-18T13:19:29.321-04:00| vmx| I125: hostCPUID level 80000000, 0: 0x80000008 0x00000000 0x00000000 0x00000000
+2018-06-18T13:19:29.321-04:00| vmx| I125: hostCPUID level 80000001, 0: 0x00000000 0x00000000 0x00000001 0x28100800
+2018-06-18T13:19:29.321-04:00| vmx| I125: hostCPUID level 80000002, 0: 0x65746e49 0x2952286c 0x6f655820 0x2952286e
+2018-06-18T13:19:29.321-04:00| vmx| I125: hostCPUID level 80000003, 0: 0x55504320 0x20202020 0x20202020 0x45202020
+2018-06-18T13:19:29.321-04:00| vmx| I125: hostCPUID level 80000004, 0: 0x36303535 0x20402020 0x33312e32 0x007a4847
+2018-06-18T13:19:29.322-04:00| vmx| I125: hostCPUID level 80000005, 0: 0x00000000 0x00000000 0x00000000 0x00000000
+2018-06-18T13:19:29.322-04:00| vmx| I125: hostCPUID level 80000006, 0: 0x00000000 0x00000000 0x01006040 0x00000000
+2018-06-18T13:19:29.322-04:00| vmx| I125: hostCPUID level 80000007, 0: 0x00000000 0x00000000 0x00000000 0x00000100
+2018-06-18T13:19:29.322-04:00| vmx| I125: hostCPUID level 80000008, 0: 0x00003028 0x00000000 0x00000000 0x00000000
+2018-06-18T13:19:29.322-04:00| vmx| I125: CPUID differences from hostCPUID.
+2018-06-18T13:19:29.322-04:00| vmx| I125: CPUID[1] level 00000001, 0: 0x000106a5 0x02100800 0x009ce3bd 0xbfebfbff
+2018-06-18T13:19:29.322-04:00| vmx| I125: CPUID[1] level 0000000b, 0: 0x00000001 0x00000001 0x00000100 0x00000002
+2018-06-18T13:19:29.322-04:00| vmx| I125: CPUID[1] level 0000000b, 1: 0x00000004 0x00000004 0x00000201 0x00000002
+2018-06-18T13:19:29.322-04:00| vmx| I125: CPUID[1] level 0000000b, 2: 0x00000000 0x00000000 0x00000002 0x00000002
+2018-06-18T13:19:29.322-04:00| vmx| I125: CPUID[2] level 00000001, 0: 0x000106a5 0x04100800 0x009ce3bd 0xbfebfbff
+2018-06-18T13:19:29.322-04:00| vmx| I125: CPUID[2] level 0000000b, 0: 0x00000001 0x00000001 0x00000100 0x00000004
+2018-06-18T13:19:29.322-04:00| vmx| I125: CPUID[2] level 0000000b, 1: 0x00000004 0x00000004 0x00000201 0x00000004
+2018-06-18T13:19:29.322-04:00| vmx| I125: CPUID[2] level 0000000b, 2: 0x00000000 0x00000000 0x00000002 0x00000004
+2018-06-18T13:19:29.322-04:00| vmx| I125: CPUID[3] level 00000001, 0: 0x000106a5 0x06100800 0x009ce3bd 0xbfebfbff
+2018-06-18T13:19:29.322-04:00| vmx| I125: CPUID[3] level 0000000b, 0: 0x00000001 0x00000001 0x00000100 0x00000006
+2018-06-18T13:19:29.322-04:00| vmx| I125: CPUID[3] level 0000000b, 1: 0x00000004 0x00000004 0x00000201 0x00000006
+2018-06-18T13:19:29.322-04:00| vmx| I125: CPUID[3] level 0000000b, 2: 0x00000000 0x00000000 0x00000002 0x00000006
+2018-06-18T13:19:29.322-04:00| vmx| I125: CPUID Maximum Physical Address Bits supported across all CPUs: 40
+2018-06-18T13:19:29.322-04:00| vmx| I125: Common: MSR       0x3a =                0x5
+2018-06-18T13:19:29.322-04:00| vmx| I125: Common: MSR      0x480 =   0xda04000000000e
+2018-06-18T13:19:29.322-04:00| vmx| I125: Common: MSR      0x481 =       0x7f00000016
+2018-06-18T13:19:29.322-04:00| vmx| I125: Common: MSR      0x482 = 0xfff9fffe0401e172
+2018-06-18T13:19:29.322-04:00| vmx| I125: Common: MSR      0x483 =   0x7fffff00036dff
+2018-06-18T13:19:29.322-04:00| vmx| I125: Common: MSR      0x484 =     0xffff000011ff
+2018-06-18T13:19:29.322-04:00| vmx| I125: Common: MSR      0x485 =            0x401c5
+2018-06-18T13:19:29.322-04:00| vmx| I125: Common: MSR      0x486 =         0x80000021
+2018-06-18T13:19:29.322-04:00| vmx| I125: Common: MSR      0x487 =         0xffffffff
+2018-06-18T13:19:29.322-04:00| vmx| I125: Common: MSR      0x488 =             0x2000
+2018-06-18T13:19:29.322-04:00| vmx| I125: Common: MSR      0x489 =             0x27ff
+2018-06-18T13:19:29.322-04:00| vmx| I125: Common: MSR      0x48a =               0x2a
+2018-06-18T13:19:29.322-04:00| vmx| I125: Common: MSR      0x48b =       0x7f00000000
+2018-06-18T13:19:29.322-04:00| vmx| I125: Common: MSR      0x48c =      0xf0106114141
+2018-06-18T13:19:29.322-04:00| vmx| I125: Common: MSR      0x48d =       0x7f00000016
+2018-06-18T13:19:29.322-04:00| vmx| I125: Common: MSR      0x48e = 0xfff9fffe04006172
+2018-06-18T13:19:29.322-04:00| vmx| I125: Common: MSR      0x48f =   0x7fffff00036dfb
+2018-06-18T13:19:29.322-04:00| vmx| I125: Common: MSR      0x490 =     0xffff000011fb
+2018-06-18T13:19:29.322-04:00| vmx| I125: Common: MSR      0x491 =                  0
+2018-06-18T13:19:29.322-04:00| vmx| I125: Common: MSR 0xc0010114 =                  0
+2018-06-18T13:19:29.322-04:00| vmx| I125: Common: MSR       0xce =      0xc0004011001
+2018-06-18T13:19:29.322-04:00| vmx| I125: VMMon_GetkHzEstimate: Calculated 2128019 kHz
+2018-06-18T13:19:29.331-04:00| vmx| I125: HOSTINFO: Host supports constant rate TSC.
+2018-06-18T13:19:29.331-04:00| vmx| I125: TSC kHz estimates: vmmon 2128019, remembered 0, osReported 2128000. Using 2128019 kHz.
+2018-06-18T13:19:29.331-04:00| vmx| I125: TSC first measured delta 269
+2018-06-18T13:19:29.331-04:00| vmx| I125: TSC min delta 233
+2018-06-18T13:19:29.331-04:00| vmx| I125: PTSC: RefClockToPTSC 0 @ 2078144Hz -> 0 @ 2128019000Hz
+2018-06-18T13:19:29.331-04:00| vmx| I125: PTSC: RefClockToPTSC ((x * 4294966376) >> 22) + -1140687272836
+2018-06-18T13:19:29.331-04:00| vmx| I125: PTSC: tscOffset -1140687549167
+2018-06-18T13:19:29.331-04:00| vmx| I125: PTSC: using TSC
+2018-06-18T13:19:29.331-04:00| vmx| I125: PTSC: hardware TSCs are synchronized.
+2018-06-18T13:19:29.331-04:00| vmx| I125: PTSC: hardware TSCs may have been adjusted by the host.
+2018-06-18T13:19:29.331-04:00| vmx| I125: PTSC: current PTSC=169262708656
+2018-06-18T13:19:29.331-04:00| vmx| I125: WQPoolAllocPoll : pollIx = 3, signalHandle = 580
+2018-06-18T13:19:29.390-04:00| vmx| I125: ConfigCheck: No rules file found. Checks are disabled.
+2018-06-18T13:19:29.390-04:00| vmx| I125: changing directory to C:\Users\jbestrad\FSLVm7_64\FSLVm7_64.vmwarevm\.
+2018-06-18T13:19:29.390-04:00| vmx| I125: Config file: C:\Users\jbestrad\FSLVm7_64\FSLVm7_64.vmwarevm\FSLVm7_64.vmx
+2018-06-18T13:19:29.390-04:00| vmx| I125: Vix: [8468 mainDispatch.c:4234]: VMAutomation_ReportPowerOpFinished: statevar=1, newAppState=1873, success=1 additionalError=0
+2018-06-18T13:19:29.390-04:00| vmx| I125: Vix: [8468 mainDispatch.c:4234]: VMAutomation_ReportPowerOpFinished: statevar=2, newAppState=1878, success=1 additionalError=0
+2018-06-18T13:19:29.391-04:00| vmx| I125: FILE: FileCreateDirectoryRetry: Non-retriable error encountered (C:\Users): Cannot create a file when that file already exists (183)
+2018-06-18T13:19:29.391-04:00| vmx| I125: FILE: FileCreateDirectoryRetry: Non-retriable error encountered (C:\Users\jbestrad): Cannot create a file when that file already exists (183)
+2018-06-18T13:19:29.391-04:00| vmx| I125: FILE: FileCreateDirectoryRetry: Non-retriable error encountered (C:\Users\jbestrad\AppData): Cannot create a file when that file already exists (183)
+2018-06-18T13:19:29.392-04:00| vmx| I125: FILE: FileCreateDirectoryRetry: Non-retriable error encountered (C:\Users\jbestrad\AppData\Local): Cannot create a file when that file already exists (183)
+2018-06-18T13:19:29.392-04:00| vmx| I125: FILE: FileCreateDirectoryRetry: Non-retriable error encountered (C:\Users\jbestrad\AppData\Local\Temp): Cannot create a file when that file already exists (183)
+2018-06-18T13:19:29.393-04:00| vmx| I125: FILE: FileCreateDirectoryRetry: Non-retriable error encountered (C:\Users\jbestrad\AppData\Local\Temp\vmware-jbestrad): Cannot create a file when that file already exists (183)
+2018-06-18T13:19:29.405-04:00| vmx| I125: FILE: FileDeletionRetry: Non-retriable error encountered (C:\Users\jbestrad\AppData\Local\Temp\vmware-jbestrad\vmware-vmx-8540.log): The process cannot access the file because it is being used by another process (32)
+2018-06-18T13:19:29.462-04:00| vmx| I125: VMXVmdbCbVmVmxExecState: Exec state change requested to state poweredOn without reset, soft, softOptionTimeout: 0.
+2018-06-18T13:19:29.462-04:00| vmx| I125: Tools: sending 'OS_PowerOn' (state = 3) state change request
+2018-06-18T13:19:29.462-04:00| vmx| I125: Tools: Delaying state change request to state 3.
+2018-06-18T13:19:29.462-04:00| vmx| W115: PowerOn
+2018-06-18T13:19:29.462-04:00| vmx| I125: VMX_PowerOn: VMX build 6661328, UI build 6661328
+2018-06-18T13:19:29.463-04:00| vmx| I125: HostWin32: WIN32 NUMA node 0, CPU mask 0x000000000000000f
+2018-06-18T13:19:29.475-04:00| vmx| I125: Vix: [8468 mainDispatch.c:4234]: VMAutomation_ReportPowerOpFinished: statevar=0, newAppState=1871, success=1 additionalError=0
+2018-06-18T13:19:29.476-04:00| vmx| I125: HOST Windows version 6.1, build 7601, platform 2, "Service Pack 1"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT --- GLOBAL SETTINGS C:\ProgramData\VMware\VMware Player\settings.ini
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT --- NON PERSISTENT (null)
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT --- USER PREFERENCES C:\Users\jbestrad\AppData\Roaming\VMware\preferences.ini
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT pref.keyboardAndMouse.vmHotKey.enabled = "FALSE"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT pref.keyboardAndMouse.vmHotKey.count = "0"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT pref.vmplayer.firstRunDismissedVersion = "14.0.0"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT      pref.mruVM0.filename = "C:\Users\jbestrad\FSLVm7_64\FSLVm7_64.vmwarevm\FSLVm7_64.vmx"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT   pref.mruVM0.displayName = "FSLVm7_64"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT         pref.mruVM0.index = "0"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT --- USER DEFAULTS C:\Users\jbestrad\AppData\Roaming\VMware\config.ini
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT --- HOST DEFAULTS C:\ProgramData\VMware\VMware Player\config.ini
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT --- SITE DEFAULTS C:\ProgramData\VMware\VMware Player\config.ini
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT --- NONPERSISTENT
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT  snapshot.numRollingTiers = "0"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT RemoteDisplay.vnc.enabled = "FALSE"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT            vmx.stdio.keep = "TRUE"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT             gui.available = "TRUE"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT --- COMMAND LINE
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT  snapshot.numRollingTiers = "0"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT RemoteDisplay.vnc.enabled = "FALSE"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT            vmx.stdio.keep = "TRUE"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT             gui.available = "TRUE"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT --- RECORDING
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT  snapshot.numRollingTiers = "0"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT RemoteDisplay.vnc.enabled = "FALSE"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT            vmx.stdio.keep = "TRUE"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT             gui.available = "TRUE"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT --- CONFIGURATION C:\Users\jbestrad\FSLVm7_64\FSLVm7_64.vmwarevm\FSLVm7_64.vmx 
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT            config.version = "8"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT         virtualHW.version = "12"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT               vcpu.hotadd = "TRUE"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT             scsi0.present = "TRUE"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT          scsi0.virtualDev = "lsilogic"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT                   memsize = "2048"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT                mem.hotadd = "TRUE"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT           scsi0:0.present = "TRUE"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT          scsi0:0.fileName = "Virtual Disk.vmdk"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT            ide1:0.present = "TRUE"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT           ide1:0.fileName = "/Volumes/Scratch/ISO_images/Linux/CentOS-7-x86_64-DVD-1511.iso"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT         ide1:0.deviceType = "cdrom-image"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT         ethernet0.present = "TRUE"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT  ethernet0.connectionType = "nat"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT      ethernet0.virtualDev = "e1000"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT   ethernet0.wakeOnPcktRcv = "FALSE"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT     ethernet0.addressType = "generated"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT ethernet0.linkStatePropagation.enable = "TRUE"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT               usb.present = "TRUE"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT              ehci.present = "TRUE"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT        ehci.pciSlotNumber = "35"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT             sound.present = "TRUE"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT            sound.fileName = "-1"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT          sound.autodetect = "TRUE"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT           serial0.present = "TRUE"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT          serial0.fileType = "thinprint"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT        pciBridge0.present = "TRUE"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT        pciBridge4.present = "TRUE"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT     pciBridge4.virtualDev = "pcieRootPort"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT      pciBridge4.functions = "8"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT        pciBridge5.present = "TRUE"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT     pciBridge5.virtualDev = "pcieRootPort"
+2018-06-18T13:19:29.476-04:00| vmx| I125: DICT      pciBridge5.functions = "8"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT        pciBridge6.present = "TRUE"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT     pciBridge6.virtualDev = "pcieRootPort"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT      pciBridge6.functions = "8"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT        pciBridge7.present = "TRUE"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT     pciBridge7.virtualDev = "pcieRootPort"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT      pciBridge7.functions = "8"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT             vmci0.present = "TRUE"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT             hpet0.present = "TRUE"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT usb.vbluetooth.startConnected = "TRUE"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT            tools.syncTime = "TRUE"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT               displayName = "FSLVm7_64"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT                   guestOS = "centos-64"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT                     nvram = "FSLVm7_64.nvram"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT virtualHW.productCompatibility = "hosted"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT      tools.upgrade.policy = "upgradeAtPowerCycle"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT        powerType.powerOff = "soft"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT         powerType.powerOn = "soft"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT         powerType.suspend = "soft"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT           powerType.reset = "soft"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT        extendedConfigFile = "FSLVm7_64.vmxf"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT             ehci:0.parent = "-1"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT               ehci:0.port = "0"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT         ehci:0.deviceType = "video"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT              mks.enable3d = "TRUE"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT    chipset.useAcpiBattery = "TRUE"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT     chipset.useApmBattery = "TRUE"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT                 uuid.bios = "56 4d a6 21 33 7a 72 82-16 90 dd bf 5a 5c 6c e8"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT             uuid.location = "56 4d a6 21 33 7a 72 82-16 90 dd bf 5a 5c 6c e8"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT           migrate.hostlog = "./FSLVm7_64-6547630e.hlog"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT              scsi0:0.redo = ""
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT  pciBridge0.pciSlotNumber = "17"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT  pciBridge4.pciSlotNumber = "21"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT  pciBridge5.pciSlotNumber = "22"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT  pciBridge6.pciSlotNumber = "23"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT  pciBridge7.pciSlotNumber = "24"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT       scsi0.pciSlotNumber = "16"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT         usb.pciSlotNumber = "32"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT   ethernet0.pciSlotNumber = "33"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT       sound.pciSlotNumber = "34"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT       vmci0.pciSlotNumber = "36"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT ethernet0.generatedAddress = "00:0c:29:5c:6c:e8"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT ethernet0.generatedAddressOffset = "0"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT                  vmci0.id = "1516006632"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT    monitor.phys_bits_used = "42"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT  vmotion.checkpointFBSize = "4194304"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT vmotion.checkpointSVGAPrimarySize = "67108864"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT             cleanShutdown = "TRUE"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT              softPowerOff = "TRUE"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT               usb:1.speed = "2"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT             usb:1.present = "TRUE"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT          usb:1.deviceType = "hub"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT                usb:1.port = "1"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT              usb:1.parent = "-1"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT     ide1:0.startConnected = "FALSE"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT           floppy0.present = "FALSE"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT        checkpoint.vmState = ""
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT svga.guestBackedPrimaryAware = "TRUE"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT             usb:0.present = "TRUE"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT          usb:0.deviceType = "hid"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT                usb:0.port = "0"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT              usb:0.parent = "-1"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT --- USER DEFAULTS C:\Users\jbestrad\AppData\Roaming\VMware\config.ini 
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT --- HOST DEFAULTS C:\ProgramData\VMware\VMware Workstation\config.ini 
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT installerDefaults.simplifiedUI = "no"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT installerDefaults.autoSoftwareUpdateEnabled = "no"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT installerDefaults.autoSoftwareUpdateEnabled.epoch = "10238"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT installerDefaults.componentDownloadEnabled = "yes"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT installerDefaults.dataCollectionEnabled = "no"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT installerDefaults.dataCollectionEnabled.epoch = "10238"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT --- SITE DEFAULTS C:\ProgramData\VMware\VMware Workstation\config.ini 
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT installerDefaults.simplifiedUI = "no"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT installerDefaults.autoSoftwareUpdateEnabled = "no"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT installerDefaults.autoSoftwareUpdateEnabled.epoch = "10238"
+2018-06-18T13:19:29.477-04:00| vmx| I125: DICT installerDefaults.componentDownloadEnabled = "yes"
+2018-06-18T13:19:29.478-04:00| vmx| I125: DICT installerDefaults.dataCollectionEnabled = "no"
+2018-06-18T13:19:29.478-04:00| vmx| I125: DICT installerDefaults.dataCollectionEnabled.epoch = "10238"
+2018-06-18T13:19:29.478-04:00| vmx| I125: DICT --- GLOBAL SETTINGS C:\ProgramData\VMware\VMware Workstation\settings.ini 
+2018-06-18T13:19:29.478-04:00| vmx| I125: DICT          printers.enabled = "FALSE"
+2018-06-18T13:19:29.478-04:00| vmx| I125: ToolsISO: open of C:\Program Files (x86)\VMware\VMware Player\isoimages_manifest.txt.sig failed: Could not find the file
+2018-06-18T13:19:29.478-04:00| vmx| I125: ToolsISO: Unable to read signature file 'C:\Program Files (x86)\VMware\VMware Player\isoimages_manifest.txt.sig', ignoring.
+2018-06-18T13:19:29.479-04:00| vmx| I125: ToolsISO: Selected Tools ISO 'linux.iso' for 'centos-64' guest.
+2018-06-18T13:19:29.479-04:00| vmx| I125: Vix: [8468 mainDispatch.c:4234]: VMAutomation_ReportPowerOpFinished: statevar=1, newAppState=1873, success=1 additionalError=0
+2018-06-18T13:19:29.481-04:00| vmx| I125: Module 'CPUIDEarly' power on failed.
+2018-06-18T13:19:29.481-04:00| vmx| I125: VMX_PowerOn: ModuleTable_PowerOn = 0
+2018-06-18T13:19:29.481-04:00| vmx| I125: Vix: [8468 mainDispatch.c:4234]: VMAutomation_ReportPowerOpFinished: statevar=1, newAppState=1873, success=1 additionalError=0
+2018-06-18T13:19:29.481-04:00| vmx| I125: Msg_Post: Error
+2018-06-18T13:19:29.481-04:00| vmx| I125: [msg.cpuid.legacyCPU.noRealModeHV] This host does not support virtualizing real mode. The Intel "VMX Unrestricted Guest" feature is necessary to run this virtual machine on an Intel processor.
+2018-06-18T13:19:29.481-04:00| vmx| I125: [msg.moduletable.powerOnFailed] Module 'CPUIDEarly' power on failed.
+2018-06-18T13:19:29.481-04:00| vmx| I125: [msg.vmx.poweron.failed] Failed to start the virtual machine.
+2018-06-18T13:19:29.481-04:00| vmx| I125: ----------------------------------------
+2018-06-18T13:20:15.476-04:00| vmx| I125: Vix: [8468 mainDispatch.c:4234]: VMAutomation_ReportPowerOpFinished: statevar=0, newAppState=1870, success=1 additionalError=0
+2018-06-18T13:20:15.476-04:00| vmx| I125: Transitioned vmx/execState/val to poweredOff
+2018-06-18T13:20:15.476-04:00| vmx| I125: Vix: [8468 mainDispatch.c:4234]: VMAutomation_ReportPowerOpFinished: statevar=0, newAppState=1870, success=0 additionalError=0
+2018-06-18T13:20:15.476-04:00| vmx| I125: Vix: [8468 mainDispatch.c:4273]: Error VIX_E_FAIL in VMAutomation_ReportPowerOpFinished(): Unknown error
+2018-06-18T13:20:15.478-04:00| vmx| I125: Vix: [8468 mainDispatch.c:4234]: VMAutomation_ReportPowerOpFinished: statevar=0, newAppState=1870, success=1 additionalError=0
+2018-06-18T13:20:15.478-04:00| vmx| I125: Transitioned vmx/execState/val to poweredOff
+2018-06-18T13:20:15.478-04:00| vmx| I125: WQPoolFreePoll : pollIx = 3, signalHandle = 580
+2018-06-18T13:20:15.479-04:00| vmx| I125: Vix: [8468 mainDispatch.c:834]: VMAutomation_LateShutdown()
+2018-06-18T13:20:15.479-04:00| vmx| I125: Vix: [8468 mainDispatch.c:783]: VMAutomationCloseListenerSocket. Closing listener socket.
+2018-06-18T13:20:15.479-04:00| vmx| I125: Flushing VMX VMDB connections
+2018-06-18T13:20:15.480-04:00| vmx| I125: VmdbDbRemoveCnx: Removing Cnx from Db for '/db/connection/#1/'
+2018-06-18T13:20:15.480-04:00| vmx| I125: VmdbCnxDisconnect: Disconnect: closed pipe for pub cnx '/db/connection/#1/' (0)
+2018-06-18T13:20:15.480-04:00| vmx| I125: VigorTransport_ServerDestroy: server destroyed.
+2018-06-18T13:20:15.480-04:00| vmx| I125: WQPoolFreePoll : pollIx = 2, signalHandle = 324
+2018-06-18T13:20:15.480-04:00| vmx| I125: WQPoolFreePoll : pollIx = 1, signalHandle = 360
+2018-06-18T13:20:15.484-04:00| vmx| I125: VMX exit (0).
+2018-06-18T13:20:15.484-04:00| vmx| I125: OBJLIB-LIB: ObjLib cleanup done.

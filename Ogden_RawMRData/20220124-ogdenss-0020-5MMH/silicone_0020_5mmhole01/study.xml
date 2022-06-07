@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE template>
+<template>
+    <action type="LIB" id="n002" status="Completed" lock="on" title="scout" exp="scout" time="null" macro="xmrtpar" data="0830_scout_01" />
+    <action type="LIB" id="n001" status="Completed" lock="on" title="spuls" exp="spuls" time="null" macro="xmrtpar" data="0835_spuls_01" />
+    <action type="LIB" id="n005" status="Completed" lock="on" title="ogden_gems reference 32 slices" exp="ogden_gems" time="null" macro="xmrtpar" data="0843_ogden_gems_reference_32_slices01" />
+    <action type="LIB" id="n003" status="Completed" lock="on" title="ogden_ge3d" exp="ogden_ge3d" time="null" macro="xmrtpar" data="0852_ogden_ge3d_01" />
+    <action type="LIB" id="n004" status="Completed" lock="on" title="ogden_stems_noalt_RO RO wiggle=5mm lambda=2mm" exp="ogden_stems_noalt_RO" time="null" macro="xmrtpar" data="0924_ogden_stems_noalt_RO_RO_wiggle_5mm_lambda_2mm01" />
+    <action type="LIB" id="n006" status="Completed" lock="on" title="ogden_stems_noalt_PE PE wiggle=5mm lambda=2mm" exp="ogden_stems_noalt_PE" time="null" macro="xmrtpar" data="0950_ogden_stems_noalt_PE_PE_wiggle_5mm_lambda_2mm01" />
+    <action type="LIB" id="n007" status="Completed" lock="on" title="ogden_stems_noalt_SL SL wiggle=5mm lambda=2mm" exp="ogden_stems_noalt_SL" time="null" macro="xmrtpar" data="1016_ogden_stems_noalt_SL_SL_wiggle_5mm_lambda_2mm01" />
+    <action type="LIB" id="n008" status="Completed" lock="on" title="ogden_stems_noalt_SL SL wiggle=2.5mm lambda=2mm" exp="ogden_stems_noalt_SL" time="null" macro="xmrtpar" data="1048_ogden_stems_noalt_SL_SL_wiggle_2.5mm_lambda_2mm01" />
+    <action type="LIB" id="n009" status="Completed" lock="on" title="ogden_stems_noalt_SL SL wiggle=2.5mm lambda=1mm" exp="ogden_stems_noalt_SL" time="null" macro="xmrtpar" data="1113_ogden_stems_noalt_SL_SL_wiggle_2.5mm_lambda_1mm01" />
+    <action type="LIB" id="n010" status="Completed" lock="on" title="ogden_stems_noalt_RO RO wiggle=2.5mm lambda=1mm" exp="ogden_stems_noalt_RO" time="null" macro="xmrtpar" data="1139_ogden_stems_noalt_RO_RO_wiggle_2.5mm_lambda_1mm01" />
+    <action type="LIB" id="n011" status="Completed" lock="on" title="ogden_stems_noalt_PE PE wiggle=2.5mm lambda=1mm" exp="ogden_stems_noalt_PE" time="null" macro="xmrtpar" data="1204_ogden_stems_noalt_PE_PE_wiggle_2.5mm_lambda_1mm01" />
+</template>

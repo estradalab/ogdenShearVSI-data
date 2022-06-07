@@ -1,0 +1,186 @@
+function [outfit,roicell,synthimage]=spine_mefit(varargin)
+%spine multi echo fit
+%[outfit,roicell,synthimage]=memsfit(filename structure from varianms, slicenumber, [,roi] [,'oddeven']);
+
+data=varargin{1};
+if isstruct(data);
+    imagedata=abs(data.image);
+elseif ischar(data); %filename
+    data=varianms(data,'512');
+    imagedata=abs(data.image);
+end
+
+xaxis=data.pars.xaxis;
+yaxis=data.pars.yaxis;
+sli=varargin{2};                %slice index
+
+%loop to check what has been passed down
+for jj=1:nargin;(varargin{jj});
+    structflag(jj)  =isstruct(varargin{jj});
+    cellflag(jj)    =iscell(varargin{jj});
+    realflag(jj)    =isreal((varargin{jj}));
+    %optional other type determinats
+end
+
+
+if any(cellflag);
+    dummy=find(cellflag);
+    for jj=1:numel(dummy);
+        testcell=varargin{dummy(jj)};
+        if strcmp(testcell{1},'ROI limits');
+            xlim=testcell{2};
+            ylim=testcell{3};
+            xwinvec=testcell{4};
+            ywinvec=testcell{5};
+            
+            roicell=testcell;
+        end
+    end
+else
+    [digiout, xlim, ylim]=pickroi(imagedata(:,:,sli,1));
+    xwinvec=xlim(1):xlim(2);
+    ywinvec=ylim(1):ylim(2);
+    roicell={'ROI limits'; xlim; ylim;xwinvec;ywinvec};
+end
+
+tauflag=false;
+if nargin>2 && isnumeric(varargin{3});
+    tau=varargin{3};
+    tauflag=true;
+    if tau>1;
+        tau=tau/1000; %convert from milliseconds to seconds;
+        %display('Tau assumed to be milliseconds...');
+    end
+end
+
+%Parameter setup mems or mgems
+datatofit=squeeze(imagedata(ywinvec,xwinvec,sli,:));  %default is fit all the data
+if (strcmp(data.pars.seqfil,'mgems') || strcmp(data.pars.seqfil,'mge3d')) ;
+    si=size(datatofit);
+    taxis=data.pars.te+[0:si(3)-1]*data.pars.te2;
+    restrictT2starflag=true;
+    if restrictT2starflag;
+        tindvec=(taxis<50e-3);
+        taxis=taxis(tindvec);
+        datatofit=squeeze(imagedata(ywinvec,xwinvec,sli,tindvec));
+    end
+    
+    Taulimits=[0.0 0.03];
+    if tauflag;
+        tit=['Synthetic T2* image, TE=' num2str(tau(1)*1000) 'ms'];
+    else
+        tit=['Synthetic T2* image, TE=' num2str(taxis(1)) 'ms'];
+    end
+    
+    figuretitle=['MGEMS T2*decay, slice ' num2str(sli)];
+    
+    TREF=0.03;
+    TEvec=[5 10 15]/1000;
+    
+    
+elseif strfind(data.pars.seqfil,'mems');
+    si=size(datatofit);
+    taxis=data.pars.te*[1:data.pars.ne];
+    Taulimits=[0 0.1];
+    if tauflag;
+        tit=['Synthetic T2 image, TE=' num2str(tau(1)) 'ms'];
+    else
+        tit=['Synthetic T2* image, TE=' num2str(taxis(1)) 'ms'];
+    end
+    
+    figuretitle=['MEMS T2 decay, slice ' num2str(sli)];
+    TREF=0.05; 
+    TEvec=[50 100 200]/1000;
+    
+end
+
+
+
+%fit the data to exponential decay
+if any(strcmp(varargin,'oddeven'));
+    outfit=matrix_expfit(datatofit,taxis, 'oddeven');
+else
+    outfit=matrix_expfit(datatofit,taxis);
+end
+
+
+% plot figures 
+hf=figure('Name',figuretitle,'Units','inches');
+set(gcf,'Position', [1 1 10 7]);
+colormap gray(256)
+
+clim=[0 2.5*mean(outfit.amplitude(:))];
+
+if isfield('data.pars','zaxis');
+    zaxis=data.pars.zaxis;
+else
+    zaxis=data.pars.pss*10;
+end
+
+tsubplot(2,2,1,10);
+imagesc(xaxis(xlim(1):xlim(2)), yaxis(ylim(1):ylim(2)), outfit.amplitude);
+set(gca,'YDir','normal','Fontsize',12,'clim',clim);
+axis image;
+title(['TE=0, zpos=' num2str(round(zaxis(sli)*100)/100) 'mm']);
+xlabel('x (mm)');
+ylabel('y (mm)');
+
+
+
+%colorbar;
+
+synthimage=zeros([size(outfit.amplitude) numel(TEvec)]);
+for jj=1:numel(TEvec);
+    synthimage(:,:,jj)=outfit.amplitude.*exp(-TEvec(jj)./outfit.Tau);
+    
+    
+    tsubplot(2,2,jj+1,10);
+    himage=imagesc(xaxis(xlim(1):xlim(2)), yaxis(ylim(1):ylim(2)), synthimage(:,:,jj));
+    set(gca,'YDir','normal','Fontsize',12,'clim', clim*exp(-TEvec(jj)/0.08));
+    title(['TE=' num2str(round(TEvec(jj)*1000)) ' ms']);
+    xlabel('x (mm)');
+    ylabel('y (mm)');
+    grid on;
+    set(gca,'Gridlinestyle','-');
+    axis image;
+    %colorbar;
+end
+
+colormap gray;
+
+
+timeevolutionflag=false;
+
+if numel(TEvec)>1 && timeevolutionflag;
+    for jj=1:numel(TEvec);
+        %imagesc(xaxis(xlim(1):xlim(2)), yaxis(ylim(1):ylim(2)), synthimage(:,:,jj));
+        set(himage,'CData', synthimage(:,:,jj));
+        title(['Synthetic image TE= ' num2str(round(TEvec(jj)*1000)) ' ms']);
+        set(gca,'clim',[0 clim1stecho(2)*exp(-TEvec(jj)/TREF)]);
+        %set(gca,'clim',[0 2000]);
+        pause(0.1);
+        M(jj)=getframe(gcf);
+    end
+    
+    currentdirectory=pwd;
+    [dummy,rootname,dummy2]=fileparts(data.pars.pathname);
+    moviedirname=[rootname '.movies'];
+    
+    if ~exist(moviedirname, 'dir');
+		unix(['mkdir ' moviedirname]);
+    end
+    moviename=[currentdirectory '/' moviedirname '/' rootname '_slice_' num2str(sli) '.avi'];
+    movie2mov(M,moviename);
+end
+
+
+
+
+
+
+
+
+
+
+
+

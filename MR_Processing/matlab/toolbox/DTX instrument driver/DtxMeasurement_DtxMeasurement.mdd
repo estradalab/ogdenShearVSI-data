@@ -1,0 +1,3652 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MATLABInstrumentDriver>
+   <FileVersion>2.43</FileVersion>
+   <DriverName>DtxMeasurement.DtxMeasurement</DriverName>
+   <DriverType>MATLAB IVI-COM</DriverType>
+   <InstrumentType>IDtxMeasurement</InstrumentType>
+   <InstrumentManufacturer>Manufacturer</InstrumentManufacturer>
+   <InstrumentModel>Model</InstrumentModel>
+   <InstrumentVersion>1.0</InstrumentVersion>
+   <Identify>*IDN?</Identify>
+   <Reset>*RST</Reset>
+   <Selftest>*TST?</Selftest>
+   <Error>System:Error?</Error>
+   <CreateInitCode>
+      <Code>function init(obj)
+% This function is called after the object is created.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT
+ictver = ver('instrument');
+splittedVer = regexp (ictver.Version , '\.', 'split');
+if (~isempty(splittedVer) &amp;&amp; (str2num(char(splittedVer(1))) &lt; 2 || (str2num(char(splittedVer(1))) == 2 &amp;&amp; str2num(char(splittedVer(2))) &lt;= 6)))
+   error('instrument:icdevice:newerdriver','This driver requires Instrument Control ToolBox version 2.7.0 (R2008B) or later');
+end
+</Code>
+   </CreateInitCode>
+   <ConnectInitCode>
+      <Type>MCode</Type>
+      <Code>function init(obj)
+% This function is called after the object is connected.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT
+
+% NOTE: This code is required to support driver interfaces that are collections.
+%       Deleting or altering this code may prevent device objects using this
+%       driver from operating correctly.
+
+comobj = get(obj, 'Interface');
+
+warning off backtrace
+try
+	collection = comobj;
+	collection = get(collection, 'Channels');
+	instrgate('privateIviComDriverHelper', 'group', obj, collection, 'Channels');
+catch e
+	errorMsg = instrgate('privateCOMGetErrorInfo');
+	warning('%s',errorMsg.Description);
+end
+
+warning on backtrace
+</Code>
+   </ConnectInitCode>
+   <CleanupCode>
+      <Type>MCode</Type>
+      <Code>function cleanup(obj)
+% This function is called before the object is disconnected.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT
+</Code>
+   </CleanupCode>
+   <GroupInfo>
+      <Group>
+         <Name>parent</Name>
+         <Description/>
+         <Command/>
+         <Size>1</Size>
+         <Mappings>
+            <ChannelMap Command="parent1" Index="1"/>
+         </Mappings>
+         <PropertyInfo>
+            <Property>
+               <Name>Initialized</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Interface;
+	propertyValue = comobj.Initialized;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Boolean</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>off</DefaultValue>
+               <ReadOnly>always</ReadOnly>
+               <Description>Initialized is True between a successful call to the Initialize method and a successful call to the Close method, and False at all other times.</Description>
+            </Property>
+         </PropertyInfo>
+         <MethodInfo>
+            <Method>
+               <Name>Close</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function Close(obj)
+
+comobj = obj.Interface;
+feature('COM_SafeArraySingleDim',1);
+comobj.Close();
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Closes the I/O session to the instrument.  Driver methods and properties that access the instrument are not accessible after Close is called.</Description>
+            </Method>
+            <Method>
+               <Name>Initialize</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function Initialize(obj, ResourceName, IdQuery, Reset, OptionString)
+
+comobj = obj.Interface;
+feature('COM_SafeArraySingleDim',1);
+comobj.Initialize(ResourceName, logical(IdQuery), logical(Reset), OptionString);
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Opens the I/O session to the instrument.  Driver methods and properties that access the instrument are only accessible after Initialize is called.  Initialize optionally performs a Reset and queries the instrument to validate the instrument model.</Description>
+            </Method>
+         </MethodInfo>
+      </Group>
+      <Group>
+         <Name>acquisition</Name>
+         <Description>Interface containing methods and properties for initiating, retrieving, and aborting measurements on a Measurement instrument.</Description>
+         <Command/>
+         <Size>1</Size>
+         <Mappings>
+            <ChannelMap Command="Acquisition1" Index="1"/>
+         </Mappings>
+         <PropertyInfo>
+            <Property>
+               <Name>Blocking</Name>
+               <Location>acquisition</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Acquisition;
+	propertyValue = comobj.Blocking;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+if ischar(propertyValue) &amp;&amp; strcmpi(propertyValue,'on')
+	propertyValue = 1;
+end
+if strcmpi(propertyValue,'off')
+	propertyValue = 0;
+end
+
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Acquisition;
+	comobj.Blocking = propertyValue;
+catch aException
+	rethrow(aException);
+end</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Boolean</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>off</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description>For the Measurement USB instruments, specifies or returns whether blocking is enabled or disabled for the FIFO. This property is not supported by Measurement LXI instruments, as blocking is always disabled for these instruments.</Description>
+            </Property>
+            <Property>
+               <Name>FilterType</Name>
+               <Location>acquisition</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Acquisition;
+	propertyValue = comobj.FilterType;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Acquisition;
+	comobj.FilterType = propertyValue;
+catch aException
+	rethrow(aException);
+end</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>enum</Constraint>
+                  <ConstraintValue>
+                     <Enum Name="DtxMeasurementFilterRaw" Value="DtxMeasurementFilterRaw"/>
+                     <Enum Name="DtxMeasurementFilterMovingAverage" Value="DtxMeasurementFilterMovingAverage"/>
+                  </ConstraintValue>
+               </PermissibleType>
+               <DefaultValue>DtxMeasurementFilterRaw</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description>Specifies or returns the filter type for the instrument.</Description>
+            </Property>
+            <Property>
+               <Name>ReportCJC</Name>
+               <Location>acquisition</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Acquisition;
+	propertyValue = comobj.ReportCJC;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+if ischar(propertyValue) &amp;&amp; strcmpi(propertyValue,'on')
+	propertyValue = 1;
+end
+if strcmpi(propertyValue,'off')
+	propertyValue = 0;
+end
+
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Acquisition;
+	comobj.ReportCJC = propertyValue;
+catch aException
+	rethrow(aException);
+end</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Boolean</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>off</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description>For the channels that support thermocouples, specifies or returns whether CJC reporting is enabled or disabled.</Description>
+            </Property>
+         </PropertyInfo>
+         <MethodInfo>
+            <Method>
+               <Name>Abort</Name>
+               <Location>acquisition</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function Abort(obj)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.Acquisition;
+feature('COM_SafeArraySingleDim',1);
+comobj.Abort();
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Aborts all previously initiated measurements and changes the state of the Measurement instrument from Running to Idle.</Description>
+            </Method>
+            <Method>
+               <Name>CalibrateAllChannels</Name>
+               <Location>acquisition</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function CalibrateAllChannels(obj)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.Acquisition;
+feature('COM_SafeArraySingleDim',1);
+comobj.CalibrateAllChannels();
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Auto-calibrates (auto-zeros) all input channels on the Measurement instrument.</Description>
+            </Method>
+            <Method>
+               <Name>Fetch</Name>
+               <Location>acquisition</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [ActualScansIndex, ActualScansRead, StartTimeInSeconds, StartTimeInMilliSeconds, Samples] = Fetch(obj, RequestedScansIndex, RequestedScansToRead, varargin)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.Acquisition;
+feature('COM_SafeArraySingleDim',1);
+[ActualScansIndex, ActualScansRead, StartTimeInSeconds, StartTimeInMilliSeconds, Samples] = comobj.Fetch(int32(RequestedScansIndex), int32(RequestedScansToRead), 0, 0, int32([0;0]), int32([0;0]), [0;0]);
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Returns the result of a previously configured and initiated measurement on the Measurement instrument.</Description>
+            </Method>
+            <Method>
+               <Name>GetStatus</Name>
+               <Location>acquisition</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [ScanIndex, State] = GetStatus(obj, varargin)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.Acquisition;
+feature('COM_SafeArraySingleDim',1);
+[ScanIndex, State] = comobj.GetStatus(0, 0);
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Returns the status of the instrument, including the scan index within the FIFO and the state (Running or Idle) of the instrument.</Description>
+            </Method>
+            <Method>
+               <Name>Initiate</Name>
+               <Location>acquisition</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function Initiate(obj)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.Acquisition;
+feature('COM_SafeArraySingleDim',1);
+comobj.Initiate();
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Initiates a measurement on all enabled channels.</Description>
+            </Method>
+         </MethodInfo>
+      </Group>
+      <Group>
+         <Name>channel</Name>
+         <Description>Interface containing properties that apply to a particular channel. Each IDtxMeasurementChannel object encapsulates a physical input channel. </Description>
+         <Command/>
+         <Size>1</Size>
+         <Mappings>
+            <ChannelMap Command="Channel1" Index="1"/>
+         </Mappings>
+         <PropertyInfo>
+            <Property>
+               <Name>ChannelType</Name>
+               <Location>channel</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Channels;
+	name = comobj.Name(obj.HwIndex);
+	comobj = comobj.Item(name);
+	propertyValue = comobj.Type;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>enum</Constraint>
+                  <ConstraintValue>
+                     <Enum Name="DtxMeasurementChannelTypeVolt" Value="DtxMeasurementChannelTypeVolt"/>
+                     <Enum Name="DtxMeasurementChannelTypeThermocouple" Value="DtxMeasurementChannelTypeThermocouple"/>
+                     <Enum Name="DtxMeasurementChannelTypeRtd" Value="DtxMeasurementChannelTypeRtd"/>
+                     <Enum Name="DtxMeasurementChannelTypeMultiRange" Value="DtxMeasurementChannelTypeMultiRange"/>
+                  </ConstraintValue>
+               </PermissibleType>
+               <DefaultValue>DtxMeasurementChannelTypeVolt</DefaultValue>
+               <ReadOnly>always</ReadOnly>
+               <Description>Returns the type of measurements that the channel supports.</Description>
+            </Property>
+            <Property>
+               <Name>Enabled</Name>
+               <Location>channel</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Channels;
+	name = comobj.Name(obj.HwIndex);
+	comobj = comobj.Item(name);
+	propertyValue = comobj.Enabled;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+if ischar(propertyValue) &amp;&amp; strcmpi(propertyValue,'on')
+	propertyValue = 1;
+end
+if strcmpi(propertyValue,'off')
+	propertyValue = 0;
+end
+
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Channels;
+	name = comobj.Name(obj.HwIndex);
+	comobj = comobj.Item(name);
+	comobj.Enabled = propertyValue;
+catch aException
+	rethrow(aException);
+end</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Boolean</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>off</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description>Specifies or returns whether the channel is enabled for scanning. Note that you can also read the digital input port through the analog input data stream by enabling the last channel in the channel list. For example, if your Measurement  instrument suppor</Description>
+            </Property>
+            <Property>
+               <Name>MaxRange</Name>
+               <Location>channel</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Channels;
+	name = comobj.Name(obj.HwIndex);
+	comobj = comobj.Item(name);
+	propertyValue = comobj.MaxRange;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>always</ReadOnly>
+               <Description>Returns the maximum voltage that the Measurement instrument can acquire for the channel.</Description>
+            </Property>
+            <Property>
+               <Name>MinRange</Name>
+               <Location>channel</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Channels;
+	name = comobj.Name(obj.HwIndex);
+	comobj = comobj.Item(name);
+	propertyValue = comobj.MinRange;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>always</ReadOnly>
+               <Description>Returns the minimum voltage that the Measurement instrument can acquire for the channel.</Description>
+            </Property>
+            <Property>
+               <Name>RangeType</Name>
+               <Location>channel</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Channels;
+	name = comobj.Name(obj.HwIndex);
+	comobj = comobj.Item(name);
+	propertyValue = comobj.RangeType;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Channels;
+	name = comobj.Name(obj.HwIndex);
+	comobj = comobj.Item(name);
+	comobj.RangeType = propertyValue;
+catch aException
+	rethrow(aException);
+end</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>enum</Constraint>
+                  <ConstraintValue>
+                     <Enum Name="DtxMeasurementRangeTypeBip10Volts" Value="DtxMeasurementRangeTypeBip10Volts"/>
+                     <Enum Name="DtxMeasurementRangeTypeBip100Volts" Value="DtxMeasurementRangeTypeBip100Volts"/>
+                     <Enum Name="DtxMeasurementRangeTypeBip400Volts" Value="DtxMeasurementRangeTypeBip400Volts"/>
+                     <Enum Name="DtxMeasurementRangeTypeBip100mVolts" Value="DtxMeasurementRangeTypeBip100mVolts"/>
+                     <Enum Name="DtxMeasurementRangeTypeBip1Volt" Value="DtxMeasurementRangeTypeBip1Volt"/>
+                  </ConstraintValue>
+               </PermissibleType>
+               <DefaultValue>DtxMeasurementRangeTypeBip10Volts</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description>Specifies or returns the input range type for the associated channel.</Description>
+            </Property>
+            <Property>
+               <Name>RtdType</Name>
+               <Location>channel</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Channels;
+	name = comobj.Name(obj.HwIndex);
+	comobj = comobj.Item(name);
+	propertyValue = comobj.RtdType;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Channels;
+	name = comobj.Name(obj.HwIndex);
+	comobj = comobj.Item(name);
+	comobj.RtdType = propertyValue;
+catch aException
+	rethrow(aException);
+end</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>enum</Constraint>
+                  <ConstraintValue>
+                     <Enum Name="DtxMeasurementRtdTypeVolts" Value="DtxMeasurementRtdTypeVolts"/>
+                     <Enum Name="DtxMeasurementRtdTypeOhms" Value="DtxMeasurementRtdTypeOhms"/>
+                     <Enum Name="DtxMeasurementRtdTypeEuroPT100" Value="DtxMeasurementRtdTypeEuroPT100"/>
+                     <Enum Name="DtxMeasurementRtdTypeEuroPT500" Value="DtxMeasurementRtdTypeEuroPT500"/>
+                     <Enum Name="DtxMeasurementRtdTypeEuroPT1000" Value="DtxMeasurementRtdTypeEuroPT1000"/>
+                     <Enum Name="DtxMeasurementRtdTypeAmericanPT100" Value="DtxMeasurementRtdTypeAmericanPT100"/>
+                     <Enum Name="DtxMeasurementRtdTypeAmericanPT500" Value="DtxMeasurementRtdTypeAmericanPT500"/>
+                     <Enum Name="DtxMeasurementRtdTypeAmericanPT1000" Value="DtxMeasurementRtdTypeAmericanPT1000"/>
+                     <Enum Name="DtxMeasurementRtdTypeEuroPT100ThreeWire" Value="DtxMeasurementRtdTypeEuroPT100ThreeWire"/>
+                     <Enum Name="DtxMeasurementRtdTypeEuroPT500ThreeWire" Value="DtxMeasurementRtdTypeEuroPT500ThreeWire"/>
+                     <Enum Name="DtxMeasurementRtdTypeEuroPT1000ThreeWire" Value="DtxMeasurementRtdTypeEuroPT1000ThreeWire"/>
+                     <Enum Name="DtxMeasurementRtdTypeAmericanPT100ThreeWire" Value="DtxMeasurementRtdTypeAmericanPT100ThreeWire"/>
+                     <Enum Name="DtxMeasurementRtdTypeAmericanPT500ThreeWire" Value="DtxMeasurementRtdTypeAmericanPT500ThreeWire"/>
+                     <Enum Name="DtxMeasurementRtdTypeAmericanPT1000ThreeWire" Value="DtxMeasurementRtdTypeAmericanPT1000ThreeWire"/>
+                  </ConstraintValue>
+               </PermissibleType>
+               <DefaultValue>DtxMeasurementRtdTypeVolts</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description>Specifies or returns the type of RTD for the associated channel.</Description>
+            </Property>
+            <Property>
+               <Name>ThermocoupleType</Name>
+               <Location>channel</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Channels;
+	name = comobj.Name(obj.HwIndex);
+	comobj = comobj.Item(name);
+	propertyValue = comobj.ThermocoupleType;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Channels;
+	name = comobj.Name(obj.HwIndex);
+	comobj = comobj.Item(name);
+	comobj.ThermocoupleType = propertyValue;
+catch aException
+	rethrow(aException);
+end</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>enum</Constraint>
+                  <ConstraintValue>
+                     <Enum Name="DtxMeasurementThermocoupleTypeNone" Value="DtxMeasurementThermocoupleTypeNone"/>
+                     <Enum Name="DtxMeasurementThermocoupleTypeJ" Value="DtxMeasurementThermocoupleTypeJ"/>
+                     <Enum Name="DtxMeasurementThermocoupleTypeK" Value="DtxMeasurementThermocoupleTypeK"/>
+                     <Enum Name="DtxMeasurementThermocoupleTypeB" Value="DtxMeasurementThermocoupleTypeB"/>
+                     <Enum Name="DtxMeasurementThermocoupleTypeE" Value="DtxMeasurementThermocoupleTypeE"/>
+                     <Enum Name="DtxMeasurementThermocoupleTypeN" Value="DtxMeasurementThermocoupleTypeN"/>
+                     <Enum Name="DtxMeasurementThermocoupleTypeR" Value="DtxMeasurementThermocoupleTypeR"/>
+                     <Enum Name="DtxMeasurementThermocoupleTypeS" Value="DtxMeasurementThermocoupleTypeS"/>
+                     <Enum Name="DtxMeasurementThermocoupleTypeT" Value="DtxMeasurementThermocoupleTypeT"/>
+                  </ConstraintValue>
+               </PermissibleType>
+               <DefaultValue>DtxMeasurementThermocoupleTypeNone</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description>Specifies or returns the thermocouple type for the associated channel.</Description>
+            </Property>
+         </PropertyInfo>
+         <MethodInfo>
+            <Method>
+               <Name>GetSupportedRangeTypes</Name>
+               <Location>channel</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Val] = GetSupportedRangeTypes(obj)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.Channels;
+name = comobj.Name(obj.HwIndex);
+comobj = comobj.Item(name);
+feature('COM_SafeArraySingleDim',1);
+[Val] = comobj.GetSupportedRangeTypes();
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Returns an array containing the available range types for the channel</Description>
+            </Method>
+         </MethodInfo>
+      </Group>
+      <Group>
+         <Name>channels</Name>
+         <Description>Interface containing methods and properties for specifying a collection of IDtxMeasurementChannel objects that the Measurement instrument can scan.</Description>
+         <Command/>
+         <Size>1</Size>
+         <Mappings>
+            <ChannelMap Command="Channels1" Index="1"/>
+         </Mappings>
+         <PropertyInfo>
+            <Property>
+               <Name>Count</Name>
+               <Location>channels</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Channels;
+	propertyValue = comobj.Count;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>always</ReadOnly>
+               <Description>Returns the number of channels that are supported by the Measurement instrument. The number of supported channels depends on the configuration of your Measurement instrument.</Description>
+            </Property>
+         </PropertyInfo>
+         <MethodInfo>
+            <Method>
+               <Name>Configure</Name>
+               <Location>channels</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function Configure(obj, Channels)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.Channels;
+feature('COM_SafeArraySingleDim',1);
+comobj.Configure(int32(Channels));
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Specifies a list of channels to enable for scanning. Note that you can also read the digital input port through the analog input data stream by enabling the appropriate channel in the channel list.</Description>
+            </Method>
+            <Method>
+               <Name>GetConfiguredChannels</Name>
+               <Location>channels</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Val] = GetConfiguredChannels(obj)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.Channels;
+feature('COM_SafeArraySingleDim',1);
+[Val] = comobj.GetConfiguredChannels();
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Returns the list of channels that are enabled for scanning.</Description>
+            </Method>
+            <Method>
+               <Name>IndexedItem</Name>
+               <Location>channels</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Val] = IndexedItem(obj, Index, varargin)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.Channels;
+feature('COM_SafeArraySingleDim',1);
+if ~isempty(varargin)
+	comobj.IndexedItem(int32(Index), varargin{:});
+end
+[Val] = comobj.IndexedItem(int32(Index));
+</MCode>
+               </Code>
+               <Description>Returns the IDtxMeasurementChannel interface that is assocated with the specified index in the channel list.</Description>
+            </Method>
+            <Method>
+               <Name>Item</Name>
+               <Location>channels</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Val] = Item(obj, Name, varargin)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.Channels;
+feature('COM_SafeArraySingleDim',1);
+if ~isempty(varargin)
+	comobj.Item(Name, varargin{:});
+end
+[Val] = comobj.Item(Name);
+</MCode>
+               </Code>
+               <Description>Returns the IDtxMeasurementChannel interface that is associated with the specified channel name.</Description>
+            </Method>
+            <Method>
+               <Name>Name</Name>
+               <Location>channels</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Val] = Name(obj, Index, varargin)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.Channels;
+feature('COM_SafeArraySingleDim',1);
+if ~isempty(varargin)
+	comobj.Name(int32(Index), varargin{:});
+end
+[Val] = comobj.Name(int32(Index));
+</MCode>
+               </Code>
+               <Description>Returns the name of the channel at the specified index in the collection of channels.</Description>
+            </Method>
+         </MethodInfo>
+      </Group>
+      <Group>
+         <Name>digitalin</Name>
+         <Description>Interface containing methods for reading the digital input port of a Measurement instrument.</Description>
+         <Command/>
+         <Size>1</Size>
+         <Mappings>
+            <ChannelMap Command="DigitalIn1" Index="1"/>
+         </Mappings>
+         <PropertyInfo/>
+         <MethodInfo>
+            <Method>
+               <Name>ReadBit</Name>
+               <Location>digitalin</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [RetValue] = ReadBit(obj, BitNumber, varargin)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.DigitalIn;
+feature('COM_SafeArraySingleDim',1);
+[RetValue] = comobj.ReadBit(int32(BitNumber), 0);
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Reads the value of a specified digital input line (0 to 7) of the  digital input port.</Description>
+            </Method>
+            <Method>
+               <Name>ReadByte</Name>
+               <Location>digitalin</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [RetValue] = ReadByte(obj, varargin)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.DigitalIn;
+feature('COM_SafeArraySingleDim',1);
+[RetValue] = comobj.ReadByte(char(0));
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Reads the value of the digital input port.</Description>
+            </Method>
+         </MethodInfo>
+      </Group>
+      <Group>
+         <Name>digitalout</Name>
+         <Description>Interface containing methods for updating the digital output port of a Measurement instrument.</Description>
+         <Command/>
+         <Size>1</Size>
+         <Mappings>
+            <ChannelMap Command="DigitalOut1" Index="1"/>
+         </Mappings>
+         <PropertyInfo/>
+         <MethodInfo>
+            <Method>
+               <Name>WriteBit</Name>
+               <Location>digitalout</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function WriteBit(obj, BitNumber, Val)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.DigitalOut;
+feature('COM_SafeArraySingleDim',1);
+comobj.WriteBit(int32(BitNumber), logical(Val));
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Updates the value of the specified digital output line of the digital output port.</Description>
+            </Method>
+            <Method>
+               <Name>WriteByte</Name>
+               <Location>digitalout</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function WriteByte(obj, Val)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.DigitalOut;
+feature('COM_SafeArraySingleDim',1);
+ c = char(Val);
+comobj.WriteByte(c);
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Updates the value of the digital output port.</Description>
+            </Method>
+         </MethodInfo>
+      </Group>
+      <Group>
+         <Name>driveroperation</Name>
+         <Description>IVI Driver operation interface</Description>
+         <Command/>
+         <Size>1</Size>
+         <Mappings>
+            <ChannelMap Command="DriverOperation1" Index="1"/>
+         </Mappings>
+         <PropertyInfo>
+            <Property>
+               <Name>Cache</Name>
+               <Location>driveroperation</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.DriverOperation;
+	propertyValue = comobj.Cache;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+if ischar(propertyValue) &amp;&amp; strcmpi(propertyValue,'on')
+	propertyValue = 1;
+end
+if strcmpi(propertyValue,'off')
+	propertyValue = 0;
+end
+
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.DriverOperation;
+	comobj.Cache = propertyValue;
+catch aException
+	rethrow(aException);
+end</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Boolean</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>off</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description>If True, the driver caches instrument settings to avoid unnecessary I/O to the instrument.  The actual settings that are cached are driver-specific.</Description>
+            </Property>
+            <Property>
+               <Name>DriverSetup</Name>
+               <Location>driveroperation</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.DriverOperation;
+	propertyValue = comobj.DriverSetup;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue/>
+               <ReadOnly>always</ReadOnly>
+               <Description>The driver setup string.  It is either specified in the Configuration Store or passed in the OptionString parameter of the Initialize function.  Driver setup is empty if the driver is not initialized.</Description>
+            </Property>
+            <Property>
+               <Name>InterchangeCheck</Name>
+               <Location>driveroperation</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.DriverOperation;
+	propertyValue = comobj.InterchangeCheck;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+if ischar(propertyValue) &amp;&amp; strcmpi(propertyValue,'on')
+	propertyValue = 1;
+end
+if strcmpi(propertyValue,'off')
+	propertyValue = 0;
+end
+
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.DriverOperation;
+	comobj.InterchangeCheck = propertyValue;
+catch aException
+	rethrow(aException);
+end</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Boolean</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>off</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description>If True, the driver maintains a record of interchangeability warnings.  If the driver does not support interchangeability checking, attempts to set InterchangeCheck to True return an error.</Description>
+            </Property>
+            <Property>
+               <Name>IoResourceDescriptor</Name>
+               <Location>driveroperation</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.DriverOperation;
+	propertyValue = comobj.IoResourceDescriptor;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue/>
+               <ReadOnly>always</ReadOnly>
+               <Description>The resource descriptor specifies the connection to a physical device.  It is either specified in the Configuration Store or passed in the ResourceName parameter of the Initialize function.  It is empty if the driver is not initialized.</Description>
+            </Property>
+            <Property>
+               <Name>LogicalName</Name>
+               <Location>driveroperation</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.DriverOperation;
+	propertyValue = comobj.LogicalName;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue/>
+               <ReadOnly>always</ReadOnly>
+               <Description>Logical Name identifies a driver session in the Configuration Store.  If Logical Name is not empty, the driver was initialized from information in the driver session.  If it is empty, the driver was initialized without using the Configuration Store.</Description>
+            </Property>
+            <Property>
+               <Name>QueryInstrumentStatus</Name>
+               <Location>driveroperation</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.DriverOperation;
+	propertyValue = comobj.QueryInstrumentStatus;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+if ischar(propertyValue) &amp;&amp; strcmpi(propertyValue,'on')
+	propertyValue = 1;
+end
+if strcmpi(propertyValue,'off')
+	propertyValue = 0;
+end
+
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.DriverOperation;
+	comobj.QueryInstrumentStatus = propertyValue;
+catch aException
+	rethrow(aException);
+end</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Boolean</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>off</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description>If True, the driver queries the instrument status at the end of each method or property that performs I/O to the instrument.  If an error is reported, use ErrorQuery to retrieve error messages one at a time from the instrument.</Description>
+            </Property>
+            <Property>
+               <Name>RangeCheck</Name>
+               <Location>driveroperation</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.DriverOperation;
+	propertyValue = comobj.RangeCheck;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+if ischar(propertyValue) &amp;&amp; strcmpi(propertyValue,'on')
+	propertyValue = 1;
+end
+if strcmpi(propertyValue,'off')
+	propertyValue = 0;
+end
+
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.DriverOperation;
+	comobj.RangeCheck = propertyValue;
+catch aException
+	rethrow(aException);
+end</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Boolean</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>off</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description>If True, the driver validates property and parameter values to avoid invalid commands to the instrument.  The extent of the validation is driver-specific.</Description>
+            </Property>
+            <Property>
+               <Name>RecordCoercions</Name>
+               <Location>driveroperation</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.DriverOperation;
+	propertyValue = comobj.RecordCoercions;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+if ischar(propertyValue) &amp;&amp; strcmpi(propertyValue,'on')
+	propertyValue = 1;
+end
+if strcmpi(propertyValue,'off')
+	propertyValue = 0;
+end
+
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.DriverOperation;
+	comobj.RecordCoercions = propertyValue;
+catch aException
+	rethrow(aException);
+end</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Boolean</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>off</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description>If True, the driver keeps a list of the value coercions it makes for ViInt32 and ViReal64 attributes.  If the driver does not support coercion recording, attempts to set RecordCoercions to True will return an error.</Description>
+            </Property>
+            <Property>
+               <Name>Simulate</Name>
+               <Location>driveroperation</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.DriverOperation;
+	propertyValue = comobj.Simulate;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+if ischar(propertyValue) &amp;&amp; strcmpi(propertyValue,'on')
+	propertyValue = 1;
+end
+if strcmpi(propertyValue,'off')
+	propertyValue = 0;
+end
+
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.DriverOperation;
+	comobj.Simulate = propertyValue;
+catch aException
+	rethrow(aException);
+end</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Boolean</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>off</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description>If True, the driver does not perform I/O to the instrument, and returns simulated values for output parameters.</Description>
+            </Property>
+         </PropertyInfo>
+         <MethodInfo>
+            <Method>
+               <Name>ClearInterchangeWarnings</Name>
+               <Location>driveroperation</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function ClearInterchangeWarnings(obj)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.DriverOperation;
+feature('COM_SafeArraySingleDim',1);
+comobj.ClearInterchangeWarnings();
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Clears the list of interchangeability warnings that the IVI specific driver maintains.</Description>
+            </Method>
+            <Method>
+               <Name>GetNextCoercionRecord</Name>
+               <Location>driveroperation</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [CoercionRecord] = GetNextCoercionRecord(obj)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.DriverOperation;
+feature('COM_SafeArraySingleDim',1);
+[CoercionRecord] = comobj.GetNextCoercionRecord();
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Returns the oldest record from the coercion record list.  Records are only added to the list if RecordCoercions is True.</Description>
+            </Method>
+            <Method>
+               <Name>GetNextInterchangeWarning</Name>
+               <Location>driveroperation</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [InterchangeWarning] = GetNextInterchangeWarning(obj)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.DriverOperation;
+feature('COM_SafeArraySingleDim',1);
+[InterchangeWarning] = comobj.GetNextInterchangeWarning();
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Returns the oldest warning from the interchange warning list.  Records are only added to the list if InterchangeCheck is True.</Description>
+            </Method>
+            <Method>
+               <Name>InvalidateAllAttributes</Name>
+               <Location>driveroperation</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function InvalidateAllAttributes(obj)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.DriverOperation;
+feature('COM_SafeArraySingleDim',1);
+comobj.InvalidateAllAttributes();
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Invalidates all of the driver's cached values.</Description>
+            </Method>
+            <Method>
+               <Name>ResetInterchangeCheck</Name>
+               <Location>driveroperation</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function ResetInterchangeCheck(obj)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.DriverOperation;
+feature('COM_SafeArraySingleDim',1);
+comobj.ResetInterchangeCheck();
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Resets the interchangeability checking algorithms of the driver so that methods and properties that executed prior to calling this function have no affect on whether future calls to the driver generate interchangeability warnings.</Description>
+            </Method>
+         </MethodInfo>
+      </Group>
+      <Group>
+         <Name>identity</Name>
+         <Description>IVI Driver driver identity interface</Description>
+         <Command/>
+         <Size>1</Size>
+         <Mappings>
+            <ChannelMap Command="Identity1" Index="1"/>
+         </Mappings>
+         <PropertyInfo>
+            <Property>
+               <Name>Description</Name>
+               <Location>identity</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Identity;
+	propertyValue = comobj.Description;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue/>
+               <ReadOnly>always</ReadOnly>
+               <Description>A brief description of the implementing component.  Description is limted to 256 bytes.</Description>
+            </Property>
+            <Property>
+               <Name>GroupCapabilities</Name>
+               <Location>identity</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Identity;
+	propertyValue = comobj.GroupCapabilities;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue/>
+               <ReadOnly>always</ReadOnly>
+               <Description>A comma-separated list of the class capability groups implemented by the driver.  Capability group names are documented in the IVI class specifications.  If the driver is not class compliant, the driver returns an empty string.</Description>
+            </Property>
+            <Property>
+               <Name>Identifier</Name>
+               <Location>identity</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Identity;
+	propertyValue = comobj.Identifier;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue/>
+               <ReadOnly>always</ReadOnly>
+               <Description>The case-sensitive unique identifier of the implementing IVI-COM instrument driver.</Description>
+            </Property>
+            <Property>
+               <Name>InstrumentFirmwareRevision</Name>
+               <Location>identity</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Identity;
+	propertyValue = comobj.InstrumentFirmwareRevision;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue/>
+               <ReadOnly>always</ReadOnly>
+               <Description>The firmware revision reported by the physical instrument.  If Simulation is enabled or the instrument is not capable of reporting the firmware revision, a string is returned that explains the condition.</Description>
+            </Property>
+            <Property>
+               <Name>InstrumentManufacturer</Name>
+               <Location>identity</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Identity;
+	propertyValue = comobj.InstrumentManufacturer;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue/>
+               <ReadOnly>always</ReadOnly>
+               <Description>The name of the manufacturer reported by the physical instrument.  If Simulation is enabled or the instrument is not capable of reporting the name of the manufacturer, a string is returned that explains the condition. Manufacturer is limited to 256 bytes</Description>
+            </Property>
+            <Property>
+               <Name>InstrumentModel</Name>
+               <Location>identity</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Identity;
+	propertyValue = comobj.InstrumentModel;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue/>
+               <ReadOnly>always</ReadOnly>
+               <Description>The model number or name reported by the physical instrument.  If Simulation is enabled or the instrument is not capable of reporting the model number or name, a string is returned that explains the condition.  Model is limited to 256 bytes</Description>
+            </Property>
+            <Property>
+               <Name>Revision</Name>
+               <Location>identity</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Identity;
+	propertyValue = comobj.Revision;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue/>
+               <ReadOnly>always</ReadOnly>
+               <Description>The revision of the implementing component.  Refer to IVI-3.2, Section 3.1.2.2, for a description of revision syntax and semantics.  Revision is limited to 256 bytes.</Description>
+            </Property>
+            <Property>
+               <Name>SpecificationMajorVersion</Name>
+               <Location>identity</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Identity;
+	propertyValue = comobj.SpecificationMajorVersion;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>always</ReadOnly>
+               <Description>For IVI class-compliant drivers, the major version number of the instrument class specification.  If the driver is not class compliant, the driver returns zero.</Description>
+            </Property>
+            <Property>
+               <Name>SpecificationMinorVersion</Name>
+               <Location>identity</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Identity;
+	propertyValue = comobj.SpecificationMinorVersion;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>always</ReadOnly>
+               <Description>For IVI class-compliant drivers, the minor version number of the instrument class specification.  If the driver is not class compliant, the driver returns zero.</Description>
+            </Property>
+            <Property>
+               <Name>SupportedInstrumentModels</Name>
+               <Location>identity</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Identity;
+	propertyValue = comobj.SupportedInstrumentModels;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue/>
+               <ReadOnly>always</ReadOnly>
+               <Description>A comma-separated list of instrument models that the IVI specific driver can control.</Description>
+            </Property>
+            <Property>
+               <Name>Vendor</Name>
+               <Location>identity</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Identity;
+	propertyValue = comobj.Vendor;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue/>
+               <ReadOnly>always</ReadOnly>
+               <Description>The name of the vendor that supplies the implementing component.  Vendor is limited to 256 bytes.</Description>
+            </Property>
+         </PropertyInfo>
+         <MethodInfo/>
+      </Group>
+      <Group>
+         <Name>system</Name>
+         <Description/>
+         <Command/>
+         <Size>1</Size>
+         <Mappings>
+            <ChannelMap Command="System1" Index="1"/>
+         </Mappings>
+         <PropertyInfo>
+            <Property>
+               <Name>ProtectedCommandsEnabled</Name>
+               <Location>system</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.System;
+	propertyValue = comobj.ProtectedCommandsEnabled;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Boolean</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>off</DefaultValue>
+               <ReadOnly>always</ReadOnly>
+               <Description>Returns a true if password protected commands are enabled.</Description>
+            </Property>
+            <Property>
+               <Name>SerialNumber</Name>
+               <Location>system</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.System;
+	propertyValue = comobj.SerialNumber;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue/>
+               <ReadOnly>always</ReadOnly>
+               <Description>Returns the serial number of the Measurement instrument.</Description>
+            </Property>
+         </PropertyInfo>
+         <MethodInfo>
+            <Method>
+               <Name>DisableProtectedCommands</Name>
+               <Location>system</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function DisableProtectedCommands(obj, Password)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+feature('COM_SafeArraySingleDim',1);
+comobj.DisableProtectedCommands(Password);
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Disables protected commands.</Description>
+            </Method>
+            <Method>
+               <Name>EnableProtectedCommands</Name>
+               <Location>system</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function EnableProtectedCommands(obj, Password)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+feature('COM_SafeArraySingleDim',1);
+comobj.EnableProtectedCommands(Password);
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Enables protected commands to function.</Description>
+            </Method>
+            <Method>
+               <Name>GetEthernetDevices</Name>
+               <Location>system</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Val] = GetEthernetDevices(obj)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+feature('COM_SafeArraySingleDim',1);
+[Val] = comobj.GetEthernetDevices();
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Returns an array of IP addresses that represent the available Ethernet Measurement instruments on the current system.</Description>
+            </Method>
+            <Method>
+               <Name>GetUSBDevices</Name>
+               <Location>system</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Val] = GetUSBDevices(obj)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+feature('COM_SafeArraySingleDim',1);
+[Val] = comobj.GetUSBDevices();
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Returns an array of device names that represent the available USB Measurement instruments on the current system.</Description>
+            </Method>
+            <Method>
+               <Name>LockRsrc</Name>
+               <Location>system</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function LockRsrc(obj, Timeout)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+feature('COM_SafeArraySingleDim',1);
+comobj.LockRsrc(int32(Timeout));
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Obtains a lock on the specified Measurement instrument (resource) if the instrument is using VISA; this method is not supported if the instrument is using sockets (see IIviDriver.Initialize for more information). This method ensures that no other clients </Description>
+            </Method>
+            <Method>
+               <Name>ReadCalPot</Name>
+               <Location>system</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Value] = ReadCalPot(obj, Key, ChipNumber, PotNumber, RegNumber, varargin)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+feature('COM_SafeArraySingleDim',1);
+[Value] = comobj.ReadCalPot(int32(Key), int32(ChipNumber), int32(PotNumber), int32(RegNumber), 0);
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Internal use only.</Description>
+            </Method>
+            <Method>
+               <Name>SetPassword</Name>
+               <Location>system</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function SetPassword(obj, CurrentPassword, NewPassword)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+feature('COM_SafeArraySingleDim',1);
+comobj.SetPassword(CurrentPassword, NewPassword);
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Changes the password from the default or current value to the new value.</Description>
+            </Method>
+            <Method>
+               <Name>UnlockRsrc</Name>
+               <Location>system</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function UnlockRsrc(obj)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+feature('COM_SafeArraySingleDim',1);
+comobj.UnlockRsrc();
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Releases a lock that was previously acquired by LockRsrc. Once the lock is released, any client can access data from the Measurement instrument. Note: This method is not supported if the Measurement instrument is using sockets rather than VISA (see IIviDr</Description>
+            </Method>
+            <Method>
+               <Name>WriteCalPot</Name>
+               <Location>system</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function WriteCalPot(obj, Key, ChipNumber, PotNumber, RegNumber, Value)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+feature('COM_SafeArraySingleDim',1);
+comobj.WriteCalPot(int32(Key), int32(ChipNumber), int32(PotNumber), int32(RegNumber), int32(Value));
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Internal use only.</Description>
+            </Method>
+         </MethodInfo>
+      </Group>
+      <Group>
+         <Name>systemio</Name>
+         <Description>IEEE 488.2 Formatted I/O Interface</Description>
+         <Command/>
+         <Size>1</Size>
+         <Mappings>
+            <ChannelMap Command="SystemIO1" Index="1"/>
+         </Mappings>
+         <PropertyInfo>
+            <Property>
+               <Name>InstrumentBigEndian</Name>
+               <Location>systemio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.System;
+	comobj = comobj.IO;
+	propertyValue = comobj.InstrumentBigEndian;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+if ischar(propertyValue) &amp;&amp; strcmpi(propertyValue,'on')
+	propertyValue = 1;
+end
+if strcmpi(propertyValue,'off')
+	propertyValue = 0;
+end
+
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.System;
+	comobj = comobj.IO;
+	comobj.InstrumentBigEndian = propertyValue;
+catch aException
+	rethrow(aException);
+end</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Boolean</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>off</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description>Get/Set whether the instrument communicates in Big Endian (IEEE 488.2) format</Description>
+            </Property>
+         </PropertyInfo>
+         <MethodInfo>
+            <Method>
+               <Name>FlushRead</Name>
+               <Location>systemio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function FlushRead(obj)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+comobj = comobj.IO;
+feature('COM_SafeArraySingleDim',1);
+comobj.FlushRead();
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Flush the Read Buffer</Description>
+            </Method>
+            <Method>
+               <Name>FlushWrite</Name>
+               <Location>systemio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function FlushWrite(obj, sendEND)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+comobj = comobj.IO;
+feature('COM_SafeArraySingleDim',1);
+comobj.FlushWrite(logical(sendEND));
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Flush the Write Buffer and optionally send the END signal</Description>
+            </Method>
+            <Method>
+               <Name>ReadIEEEBlock</Name>
+               <Location>systemio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [pData] = ReadIEEEBlock(obj, type, seekToBlock, flushToEND)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+comobj = comobj.IO;
+feature('COM_SafeArraySingleDim',1);
+[pData] = comobj.ReadIEEEBlock(type, logical(seekToBlock), logical(flushToEND));
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Read a definite-length IEEE block from the I/O Stream and optionally flush the buffer</Description>
+            </Method>
+            <Method>
+               <Name>ReadList</Name>
+               <Location>systemio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [pData] = ReadList(obj, type, listSeperator)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+comobj = comobj.IO;
+feature('COM_SafeArraySingleDim',1);
+[pData] = comobj.ReadList(type, listSeperator);
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Read a list of values in ASCII format from the I/O Stream, convert them to the specified type, and optionally flush the buffer</Description>
+            </Method>
+            <Method>
+               <Name>ReadNumber</Name>
+               <Location>systemio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [pData] = ReadNumber(obj, type, flushToEND)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+comobj = comobj.IO;
+feature('COM_SafeArraySingleDim',1);
+[pData] = comobj.ReadNumber(type, logical(flushToEND));
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Read a single number from the I/O Stream and optionally flush the buffer</Description>
+            </Method>
+            <Method>
+               <Name>ReadString</Name>
+               <Location>systemio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [pData] = ReadString(obj)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+comobj = comobj.IO;
+feature('COM_SafeArraySingleDim',1);
+[pData] = comobj.ReadString();
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Read the entire contents of the buffer until the termination character / END signal and return the data as a string</Description>
+            </Method>
+            <Method>
+               <Name>SetBufferSize</Name>
+               <Location>systemio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function SetBufferSize(obj, mask, size)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+comobj = comobj.IO;
+feature('COM_SafeArraySingleDim',1);
+comobj.SetBufferSize(mask, int32(size));
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Set the formatted I/O read or write buffer size</Description>
+            </Method>
+            <Method>
+               <Name>WriteIEEEBlock</Name>
+               <Location>systemio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function WriteIEEEBlock(obj, Command, data, flushAndEND)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+comobj = comobj.IO;
+feature('COM_SafeArraySingleDim',1);
+comobj.WriteIEEEBlock(Command, logical(flushAndEND));
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Write a command followed by an IEEE 488.2 definite-length binary block terminated with the Stream's termination character to the I/O Stream</Description>
+            </Method>
+            <Method>
+               <Name>WriteList</Name>
+               <Location>systemio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function WriteList(obj, data, type, listSeperator, flushAndEND)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+comobj = comobj.IO;
+feature('COM_SafeArraySingleDim',1);
+comobj.WriteList(type, listSeperator, logical(flushAndEND));
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Write a list of values to the I/O Stream and optionally flush the buffer</Description>
+            </Method>
+            <Method>
+               <Name>WriteNumber</Name>
+               <Location>systemio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function WriteNumber(obj, data, type, flushAndEND)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+comobj = comobj.IO;
+feature('COM_SafeArraySingleDim',1);
+comobj.WriteNumber(type, logical(flushAndEND));
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Write a single number to the I/O Stream and optionally flush the buffer</Description>
+            </Method>
+            <Method>
+               <Name>WriteString</Name>
+               <Location>systemio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function WriteString(obj, data, flushAndEND)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+comobj = comobj.IO;
+feature('COM_SafeArraySingleDim',1);
+comobj.WriteString(data, logical(flushAndEND));
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Write a string to the I/O Stream and optionally flush the buffer</Description>
+            </Method>
+         </MethodInfo>
+      </Group>
+      <Group>
+         <Name>systemioio</Name>
+         <Description>Message Based Interface</Description>
+         <Command/>
+         <Size>1</Size>
+         <Mappings>
+            <ChannelMap Command="SystemIOIO1" Index="1"/>
+         </Mappings>
+         <PropertyInfo>
+            <Property>
+               <Name>ComponentVersion</Name>
+               <Location>systemioio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.System;
+	comobj = comobj.IO;
+	comobj = comobj.IO;
+	propertyValue = comobj.ComponentVersion;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>always</ReadOnly>
+               <Description>Get the implementation version of the component</Description>
+            </Property>
+            <Property>
+               <Name>HardwareInterfaceName</Name>
+               <Location>systemioio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.System;
+	comobj = comobj.IO;
+	comobj = comobj.IO;
+	propertyValue = comobj.HardwareInterfaceName;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue/>
+               <ReadOnly>always</ReadOnly>
+               <Description>Get a description of the hardware interface</Description>
+            </Property>
+            <Property>
+               <Name>HardwareInterfaceNumber</Name>
+               <Location>systemioio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.System;
+	comobj = comobj.IO;
+	comobj = comobj.IO;
+	propertyValue = comobj.HardwareInterfaceNumber;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>always</ReadOnly>
+               <Description>Get the hardware interface number</Description>
+            </Property>
+            <Property>
+               <Name>HardwareInterfaceType</Name>
+               <Location>systemioio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.System;
+	comobj = comobj.IO;
+	comobj = comobj.IO;
+	propertyValue = comobj.HardwareInterfaceType;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>always</ReadOnly>
+               <Description>Get the hardware interface type</Description>
+            </Property>
+            <Property>
+               <Name>IOProtocol</Name>
+               <Location>systemioio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.System;
+	comobj = comobj.IO;
+	comobj = comobj.IO;
+	propertyValue = comobj.IOProtocol;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.System;
+	comobj = comobj.IO;
+	comobj = comobj.IO;
+	comobj.IOProtocol = propertyValue;
+catch aException
+	rethrow(aException);
+end</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>enum</Constraint>
+                  <ConstraintValue>
+                     <Enum Name="PROT_NORMAL" Value="PROT_NORMAL"/>
+                     <Enum Name="PROT_FDC" Value="PROT_FDC"/>
+                     <Enum Name="PROT_HS488" Value="PROT_HS488"/>
+                     <Enum Name="PROT_4882_STRS" Value="PROT_4882_STRS"/>
+                     <Enum Name="PROT_USBTMC_VENDOR" Value="PROT_USBTMC_VENDOR"/>
+                  </ConstraintValue>
+               </PermissibleType>
+               <DefaultValue>PROT_NORMAL</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description>Get/Set which I/O protocol to use</Description>
+            </Property>
+            <Property>
+               <Name>LastStatus</Name>
+               <Location>systemioio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>InstrumentCommand</Type>
+               <Code>
+                  <Commands>
+                     <ConfigureCommand/>
+                     <QueryCommand/>
+                  </Commands>
+               </Code>
+               <DefaultValue/>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>LockState</Name>
+               <Location>systemioio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.System;
+	comobj = comobj.IO;
+	comobj = comobj.IO;
+	propertyValue = comobj.LockState;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>enum</Constraint>
+                  <ConstraintValue>
+                     <Enum Name="NO_LOCK" Value="NO_LOCK"/>
+                     <Enum Name="EXCLUSIVE_LOCK" Value="EXCLUSIVE_LOCK"/>
+                     <Enum Name="SHARED_LOCK" Value="SHARED_LOCK"/>
+                     <Enum Name="LOAD_CONFIG" Value="LOAD_CONFIG"/>
+                  </ConstraintValue>
+               </PermissibleType>
+               <DefaultValue>NO_LOCK</DefaultValue>
+               <ReadOnly>always</ReadOnly>
+               <Description>Get the current lock state of the resource</Description>
+            </Property>
+            <Property>
+               <Name>OptionString</Name>
+               <Location>systemioio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.System;
+	comobj = comobj.IO;
+	comobj = comobj.IO;
+	propertyValue = comobj.OptionString;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue/>
+               <ReadOnly>always</ReadOnly>
+               <Description>Get the current state of all settable properties</Description>
+            </Property>
+            <Property>
+               <Name>ProgID</Name>
+               <Location>systemioio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.System;
+	comobj = comobj.IO;
+	comobj = comobj.IO;
+	propertyValue = comobj.ProgID;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue/>
+               <ReadOnly>always</ReadOnly>
+               <Description>Get the ProgID of the component</Description>
+            </Property>
+            <Property>
+               <Name>ResourceName</Name>
+               <Location>systemioio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.System;
+	comobj = comobj.IO;
+	comobj = comobj.IO;
+	propertyValue = comobj.ResourceName;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue/>
+               <ReadOnly>always</ReadOnly>
+               <Description>Get the resource name</Description>
+            </Property>
+            <Property>
+               <Name>SendEndEnabled</Name>
+               <Location>systemioio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.System;
+	comobj = comobj.IO;
+	comobj = comobj.IO;
+	propertyValue = comobj.SendEndEnabled;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+if ischar(propertyValue) &amp;&amp; strcmpi(propertyValue,'on')
+	propertyValue = 1;
+end
+if strcmpi(propertyValue,'off')
+	propertyValue = 0;
+end
+
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.System;
+	comobj = comobj.IO;
+	comobj = comobj.IO;
+	comobj.SendEndEnabled = propertyValue;
+catch aException
+	rethrow(aException);
+end</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Boolean</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>off</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description>Get/Set whether to assert END on Write</Description>
+            </Property>
+            <Property>
+               <Name>SessionType</Name>
+               <Location>systemioio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.System;
+	comobj = comobj.IO;
+	comobj = comobj.IO;
+	propertyValue = comobj.SessionType;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue/>
+               <ReadOnly>always</ReadOnly>
+               <Description>Get the session class type</Description>
+            </Property>
+            <Property>
+               <Name>SoftwareManufacturerID</Name>
+               <Location>systemioio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.System;
+	comobj = comobj.IO;
+	comobj = comobj.IO;
+	propertyValue = comobj.SoftwareManufacturerID;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>always</ReadOnly>
+               <Description>Get the manufacturer ID of the component</Description>
+            </Property>
+            <Property>
+               <Name>SoftwareManufacturerName</Name>
+               <Location>systemioio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.System;
+	comobj = comobj.IO;
+	comobj = comobj.IO;
+	propertyValue = comobj.SoftwareManufacturerName;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue/>
+               <ReadOnly>always</ReadOnly>
+               <Description>Get the manufacturer name of the component</Description>
+            </Property>
+            <Property>
+               <Name>SpecVersion</Name>
+               <Location>systemioio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.System;
+	comobj = comobj.IO;
+	comobj = comobj.IO;
+	propertyValue = comobj.SpecVersion;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+%	NOTE: This property is defined as read only.</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>always</ReadOnly>
+               <Description>Get the VISA COM I/O specification version</Description>
+            </Property>
+            <Property>
+               <Name>TerminationCharacter</Name>
+               <Location>systemioio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.System;
+	comobj = comobj.IO;
+	comobj = comobj.IO;
+	propertyValue = comobj.TerminationCharacter;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.System;
+	comobj = comobj.IO;
+	comobj = comobj.IO;
+	comobj.TerminationCharacter = propertyValue;
+catch aException
+	rethrow(aException);
+end</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description>Get/Set the termination character</Description>
+            </Property>
+            <Property>
+               <Name>TerminationCharacterEnabled</Name>
+               <Location>systemioio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.System;
+	comobj = comobj.IO;
+	comobj = comobj.IO;
+	propertyValue = comobj.TerminationCharacterEnabled;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+if ischar(propertyValue) &amp;&amp; strcmpi(propertyValue,'on')
+	propertyValue = 1;
+end
+if strcmpi(propertyValue,'off')
+	propertyValue = 0;
+end
+
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.System;
+	comobj = comobj.IO;
+	comobj = comobj.IO;
+	comobj.TerminationCharacterEnabled = propertyValue;
+catch aException
+	rethrow(aException);
+end</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Boolean</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>off</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description>Get/Set whether to use the termination character on Read</Description>
+            </Property>
+            <Property>
+               <Name>Timeout</Name>
+               <Location>systemioio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.System;
+	comobj = comobj.IO;
+	comobj = comobj.IO;
+	propertyValue = comobj.Timeout;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.System;
+	comobj = comobj.IO;
+	comobj = comobj.IO;
+	comobj.Timeout = propertyValue;
+catch aException
+	rethrow(aException);
+end</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description>Get/Set the I/O timeout in milliseconds</Description>
+            </Property>
+         </PropertyInfo>
+         <MethodInfo>
+            <Method>
+               <Name>AssertTrigger</Name>
+               <Location>systemioio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function AssertTrigger(obj, protocol)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+comobj = comobj.IO;
+comobj = comobj.IO;
+feature('COM_SafeArraySingleDim',1);
+comobj.AssertTrigger(protocol);
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Assert a trigger</Description>
+            </Method>
+            <Method>
+               <Name>Clear</Name>
+               <Location>systemioio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function Clear(obj)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+comobj = comobj.IO;
+comobj = comobj.IO;
+feature('COM_SafeArraySingleDim',1);
+comobj.Clear();
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Clear the device</Description>
+            </Method>
+            <Method>
+               <Name>Close</Name>
+               <Location>systemioio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function Close(obj)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+comobj = comobj.IO;
+comobj = comobj.IO;
+feature('COM_SafeArraySingleDim',1);
+comobj.Close();
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Close the session</Description>
+            </Method>
+            <Method>
+               <Name>Init</Name>
+               <Location>systemioio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function Init(obj, ResourceName, mode, initTimeout, OptionString)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+comobj = comobj.IO;
+comobj = comobj.IO;
+feature('COM_SafeArraySingleDim',1);
+comobj.Init(ResourceName, mode, int32(initTimeout), OptionString);
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Initialize a session to the specified resource name</Description>
+            </Method>
+            <Method>
+               <Name>LockRsrc</Name>
+               <Location>systemioio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [pAccessKey] = LockRsrc(obj, type, lockTimeout, requestedKey)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+comobj = comobj.IO;
+comobj = comobj.IO;
+feature('COM_SafeArraySingleDim',1);
+[pAccessKey] = comobj.LockRsrc(type, int32(lockTimeout), requestedKey);
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Establish ownership of the resource</Description>
+            </Method>
+            <Method>
+               <Name>Read</Name>
+               <Location>systemioio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [pBuffer] = Read(obj, count)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+comobj = comobj.IO;
+comobj = comobj.IO;
+feature('COM_SafeArraySingleDim',1);
+[pBuffer] = comobj.Read(int32(count));
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Read the specified number of bytes</Description>
+            </Method>
+            <Method>
+               <Name>ReadSTB</Name>
+               <Location>systemioio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [pStatusByte] = ReadSTB(obj)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+comobj = comobj.IO;
+comobj = comobj.IO;
+feature('COM_SafeArraySingleDim',1);
+[pStatusByte] = comobj.ReadSTB();
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Read the status byte</Description>
+            </Method>
+            <Method>
+               <Name>ReadString</Name>
+               <Location>systemioio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [pBuffer] = ReadString(obj, count)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+comobj = comobj.IO;
+comobj = comobj.IO;
+feature('COM_SafeArraySingleDim',1);
+[pBuffer] = comobj.ReadString(int32(count));
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Read the specified number of bytes as a string</Description>
+            </Method>
+            <Method>
+               <Name>UnlockRsrc</Name>
+               <Location>systemioio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function UnlockRsrc(obj)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+comobj = comobj.IO;
+comobj = comobj.IO;
+feature('COM_SafeArraySingleDim',1);
+comobj.UnlockRsrc();
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Relinquish ownership of the resource</Description>
+            </Method>
+            <Method>
+               <Name>Write</Name>
+               <Location>systemioio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [pRetCount] = Write(obj, buffer, count)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+comobj = comobj.IO;
+comobj = comobj.IO;
+feature('COM_SafeArraySingleDim',1);
+[pRetCount] = comobj.Write(uint8(buffer), int32(count));
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Write the specified data</Description>
+            </Method>
+            <Method>
+               <Name>WriteString</Name>
+               <Location>systemioio</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [pRetCount] = WriteString(obj, buffer)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.System;
+comobj = comobj.IO;
+comobj = comobj.IO;
+feature('COM_SafeArraySingleDim',1);
+[pRetCount] = comobj.WriteString(buffer);
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Write the specified string</Description>
+            </Method>
+         </MethodInfo>
+      </Group>
+      <Group>
+         <Name>trigger</Name>
+         <Description>Interface containing properties for controlling the scan rate and the number of scans to acquire on the Measurement instrument.</Description>
+         <Command/>
+         <Size>1</Size>
+         <Mappings>
+            <ChannelMap Command="Trigger1" Index="1"/>
+         </Mappings>
+         <PropertyInfo>
+            <Property>
+               <Name>ExtTriggerEnabled</Name>
+               <Location>trigger</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Trigger;
+	propertyValue = comobj.ExtTriggerEnabled;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+if ischar(propertyValue) &amp;&amp; strcmpi(propertyValue,'on')
+	propertyValue = 1;
+end
+if strcmpi(propertyValue,'off')
+	propertyValue = 0;
+end
+
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Trigger;
+	comobj.ExtTriggerEnabled = propertyValue;
+catch aException
+	rethrow(aException);
+end</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Boolean</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>off</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description>If TRUE, an external digital trigger is selected; in this case, a 3 to 28 V DC signal on digital input line 0 causes the instrument to start acquiring data once the  IDtxMeasurementMeasurement_Initiate() method is executed. If FALSE, a software trigger is</Description>
+            </Property>
+            <Property>
+               <Name>ScanCount</Name>
+               <Location>trigger</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Trigger;
+	propertyValue = comobj.ScanCount;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Trigger;
+	comobj.ScanCount = propertyValue;
+catch aException
+	rethrow(aException);
+end</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description>For Measurement USB instruments, specifies and returns the number of times to scan the list of enabled channels when the measurement is initiated; the size of the circular buffer is adjusted to accommodate the scan count. For Measurement LXI instruments, </Description>
+            </Property>
+            <Property>
+               <Name>TimerInterval</Name>
+               <Location>trigger</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Trigger;
+	propertyValue = comobj.TimerInterval;
+catch
+	propertyValue = [];
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+try
+	comobj = obj.Parent;
+	comobj = comobj.Interface;
+	comobj = comobj.Trigger;
+	comobj.TimerInterval = propertyValue;
+catch aException
+	rethrow(aException);
+end</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description>Specifies or returns the rate at which to scan the list of enabled channels (in seconds).</Description>
+            </Property>
+         </PropertyInfo>
+         <MethodInfo/>
+      </Group>
+      <Group>
+         <Name>utility</Name>
+         <Description>IVI Driver utility interface</Description>
+         <Command/>
+         <Size>1</Size>
+         <Mappings>
+            <ChannelMap Command="Utility1" Index="1"/>
+         </Mappings>
+         <PropertyInfo/>
+         <MethodInfo>
+            <Method>
+               <Name>Disable</Name>
+               <Location>utility</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function Disable(obj)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.Utility;
+feature('COM_SafeArraySingleDim',1);
+comobj.Disable();
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Quickly places the instrument in a state where it has no, or minimal, effect on the external system to which it is connected.  This state is not necessarily a known state.</Description>
+            </Method>
+            <Method>
+               <Name>ErrorQuery</Name>
+               <Location>utility</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [ErrorCode, ErrorMessage] = ErrorQuery(obj, varargin)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.Utility;
+feature('COM_SafeArraySingleDim',1);
+[ErrorCode, ErrorMessage] = comobj.ErrorQuery(0, '');
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Queries the instrument and returns instrument specific error information.  This function can be used when QueryInstrumentStatus is True to retrieve error details when the driver detects an instrument error.</Description>
+            </Method>
+            <Method>
+               <Name>LockObject</Name>
+               <Location>utility</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function LockObject(obj)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.Utility;
+feature('COM_SafeArraySingleDim',1);
+comobj.LockObject();
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Obtains a multithread lock on the driver after waiting until all other execution threads have released their locks on the instrument session.</Description>
+            </Method>
+            <Method>
+               <Name>Reset</Name>
+               <Location>utility</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function Reset(obj)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.Utility;
+feature('COM_SafeArraySingleDim',1);
+comobj.Reset();
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Places the instrument in a known state and configures instrument options on which the IVI specific driver depends (for example, enabling/disabling headers).  For an IEEE 488.2 instrument, Reset sends the command string *RST to the instrument.</Description>
+            </Method>
+            <Method>
+               <Name>ResetWithDefaults</Name>
+               <Location>utility</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function ResetWithDefaults(obj)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.Utility;
+feature('COM_SafeArraySingleDim',1);
+comobj.ResetWithDefaults();
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Does the equivalent of Reset and then, (1) disables class extension capability groups, (2) sets attributes to initial values defined by class specs, and (3) configures the driver to option string settings used when Initialize was last executed.</Description>
+            </Method>
+            <Method>
+               <Name>SelfTest</Name>
+               <Location>utility</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [TestResult, TestMessage] = SelfTest(obj, varargin)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.Utility;
+feature('COM_SafeArraySingleDim',1);
+[TestResult, TestMessage] = comobj.SelfTest(0, '');
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Performs an instrument self test, waits for the instrument to complete the test, and queries the instrument for the results.  If the instrument passes the test, TestResult is zero and TestMessage is 'Self test passed'.</Description>
+            </Method>
+            <Method>
+               <Name>UnlockObject</Name>
+               <Location>utility</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function UnlockObject(obj)
+
+comobj = obj.Parent;
+comobj = comobj.Interface;
+comobj = comobj.Utility;
+feature('COM_SafeArraySingleDim',1);
+comobj.UnlockObject();
+feature('COM_SafeArraySingleDim',0);
+</MCode>
+               </Code>
+               <Description>Releases a previously obtained mutlithread lock.</Description>
+            </Method>
+         </MethodInfo>
+      </Group>
+   </GroupInfo>
+</MATLABInstrumentDriver>

@@ -1,0 +1,8 @@
+type LIB
+status Completed
+title ogden_stems_noalt_RO RO wiggle=2.5mm lambda=1mm
+exp ogden_stems_noalt_RO
+lock on
+time null
+macro xmrtpar
+data 1139_ogden_stems_noalt_RO_RO_wiggle_2.5mm_lambda_1mm01

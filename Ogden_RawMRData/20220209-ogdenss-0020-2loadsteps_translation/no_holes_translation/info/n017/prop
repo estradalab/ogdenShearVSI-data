@@ -1,0 +1,8 @@
+type LIB
+status Completed
+title ogden_stems_noalt_SL translation=5mm lambda=2mm
+exp ogden_stems_noalt_SL
+lock on
+time null
+macro xmrtpar
+data 1630_ogden_stems_noalt_SL_translation_5mm_lambda_2mm01

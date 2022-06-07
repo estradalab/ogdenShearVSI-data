@@ -1,0 +1,54 @@
+function mimdisp(hdr,scale, imgname);     %, slice_number)
+%
+% function imdisp(hdr, scale, imgname)
+%
+% Multi-slice display
+%
+% Luis Hernandez
+% 8-7-97
+%
+% Display the current image on the axis scaled with scale
+% 
+global MAPMAX
+
+matrix_size = round(sqrt(hdr.zdim))
+
+xdim = matrix_size * hdr.xdim;
+ydim = matrix_size * hdr.ydim;
+
+b=zeros(xdim,ydim);
+
+row = 1;
+col = 1;
+
+for i=1:hdr.zdim
+   
+   slice(i) = read_img_slice(hdr, imgname, i);
+   
+   row;
+   col;
+
+   whos slice(i).data;
+   
+   b(hdr.xdim * (row-1) + 1 : hdr.xdim *(row), ...
+      hdr.ydim *(col-1) + 1 : hdr.ydim *(col) ) = slice(i).data(:,:);	
+   
+   col=col+1;
+   if col > matrix_size
+      col=1;
+      row=row+1;
+   end
+   
+end
+mx = max(b);
+scale = MAPMAX/max(mx);
+image(b*scale);
+
+  
+return 
+
+
+
+
+
+

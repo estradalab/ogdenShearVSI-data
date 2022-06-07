@@ -1,0 +1,29 @@
+
+function tcourse = xtractROI(hdr, data, x, y, z)
+%
+% function tcourse = xtractROI(hdr, data, x, y, z)
+%
+% here the data is a 2D matrix with all the time points in rows
+% x,y,z are vectors defining an arbitratry ROI
+%
+% (c) 2005 Luis Hernandez-Garcia 
+% University of Michigan
+% report bugs to:  hernan@umich.edu
+%
+%
+
+    num = length(x);
+
+    
+    tcourse=zeros(size(data,1),1);
+    for i=1:num
+
+                    tcourse = tcourse + ...
+                        data( :,(k-1)*(hdr.xdim*hdr.ydim) + (j-1)*hdr.xdim + i-1);
+    end
+
+    fprintf('... %d voxels in ROI ', num)
+
+    tcourse = tcourse/num;
+    
+return

@@ -1,0 +1,24 @@
+function mssg = lig_reprocess
+% looks for matlab workspaces  DESTE_strains_####_#####_#####_#####.mat
+%extracts the time stamps and re-runs lig_deste_3d on those
+
+d=dir;
+
+for jj=1:numel(d)
+	
+	if contains(d(jj).name,'DESTE_strains')
+		currrent_DESTE=(d(jj).name);
+		
+		
+		underscores=regexp('_',current_DESTE);
+		
+		for kk=2:numel(underscores); %the first underscore is between DESTE and strains
+			timesstamp{kk-1}=
+		
+		
+		
+	end
+
+
+end
+

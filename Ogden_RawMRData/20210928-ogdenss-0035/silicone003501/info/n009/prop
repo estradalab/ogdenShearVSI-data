@@ -1,0 +1,8 @@
+type LIB
+status Completed
+title lig_stems_RO_mTE wiggle=7mm lambda=1mm
+exp lig_stems_RO_mTE
+lock on
+time null
+macro xmrtpar
+data 1820_lig_stems_RO_mTE_wiggle_7mm_lambda_1mm01

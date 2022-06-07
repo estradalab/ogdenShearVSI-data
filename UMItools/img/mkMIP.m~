@@ -1,0 +1,42 @@
+function mkMIP(img, stdT)
+% function mkMIP(img, stdT)
+% 
+% Display crude maximum intensity projections of THRESHOLDED
+% 3D brain maps
+%
+% img:  the  data
+% stdT:  How many standard deviations to use for the threshold
+
+% discard the zeros, and take the abs()
+img = abs(img);
+buffer = img(:);
+buffer = buffer(find(buffer));
+
+% basic stats on the image
+m = mean(buffer(:));
+sd = std(buffer(:));
+
+threshold = m + stdT *sd;
+
+fprintf('Mean:  %6.2f  -StdDev: %6.2f  Threshold: %6.2f  Max:  %6.2f  Min: %6.2f \n' , ...
+    m, sd, threshold, max(img(:)), min(img(:)) );
+
+% we use 10% of the mean to create a background for overlaying the data
+buffer = zeros(size(img));
+buffer(find(img)) = m/10;
+
+img(find(img < threshold)) = 0;
+img = img + buffer;
+
+% do the MIP here
+f1 = squeeze(sum(img,1));
+f2 = squeeze(sum(img,2));
+f3 = squeeze(sum(img,3));
+
+set(gcf, 'Position',[100 100 600 200])
+subplot (231), imagesc(f1'), axis xy, axis equal, axis tight
+subplot (232), imagesc(f2'), axis xy, axis equal, axis tight
+subplot (233), imagesc(f3'), axis xy, axis equal, axis tight
+
+
+return

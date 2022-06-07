@@ -1,0 +1,30 @@
+function M = makeAffine( rx, ry, rz, tx, ty,tz);
+% function M = makeAffine( rx, ry, rz, tx, ty, tz);
+% 
+% Make a transformation matrix from movement parameters
+% the formula is
+% M = [ cos(rx)*cos(ry), cos(rx)*sin(ry)*sin(rz) - sin(rx)*cos(rz), cos(rx)*sin(ry)*cos(rz) + sin(rx)*sin(rz), tx;
+%       sin(rx)*cos(ry), sin(rx)*sin(ry)*sin(rz) + cos(rx)*cos(ry), sin(rx)*sin(ry)*cos(rz) - cos(rx)*sin(rz), ty;
+%       -sin(ry) ,         cos(ry)*sin(rz),                                 cos(ry)*cos(rz),                                 tz;
+%       0,                   0,                                                   0,                                                     1]
+  
+  
+if nargin==1
+    p = rx;
+    rx = p(1); ry = p(2); rz = p(3); tx = p(4); ty=p(5);tz=p(6);
+end
+
+M = [ cos(rx)*cos(ry), cos(rx)*sin(ry)*sin(rz) - sin(rx)*cos(rz), cos(rx)*sin(ry)*cos(rz) + sin(rx)*sin(rz), tx;
+      sin(rx)*cos(ry), sin(rx)*sin(ry)*sin(rz) + cos(rx)*cos(rz), sin(rx)*sin(ry)*cos(rz) - cos(rx)*sin(rz), ty;
+      -sin(ry) ,         cos(ry)*sin(rz),                                 cos(ry)*cos(rz),                                 tz;
+      0,                   0,                                                   0,                                                     1];
+M = zeros(4,4);
+M(1,1) = cos(rz)*cos(ry)+sin(rx)*sin(ry)*sin(rz);
+M(1,2) = sin(rz)*cos(ry)-cos(rz)*sin(rx)sin(ry);
+M(1,3) = cos(rx)*sin(ry);
+M(2,1) =  -sin(rz)*cos(rx);
+M(2,2) = cos(rx)*cos(rz);
+M(2,3) = sin(rx);
+M(3,1) = sin(rz)*sin(rx)*cos(ry) - cos(rz)*sin
+
+return

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE template>
+
+<template expanded="true">
+  <action type="LIB" status="Completed" title="scout" exp="scout" lock="on" time="null" data="1033_scout_01" id="n005" tooltext="scout n005 [Completed]" macro="xmrtpar" />
+  <action type="LIB" status="Completed" title="spuls" exp="spuls" lock="on" time="null" data="1040_spuls_01" id="n001" macro="xmrtpar" tooltext="spuls n001 [Completed]" />
+  <action type="LIB" status="Completed" title="ogden_gems reference 32 slices" exp="ogden_gems" lock="on" time="null" data="1044_ogden_gems_reference_32_slices01" id="n003" tooltext="ogden_gems reference 32 slices n003 [Completed]" macro="xmrtpar" />
+  <action type="LIB" status="Completed" title="ogden_stems_noalt_RO translation=5mm lambda=2mm" exp="ogden_stems_noalt_RO" lock="on" time="null" data="1114_ogden_stems_noalt_RO_translation_5mm_lambda_2mm01" id="n002" macro="xmrtpar" tooltext="ogden_stems_noalt_RO translation=5mm lambda=2mm n002 [Completed]" />
+  <action type="LIB" status="Completed" title="ogden_stems_noalt_PE translation=5mm lambda=2mm" exp="ogden_stems_noalt_PE" lock="on" time="null" data="1141_ogden_stems_noalt_PE_translation_5mm_lambda_2mm01" id="n004" macro="xmrtpar" tooltext="ogden_stems_noalt_PE translation=5mm lambda=2mm n004 [Completed]" />
+  <action type="LIB" status="Completed" title="ogden_stems_noalt_SL translation=mm lambda=2mm" exp="ogden_stems_noalt_SL" lock="on" time="null" data="1207_ogden_stems_noalt_SL_translation_mm_lambda_2mm01" id="n006" macro="xmrtpar" tooltext="ogden_stems_noalt_SL translation=mm lambda=2mm n006 [Completed]" />
+  <action type="LIB" status="Completed" title="ogden_ge3d" exp="ogden_ge3d" lock="on" time="null" data="1215_ogden_ge3d_01" id="n007" macro="xmrtpar" tooltext="ogden_ge3d n007 [Completed]" />
+</template>
+

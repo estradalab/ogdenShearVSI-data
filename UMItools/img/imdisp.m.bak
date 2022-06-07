@@ -1,0 +1,27 @@
+function imdisp(slice, scale);     %, slice_number)
+%
+% function imdisp(slice, scale)
+%
+% Luis Hernandez
+% 12-29-97
+%
+% Display the current image on the axis scaled with scale
+% 
+
+
+    if ~isempty(slice),
+       b = slice.data;	
+       %colormap(gray);
+       %image(b*scale);
+       image(b*scale);
+       %colorbar('vert');
+    end
+    
+  
+return 
+
+
+
+
+
+

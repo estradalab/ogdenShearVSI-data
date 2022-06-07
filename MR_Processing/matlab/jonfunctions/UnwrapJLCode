@@ -1,0 +1,36 @@
+using MAT;
+using Unwrap;
+using ImageView;
+
+#name = 3000;
+#folder = "061218_AM_wiggle_data_for_Callan_and_Jon";
+name = 1436;
+folder = "Dogbone"
+tag = "postfilt";
+
+vars = matread("G:\\My Drive\\RESEARCH\\Ligament Stretcher\\Data\\$(folder)\\CI_$(name)$(tag).mat");
+hCIx = vars["hCIx"];
+hCIy = vars["hCIy"];
+hCIz = vars["hCIz"];
+
+hCI_phx = atan2(imag(hCIx), real(hCIx));
+hCI_phy = atan2(imag(hCIy), real(hCIy));
+hCI_phz = atan2(imag(hCIz), real(hCIz));
+
+uhCIx = unwrap(hCI_phx);
+uhCIy = unwrap(hCI_phy);
+uhCIz = unwrap(hCI_phz);
+
+#img = uhCIx
+
+datafile = matopen("G:\\My Drive\\RESEARCH\\Ligament Stretcher\\Data\\$(folder)\\$(name)_UnwrapX$(tag).mat", "w");
+write(datafile, "juhCIx", uhCIx);
+close(datafile);
+
+datafile = matopen("G:\\My Drive\\RESEARCH\\Ligament Stretcher\\Data\\$(folder)\\$(name)_UnwrapY$(tag).mat", "w");
+write(datafile, "juhCIy", uhCIy);
+close(datafile);
+
+datafile = matopen("G:\\My Drive\\RESEARCH\\Ligament Stretcher\\Data\\$(folder)\\$(name)_UnwrapZ$(tag).mat", "w");
+write(datafile, "juhCIz", uhCIz);
+close(datafile);

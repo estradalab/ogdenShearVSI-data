@@ -1,0 +1,18 @@
+function parms = getMovParms (M)
+%function [rotx roty rotz tx ty tz ] = getMovParms (M)
+
+% from http://planning.cs.uiuc.edu/node103.html
+rotx = atan(M(1,1)/M(2,1));
+roty = acos( sqrt(M(3,2)^2 + M(3,3)^2) );
+rotz = atan(M(3,2) / (M(3,3))) ;
+
+% from http://bishopw.loni.ucla.edu/AIR5/rigidbody.html
+rotx = asin(M(2,3));
+
+tx = M(1,4);
+ty = M(2,4);
+tz = M(3,4);
+
+parms = [rotx, roty, rotz, tx,ty,tz]
+
+return
