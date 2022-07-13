@@ -4,7 +4,7 @@ close all
 
 type = {'Sim','Exp'};
 fn = 'cax-5to0LOG';
-flt = 'Filter'; % 'Filter','Filter_None'
+flt = 'Filter_None'; % 'Filter','Filter_None'
 clim = [-5 0];%[0 0.05];
 
 ii = 2;
@@ -38,6 +38,7 @@ saveas(gcf,[flt '/k_lam_SensitivityPlots_uniaxial/Sim/histo_uniaxial.pdf']);
 load(['22-0325-Ogden_Uniaxial/Experimental' flt_str '/sensitivity.mat'])
 load(['22-0325-Ogden_Uniaxial/Experimental' flt_str '/MRI-3Ddefs_RectPrism_190919_' hflt 'hfilt.mat'])
 
+warning off;
 for i = 1:10
     figure();
     [lam_bin,k_bin,h] = ndhist(lam{i}(:),k{i}(:),'axis',[1,0;1.8,1]-0.005);
@@ -108,7 +109,7 @@ ylabel('$S_{metric}=\sum_{i,j}\hat{hist}\left(k_i,\lambda_j,test\right)\;.*\;\ha
 saveas(gcf,[flt '/k_lam_SensitivityPlots_uniaxial/' type{ii} '/sens_metric.png'])
 saveas(gcf,[flt '/k_lam_SensitivityPlots_uniaxial/' type{ii} '/sens_metric.pdf'])
 
-save([flt '/k_lam_SensitivityPlots_uniaxial/S_metrics_histos_' type{ii} '.mat'],'H','S_hat_lookup','S_lookup');
+% save([flt '/k_lam_SensitivityPlots_uniaxial/S_metrics_histos_' type{ii} '.mat'],'H','S_hat_lookup','S_lookup');
 
 %% S_alpha{test}(metric;alpha) Plots Simulation
 figure();
@@ -138,7 +139,7 @@ Smu_ALL = mat_temp2;
 H_{11} = H_sim; S_hat_{11} = S_hat_lookup_sim; S_{11} = S_lookup_sim; Salpha_all_{11} = Salpha_ALL; Smu_all_{11} = Smu_ALL;
 
 %% S_alpha,mu{test}(metric;alpha) Uniaxial plots (Both sim and exp)
-save([flt '/k_lam_SensitivityPlots_uniaxial/S_metrics_histos_both.mat'],'H_','S_hat_','S_','Salpha_all_','Smu_all_');
+% save([flt '/k_lam_SensitivityPlots_uniaxial/S_metrics_histos_both.mat'],'H_','S_hat_','S_','Salpha_all_','Smu_all_');
 figure('units','normalized','outerposition',[0 0 1 1])
 subplot(2,2,1)
 plot(S_hat_{10}(:,1),S_hat_{10}(:,2)); hold on
@@ -230,6 +231,7 @@ legend('Sim; Holes; $U_d = 2.5 mm$','Sim; Holes; $U_d = 5 mm$','Sim; No Holes; $
 
 saveas(gcf,'sens_metric_all_v2.pdf')
 saveas(gcf,'sens_metric_all_v2.png')
+warning on;
 
 %% Other
 

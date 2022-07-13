@@ -1,0 +1,8 @@
+type LIB
+status Completed
+title scout translation
+exp scout
+lock on
+time null
+macro xmrtpar
+data 1602_scout_translation01

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE template>
+<template>
+    <action type="LIB" id="n002" status="Completed" lock="on" title="scout" exp="scout" time="null" macro="xmrtpar" data="1728_scout_01" />
+    <action type="LIB" id="n003" status="Completed" lock="on" title="scout" exp="scout" time="null" macro="xmrtpar" data="1758_scout_01" />
+    <action type="LIB" id="n004" status="Completed" lock="on" title="scout" exp="scout" time="null" macro="xmrtpar" data="1758_scout_02" />
+    <action type="LIB" id="n001" status="Completed" lock="on" title="spuls" exp="spuls" time="null" macro="xmrtpar" data="1802_spuls_01" />
+    <action type="LIB" id="n007" status="Completed" lock="on" title="lig_gems" exp="lig_gems" time="null" macro="xmrtpar" data="1814_lig_gems_01" />
+    <action type="LIB" id="n005" status="Completed" lock="on" title="lig_gems" exp="lig_gems" time="null" macro="xmrtpar" data="1817_lig_gems_01" />
+    <action type="LIB" id="n006" status="Completed" lock="on" title="lig_gems" exp="lig_gems" time="null" macro="xmrtpar" data="1823_lig_gems_01" />
+    <action type="LIB" id="n011" status="Completed" lock="on" title="lig_gems" exp="lig_gems" time="null" macro="xmrtpar" data="1833_lig_gems_01" />
+    <action type="LIB" id="n013" status="Completed" lock="on" title="lig_gems stretched 48 slices" exp="lig_gems" time="null" macro="xmrtpar" data="1835_lig_gems_stretched_48_slices01" />
+    <action type="LIB" id="n012" status="Completed" lock="on" title="lig_gems reference 48 slices" exp="lig_gems" time="null" macro="xmrtpar" data="1836_lig_gems_reference_48_slices01" />
+    <action type="LIB" id="n008" status="Completed" lock="on" title="lig_stems_noalt_SL SL wiggle=7mm lambda=2mm" exp="lig_stems_noalt_SL" time="null" macro="xmrtpar" data="1904_lig_stems_noalt_SL_SL_wiggle_7mm_lambda_2mm01" />
+    <action type="LIB" id="n009" status="Completed" lock="on" title="lig_stems_noalt_RO RO wiggle=7mm lambda=2mm" exp="lig_stems_noalt_RO" time="null" macro="xmrtpar" data="1931_lig_stems_noalt_RO_RO_wiggle_7mm_lambda_2mm01" />
+    <action type="LIB" id="n010" status="Completed" lock="on" title="lig_stems_noalt_PE PE wiggle=7mm lambda=2mm" exp="lig_stems_noalt_PE" time="null" macro="xmrtpar" data="1958_lig_stems_noalt_PE_PE_wiggle_7mm_lambda_2mm01" />
+</template>

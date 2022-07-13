@@ -1,0 +1,8 @@
+type LIB
+status Submitted
+title ogden_stems_noalt_RO translation=5mm lambda=2mm
+exp ogden_stems_noalt_RO
+lock on
+time 19m:12s
+macro xmrtpar
+data exp3.uscheven.linchpin.engin.umich.edu_1644440669_118004

@@ -44,7 +44,6 @@ saveas(gcf,[pwd '\5bcd_V2-Slice_U\Exp_NoHoles_U3.png']);
 
 %% Experimental w/ Holes
 
-% load('Experimental\Holes\MRI-3Ddefs_SimpleShear_220124_0020_5MMholes.mat')
 load('Experimental\Holes\MRI-3Ddefs_SimpleShear_220307_0020_5MMholes_1300Tol.mat')
 load('Experimental\Holes\refpositions.mat')
 new_mask = erode_mask(mask);

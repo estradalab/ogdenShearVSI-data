@@ -1,0 +1,180 @@
+function out=lig_T2star(varargin)
+%takes a mge3d data set of a ligament, data id bu time stamp
+%options: 'plot' to make a movie
+timestamp=varargin{1};
+
+
+%% 1. read the data from FID
+data=varianms(timestamp,'apod','gradlag',48);  
+                                             %'shphase' without argument
+                                             %does a cyclic shift of the
+                                             %image to match the phase
+                                             %encode offsets and FOV                                        
+                                              
+%% 2. apply a 3 d blur to get the voxel size right
+if any(strcmp(varargin,'vox'));
+    ind=find(strcmp(varargin,'vox'));
+    vxs=varargin{ind+1};
+    if numel(vxs)~=3;
+        vox=vxs*[1 1 1];
+    else
+        vox=vxs(1:3);
+    end
+    data=blur3d(data,'vox',vox);
+end
+
+pic=data.image;
+
+%% 3. calculate the time axis
+taxis=data.pars.te+(0:data.pars.ne-1)*data.pars.te2;
+
+
+%% 4. pick the region of interest where the relaxation times and amplitudes
+%are to be calculated use the central fifth of the readout direction
+si=size(pic);
+axis1=data.pars.axis1;  %mm 
+axis2=data.pars.axis2;  %mm
+axis3=data.pars.axis3;  %mm
+
+%%
+outf=matrix_expfit(pic,taxis);
+
+magnitude=outf.amplitude;
+t2star=outf.Tau;
+err_t2star=outf.error.Tau;
+
+%%make a mask
+%try making a mask
+[signallevel,noiselevel] = estimate_noiselevel(magnitude); %#ok<ASGLU>
+
+mask=1*(magnitude>2*noiselevel);
+comment=data.pars.comment;
+timest = timestamp;
+
+%check if a position was specified in the comment
+comment=data.pars.comment;
+if ~isempty(strfind(comment,'pos'));
+	numbers_index = isstrprop(comment,'digit') | isstrprop(comment,'punct');
+	totherightofpos=false(1,numel(numbers_index));
+	posindex=strfind(comment,'pos');
+	totherightofpos((posindex+3):end)=true;
+	numbers_index=numbers_index & totherightofpos;
+	position=str2num(comment(numbers_index));
+else
+	position=[];
+end
+
+params=data.pars;
+	
+	
+
+%%
+if isnumeric(timestamp);
+    filename=[num2str(timestamp) '_movie'];
+    matfilename=['HIRES_' num2str(timestamp) '_T2star.mat'];
+else
+    filename=[timestamp '_movie'];
+    matfilename=['HIRES_' timestamp '_T2star.mat'];
+end
+
+save(matfilename, 'axis1','axis2','axis3','magnitude','t2star','mask','noiselevel','comment','timest','position','params');
+
+out.axis1=axis1;
+out.axis2=axis2;
+out.axis3=axis3;
+out.magnitude=magnitude;
+out.t2star=t2star;
+out.err_t2star=err_t2star;
+out.mask=mask;
+out.noiselevel=noiselevel;
+out.comment=comment;
+out.timest=timest;
+out.position=position;
+out.params=params;
+out.taxis=taxis;
+out.data=pic;
+
+
+
+
+%%
+if any(strcmp(varargin,'plot'));
+    figure('Position',[ 200 200 600 600]);
+    for jj=1:numel(axis3);
+        
+        MM=log10(squeeze(magnitude(:,:,jj)));
+        TT=squeeze(t2star(:,:,jj))*1000;
+        %MM(mask)=0;
+        %TT(mask)=0;
+        
+        subplot(1,2,1);
+        imagesc(axis2,axis1,MM,[1 6]);
+        colorbar;
+        title(['magnitude, z=' num2str(axis3(jj),'%0.3f') 'mm']);
+        axis image;
+        xlabel('x (mm)');
+        ylabel('y (mm)');
+        
+        subplot(1,2,2);
+        imagesc(axis2,axis1,TT,[0 30]);
+        colorbar;
+        title('T2* (ms)');
+        axis image;
+        xlabel('x (mm)');
+        ylabel('y (mm)');
+        
+        
+        %colormap gray;
+        pause(0.1);
+        
+        gifflag=false;
+        
+        if gifflag
+            %make the gif;
+            frame=getframe(gcf);
+            im=frame2im(frame);
+            [imind,cm] = rgb2ind(im,256);
+            
+            % Write to the GIF File
+            if jj == 1
+                imwrite(imind,cm,filename,'gif', 'Loopcount',inf);
+            else
+                imwrite(imind,cm,filename,'gif','WriteMode','append');
+            end
+        end
+    end
+    
+end;
+
+end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function [signallevel, noiselevel]=estimate_noiselevel(incube)
+%estimate the noise using NxN patches of the first and last slice
+N=12;
+refplane=incube(:,:,[1 : end]);
+si=size(refplane);
+ni=floor(si(1)/N);
+nj=floor(si(2)/N);
+nk=si(3); %for each slice
+noisetest=zeros(ni,nj,nk);
+amplitudetest=zeros(ni,nj,nk);
+for kk=1:nk;
+	for ii=0:ni-1;
+		for jj=0:nj-1;
+			ivec=(1:N) + ii*N;
+			jvec=(1:N) + jj*N;
+			kvec=kk;
+			patch=refplane(ivec,jvec,kvec);
+			noisetest(ii+1,jj+1,kk)=sqrt(var(abs(patch(:))));
+			amplitudetest(ii+1,jj+1,kk)=mean(abs(patch(:)));
+		end
+	end
+end
+
+sortednoiselevel=sort(noisetest(:));
+sortedamplitudelevel=sort(amplitudetest(:));
+noiselevel=sqrt(2)*mean(sortednoiselevel(1:round(numel(sortednoiselevel)/2)));
+signallevel=mean(sortedamplitudelevel(round(end*0.9):end));
+end
+

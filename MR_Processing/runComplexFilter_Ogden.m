@@ -16,11 +16,9 @@ try
 catch
 end
 
-sampleName = '20211012-ogdenss';
+% sampleName = '20211012-ogdenss';
 % sampleName = '20220124-ogdenss_5MMH_apod_64_16'; % Most optimal
-% sampleName = '20220209-ogdenss_5MMH_translation';
-% sampleName = '20220209-ogdenss_2moreloadsteps';
-% sampleName = '20220209-ogdenss_translation';  
+sampleName = '20220209-ogdenss_2moreloadsteps';
 cd(sampleName)
 
 switch sampleName
@@ -29,50 +27,14 @@ switch sampleName
         refnum = '1836';
         fixedpt = [90,5,5];
         maskparam = 750;
-    case '20220124-ogdenss_5MMH'
-        % fnums = {'0924'}; % 1 Load step (5 mm)
-        fnums = {'1139'}; % 2.5mm
-        refnum = '0852';
-        fixedpt = [101,9,15];
-    case '20220124-ogdenss_5MMH_diffref'
-        % fnums = {'1139','0924'}; % 2 Load steps
-        fnums = {'0924'}; % 1 Load step (5 mm)
-        refnum = '0843';
-        fixedpt = [101,9,15];
-    case '20220124-ogdenss_5MMH_2.5mm_lam2'
-        fnums = {'1139'}; % 2.5 mm displacement
-        refnum = '0852';
-        fixedpt = [101,9,15];
-    case '20220124-ogdenss_5MMH_2loadsteps'
-        fnums = {'1139','0924'};
-        refnum = '0852';
-        fixedpt = [101,9,15];
     case '20220124-ogdenss_5MMH_apod_64_16' % Most optimal
         fnums = {'1139','0924'}; % 2 load steps
         refnum = '0852';
         fixedpt = [101,9,15];
         maskparam = 1300;
-    case '20220124-ogdenss_5MMH_apod_128_32'
-        fnums = {'0924'}; % 5mm
-        refnum = '0852';
-        fixedpt = [101,9,15];
-    case '20220124-ogdenss_5MMH_apod_8_2'
-        fnums = {'0924'}; % 5mm
-        refnum = '0852';
-        fixedpt = [101,9,15];
-    case '20220209-ogdenss_5MMH_translation'
-        fnums = {'1114'}; % 5mm translation
-        refnum = '1215';
-        fixedpt = [101,9,15];
-        maskparam = 850;
     case '20220209-ogdenss_2moreloadsteps'
         fnums = {'1456','1336'};
         refnum = '1554';
-        fixedpt = [89,6,6];
-        maskparam = 600;
-    case '20220209-ogdenss_translation'
-        fnums = {'1657'};
-        refnum = '1731';
         fixedpt = [89,6,6];
         maskparam = 600;
 end
@@ -80,6 +42,7 @@ end
 % hfilts = {[0 0 0],[1 1 1],[2 2 2],[3 3 3],[4 4 4],[8 8 8]};
 % hfilts = {[0 0 0],[1 1 1],[2 2 2]};
 hfilts = {[2 2 2]};
+warning off;
 for hidx = 1:length(hfilts)
     for idx = 1:length(fnums)
         %         try
@@ -114,6 +77,7 @@ for hidx = 1:length(hfilts)
             maskthresh = -maskparam/1000;
         catch
             maskthresh = -0.6; % Generally for silicone
+            maskparam = -maskthresh*1000;
         end
         reps = 0;
         %filter u after unwrapping
@@ -870,3 +834,4 @@ save(['mask_data_' num2str(maskparam) '.mat'],'mask','mask_','maskthresh','osc')
 save(['disp_data_' sampleName '.mat'],'F_t','E_t','U_t','mask','prescribedU','osc');
 save(['refpositions_' sampleName '.mat'],'X');
 cd ..
+warning on;

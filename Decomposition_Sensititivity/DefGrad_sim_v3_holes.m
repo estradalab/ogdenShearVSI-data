@@ -1,7 +1,7 @@
 clc; clear;
 
-% curdir = '22-0201-OgdenSS_Simulation_Holes';
-curdir = '22-0301-OgdenSS_Simulation_NoHoles_Corr';
+curdir = '22-0201-OgdenSS_Simulation_Holes';
+% curdir = '22-0301-OgdenSS_Simulation_NoHoles_Corr';
 % curdir = '22-0325-Ogden_Uniaxial/Simulation';
 
 addpath(genpath(curdir))

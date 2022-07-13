@@ -3,10 +3,11 @@ sensitivity_metric_scrap
 close all
 
 type = {'Sim','Exp'};
-flt = 'Filter'; % 'Filter','Filter_None'
+flt = 'Filter_None'; % 'Filter','Filter_None'
 fn = 'cax-5to0LOG';
 clim = [-5 0];%[0 0.05];
 
+warning off;
 for ii = 1:2
 %% k vs. lam Holes
 switch flt
@@ -253,7 +254,7 @@ saveas(gcf,[flt '/k_lam_SensitivityPlots/' type{ii} '/sens_metric.pdf'])
 
 Salpha_ALL = mat_temp;
 Smu_ALL = mat_temp2;
-save([flt '/k_lam_SensitivityPlots/S_metrics_histos_' type{ii} '.mat'],'H','S_hat_lookup','S_lookup','Salpha_ALL');
+% save([flt '/k_lam_SensitivityPlots/S_metrics_histos_' type{ii} '.mat'],'H','S_hat_lookup','S_lookup','Salpha_ALL');
 
 H_{ii} = H; S_hat_{ii} = S_hat_lookup; S_{ii} = S_lookup; Salpha_all_{ii} = Salpha_ALL; Smu_all_{ii} = Smu_ALL;
     
@@ -287,6 +288,7 @@ legend('Sim; Holes; $U_d = 2.5 mm$','Sim; Holes; $U_d = 5 mm$','Sim; No Holes; $
     'Exp; No Holes; $U_d = 5 mm$', 'Exp; No Holes; $U_d = 7 mm$','interpreter','latex')
 
 saveas(gcf,[flt '/k_lam_SensitivityPlots/sens_metric_both.png'])
+warning on;
 % saveas(gcf,[flt '/k_lam_SensitivityPlots/sens_metric_both.pdf'])
 
 %% Other

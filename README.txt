@@ -1,6 +1,19 @@
 
 
-MRI Raw Experimental Data Pipeline (as of 06/07/2022)
+MRI Raw Experimental Data Pipeline (as of 07/13/2022)
+-------------------------------------------
+Note: 	Archive has all datasets and files from prior research and aren't intended for the main investigation of this paper
+      	It's intended for future investigations of the authors of this paper, however the resources are publically available for miscellaneous investigation
+	The primary files for this paper are in the following parent directories located in the main directory with this readme file:
+		- UMItools
+		- Ogden_RawMRData
+		- MR_Processing
+		- Decomposition_Sensitivity
+		- Visualization
+	For further explanation of the datasets in each of these folders, refer to Data_Inventory.xlsx
+	For each run/main function of the dataset, you may utilize the following function to see dependencies and all other functions used in the primary functions:
+		[fList,pList] = matlab.codetools.requiredFilesAndProducts('[functions_name].m');
+		fList contains all the dependent functions
 -------------------------------------------
 1. Open MATLAB and add all folders and subfolders to path
 2. Processing raw data
@@ -63,10 +76,10 @@ MRI Raw Experimental Data Pipeline (as of 06/07/2022)
 			'k' and 'lam' contain information for the k and lambda decoupling for each voxel's deformation gradient
 	- Sensitivity plots:
 		+ Open 'Plot2DHists_Both.m' (You can change whether you'd want filtered data or none and see the effect of filtering helping significantly with the plots)
-		+ Run 'Plot2DHists_Both.m' for the plots in figure 6a and 6b
+		+ Run 'Plot2DHists_Both.m' for the plots in figure 7a and 7b
 		+ The figures and data are saved in the Filter or Filter_None subdirectories
 		+ Open 'Plot2DHists_Uniaxial_Both_mu_alpha.m' (You can change whether you'd want filtered data or none and see the effect of filtering helping significantly with the plots)
-		+ Run 'Plot2DHists_Uniaxial_Both_mu_alpha.m' for the plot in figure 6c
+		+ Run 'Plot2DHists_Uniaxial_Both_mu_alpha.m' for the plot in figure 7c
 		+ The figure is save in the directory as 'sens_metric_all_v2.png' and 'sens_metric_all_v2.pdf'
 
 5. Visualization of data (Reproduce processing pipeline, and displacement plots figure)
