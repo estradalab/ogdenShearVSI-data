@@ -1,6 +1,6 @@
 
 
-MRI Raw Experimental Data Pipeline (as of 07/13/2022)
+MRI Raw Experimental Data Pipeline (as of 07/14/2022)
 -------------------------------------------
 Note: 	Archive has all datasets and files from prior research and aren't intended for the main investigation of this paper
       	It's intended for future investigations of the authors of this paper, however the resources are publically available for miscellaneous investigation
@@ -40,6 +40,7 @@ Note: 	Archive has all datasets and files from prior research and aren't intende
 		20220209-ogdenss_2moreloadsteps		Solid_Rectangular	2.5 mm & 5 mm
 	- Due to size limitations, you'll have to visit https://drive.google.com/file/d/1sl29qNNzVtvLLefp_xoE7m4ru78bWVhV/view?usp=sharing and download the zip file.
 	- Populate the DESTE_strains_RO_PE_SL_Ref_blurvec0.80.80.8.mat files into their respective experiment subdirectory (labeling in the zip file should help out)
+	- Re-enter the parent directory of MR_Processing (or you may comment out 'cd(sampleName)' in the code)
 	- Run runComplexFilter_Ogden
 	- A file named 'disp_data_sampleName.mat' is produced in the respective sampleName subdirectory that contains the following information:
 		F_t{t}{i,j}(x,y,z) 	- Deformation gradient tensor
