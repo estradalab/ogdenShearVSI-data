@@ -80,7 +80,7 @@ Note: 	Archive has all datasets and files from prior research and aren't intende
 		+ Run 'Plot2DHists_Both.m' for the plots in figure 7a and 7b
 		+ The figures and data are saved in the Filter or Filter_None subdirectories
 		+ Open 'Plot2DHists_Uniaxial_Both_mu_alpha.m' (You can change whether you'd want filtered data or none and see the effect of filtering helping significantly with the plots)
-		+ Run 'Plot2DHists_Uniaxial_Both_mu_alpha.m' for the plot in figure 7c
+		+ Run 'Plot2DHists_Uniaxial_Both_mu_alpha.m' for the plot in figure 7c (Ensure to run Plot2DHists_Both first to populate the appropriate data)
 		+ The figure is save in the directory as 'sens_metric_all_v2.png' and 'sens_metric_all_v2.pdf'
 
 5. Visualization of data (Reproduce processing pipeline, and displacement plots figure)
