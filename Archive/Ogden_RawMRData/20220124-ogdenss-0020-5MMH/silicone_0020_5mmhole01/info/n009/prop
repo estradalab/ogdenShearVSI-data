@@ -1,8 +1,0 @@
-type LIB
-status Completed
-title ogden_stems_noalt_SL SL wiggle=2.5mm lambda=1mm
-exp ogden_stems_noalt_SL
-lock on
-time null
-macro xmrtpar
-data 1113_ogden_stems_noalt_SL_SL_wiggle_2.5mm_lambda_1mm01

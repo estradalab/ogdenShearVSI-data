@@ -1,8 +1,0 @@
-type LIB
-status Completed
-title ogden_stems_noalt_RO RO wiggle=5mm lambda=2mm
-exp ogden_stems_noalt_RO
-lock on
-time null
-macro xmrtpar
-data 0924_ogden_stems_noalt_RO_RO_wiggle_5mm_lambda_2mm01

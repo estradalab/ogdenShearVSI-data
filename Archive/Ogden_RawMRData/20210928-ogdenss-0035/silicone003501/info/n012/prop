@@ -1,8 +1,0 @@
-type LIB
-status Completed
-title lig_stems_SL_mTE wiggle=3.5mm lambda=1mm
-exp lig_stems_SL_mTE
-lock on
-time null
-macro xmrtpar
-data 1919_lig_stems_SL_mTE_wiggle_3.5mm_lambda_1mm01

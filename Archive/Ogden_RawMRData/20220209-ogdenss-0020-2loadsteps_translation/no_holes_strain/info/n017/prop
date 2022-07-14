@@ -1,8 +1,0 @@
-type LIB
-status Executing
-title ogden_stems_noalt_SL translation=5mm lambda=2mm
-exp ogden_stems_noalt_SL
-lock on
-time 19m:12s
-macro xmrtpar
-data exp3.uscheven.linchpin.engin.umich.edu_1644440665_598884

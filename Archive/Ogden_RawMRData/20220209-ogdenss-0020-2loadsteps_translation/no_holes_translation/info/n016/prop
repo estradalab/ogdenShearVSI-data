@@ -1,8 +1,0 @@
-type LIB
-status Executing
-title ogden_ge3d post translation
-exp ogden_ge3d
-lock on
-time 7m:13s
-macro xmrtpar
-data exp3.uscheven.linchpin.engin.umich.edu_1644445425_782395

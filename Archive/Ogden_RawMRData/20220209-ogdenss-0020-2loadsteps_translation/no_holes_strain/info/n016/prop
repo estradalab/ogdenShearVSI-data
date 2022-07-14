@@ -1,8 +1,0 @@
-type LIB
-status Active
-title ogden_ge3d post translation
-exp ogden_ge3d
-lock off
-time null
-macro xmrtpar
-data null

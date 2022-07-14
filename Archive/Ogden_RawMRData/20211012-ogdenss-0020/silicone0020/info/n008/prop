@@ -1,8 +1,0 @@
-type LIB
-status Completed
-title lig_stems_noalt_SL SL wiggle=7mm lambda=2mm
-exp lig_stems_noalt_SL
-lock on
-time null
-macro xmrtpar
-data 1904_lig_stems_noalt_SL_SL_wiggle_7mm_lambda_2mm01
