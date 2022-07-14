@@ -3,7 +3,7 @@ sensitivity_metric_scrap
 close all
 
 type = {'Sim','Exp'};
-flt = 'Filter_None'; % 'Filter','Filter_None'
+flt = 'Filter'; % 'Filter','Filter_None'
 fn = 'cax-5to0LOG';
 clim = [-5 0];%[0 0.05];
 

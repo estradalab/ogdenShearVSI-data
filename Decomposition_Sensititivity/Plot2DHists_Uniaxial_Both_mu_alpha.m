@@ -4,7 +4,7 @@ close all
 
 type = {'Sim','Exp'};
 fn = 'cax-5to0LOG';
-flt = 'Filter_None'; % 'Filter','Filter_None'
+flt = 'Filter'; % 'Filter','Filter_None'
 clim = [-5 0];%[0 0.05];
 
 ii = 2;
