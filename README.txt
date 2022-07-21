@@ -1,20 +1,38 @@
-
-
-MRI Raw Experimental Data Pipeline (as of 07/14/2022)
+Dataset Title: MRI Raw Experimental Data Pipeline (as of 07/21/2022)
+Dataset Creators: D.P. Nikolov, S. Srivastava, B.A. Abeid, U.M. Scheven, E.M. Arruda, K. Garikipati, J.B. Estrada
+Dataset Contact: J.B. Estrada jbestrad@umich.edu
+Funding: 1729166 (NSF)
 -------------------------------------------
-Note: 	Archive has all datasets and files from prior research and aren't intended for the main investigation of this paper
-      	It's intended for future investigations of the authors of this paper, however the resources are publically available for miscellaneous investigation
-	The primary files for this paper are in the following parent directories located in the main directory with this readme file:
-		- UMItools
-		- Ogden_RawMRData
-		- MR_Processing
-		- Decomposition_Sensitivity
-		- Visualization
-	For further explanation of the datasets in each of these folders, refer to Data_Inventory.xlsx
-	For each run/main function of the dataset, you may utilize the following function to see dependencies and all other functions used in the primary functions:
-		[fList,pList] = matlab.codetools.requiredFilesAndProducts('[functions_name].m');
-		fList contains all the dependent functions
+Research Overview:
+Contemporary material characterisation techniques that leverage deformation fields and the weak form of the equilibrium equations face challenges in the numerical solution procedure of the inverse characterisation problem.  As material models and descriptions differ, so too must the approaches for identifying parameters and their corresponding mechanisms. The widely-used Ogden material model can be comprised of a chosen number of terms of the same mathematical form, which presents challenges of parsimonious representation, interpretability, and stability.  Robust techniques for system identification of any material model are important to assess and improve experimental design, in addition to their centrality to forward computations. Using fully 3D displacement fields acquired in silicone elastomers with our recently-developed magnetic resonance cartography (MR-u) technique on the order of ~20,000 points per sample, we leverage PDE-constrained optimisation as the basis of variational system identification of our material parameters. We incorporate the statistical F-test to maintain parsimony of representation.  Using a new, local deformation decomposition locally into mixtures of biaxial and uniaxial tensile states, we evaluate experiments based on an analytical sensitivity metric, and discuss the implications for experimental design.  
+
+Methodology:
+This repository contains the acquired kinematic data and MRI processing code used in this work.
+
+Instruments:
+	- 7T small-animal MRI system
+	- Distant captive linear actuator (L5918S2008-T10X2-A50, Nanotec Electronic GmbH and Co. KG, Germany)
+	- Load cell (LCM300, Futek Advanced Sensor Technology Inc., Irvine, CA)
+	- Silicone samples (Ecoflex OO-20 formulation; Dragon Skin, Smooth-On Inc., Macungie, PA)
+
+Software: MathWorks MATLAB v. 2020b or later (Natick, MA); Abaqus FEA (Providence, RI)
 -------------------------------------------
+Notes: 		Archive has all datasets and files from prior research and aren't intended for the main investigation of this paper
+      		It's intended for future investigations of the authors of this paper, however the resources are publically available for miscellaneous investigation
+		The primary files for this paper are in the following parent directories located in the main directory with this readme file:
+			- UMItools
+			- Ogden_RawMRData
+			- MR_Processing
+			- Decomposition_Sensitivity
+			- Visualization
+
+File Inventory:	For further explanation of the datasets in each of these folders, refer to Data_Inventory.xlsx
+		For each run/main function of the dataset, you may utilize the following function to see dependencies and all other functions used in the primary functions:
+			- [fList,pList] = matlab.codetools.requiredFilesAndProducts('[functions_name].m');
+			- fList contains all the dependent functions
+-------------------------------------------
+Use and Access:
+
 1. Open MATLAB and add all folders and subfolders to path
 2. Processing raw data
 	- Open Ogden_RawMRData directory
