@@ -1,4 +1,4 @@
-Dataset Title: MRI Raw Experimental Data Pipeline (as of 07/21/2022)
+Dataset Title: MRI Raw Experimental Data Pipeline (as of 08/18/2022)
 Dataset Creators: D.P. Nikolov, S. Srivastava, B.A. Abeid, U.M. Scheven, E.M. Arruda, K. Garikipati, J.B. Estrada
 Dataset Contact: J.B. Estrada jbestrad@umich.edu
 Funding: 1729166 (NSF)
@@ -25,6 +25,7 @@ Notes: 		Archive has all datasets and files from prior research and aren't inten
 			- MR_Processing
 			- Decomposition_Sensitivity
 			- Visualization
+			- Abaqus2Matlab (Work in progress - Workspace for automating Abaqus simulations completely in MatLab)
 
 File Inventory:	For further explanation of the datasets in each of these folders, refer to Data_Inventory.xlsx
 		For each run/main function of the dataset, you may utilize the following function to see dependencies and all other functions used in the primary functions:
