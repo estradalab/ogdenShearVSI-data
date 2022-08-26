@@ -1,6 +1,6 @@
 function runInp(fileName)
 % Runs the input file through abaqus
-system(['abaqus job=' fileName '_test cpus=3 interactive']);
+system(['abaqus job=' fileName '_test cpus=4 interactive']);
 
 % Makes a new directory to store ammended .inp file, .odb output database,
 % and .dat data
