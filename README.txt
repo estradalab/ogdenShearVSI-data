@@ -1,4 +1,4 @@
-Dataset Title: MRI Raw Experimental Data Pipeline (as of 08/19/2022)
+Dataset Title: MRI Raw Experimental Data Pipeline (as of 10/06/2022)
 Dataset Creators: D.P. Nikolov, S. Srivastava, B.A. Abeid, U.M. Scheven, E.M. Arruda, K. Garikipati, J.B. Estrada
 Dataset Contact: J.B. Estrada jbestrad@umich.edu
 Funding: 1729166 (NSF)
@@ -77,17 +77,18 @@ Use and Access:
 
 4. Simulation deformation gradients:
 	- Open Abaqus2Matlab directory
-	- Open DefGrad_sim_v7
+	- Open DefGrad_sim_v8
 	- Uncomment the following for 'curdir' variable to run for a particular sample:
 		22-0201-5MM_Holes_SS	Holes_Rectangular	2.5 mm & 5 mm
 		22-0301-NoHoles_SS	Solid_Rectangular	2.5 mm & 5 mm & 7 mm
 		22-0325-Uniaxial	Uniaxial		7 mm
-	- A file named 'MRI-3Ddefs_SimpleShear_' curdir '.mat' is produced in the respective 'Simulations\curdir' subdirectory and contains the deformation information on the deformation gradient and displacement of each element
-	- A file named 'refpositions.mat' is produced in the respective 'Simulations\curdir' subdirectory and contains information about the referenece configuration positions
+	- A file named 'MRI-3Ddefs_SimpleShear_' curdir '.mat' is produced in the respective 'Simulations_tet\curdir' subdirectory and contains the deformation information on the deformation gradient and displacement of each element
+	- A file named 'refpositions.mat' is produced in the respective 'Simulations_tet\curdir' subdirectory and contains information about the referenece configuration positions
 	- Note: Abaqus simulations don't run by default, since the 'Data' files are already produced. If you'd like to inspect how Abaqus runs in MatLab, simply delete the folder with the respective data in the 'Data' subdirectory
-	- Feel free to use your own input files from Abaqus to investigate DefGrad_sim_v7. Some guidelines to follow:
-		Create a simulation file with only one static step (Work in progress to implement simulations with incremental loading)
-		Ensure that the mesh's connectivity matrix has node ordering consistent with the current input files (Abaqus sometimes shifts ordering for easier compilation; work in progress to implement a mesh generator in MatLab)
+	- Feel free to use your own input files from Abaqus to investigate DefGrad_sim_v8. Some guidelines to follow:
+		Create a new case for 'curdir' and change the size/hole inclusion in genMesh within the subdirectory 'Functions\'
+	- Note: This code runs for delaunay triangulation within MatLab and hence calculates the deformation gradients for quadratic tetrahedral elements
+		+ For hexahedral elements, you'll need to use the files that are in the folders 'Old_hex' to run them
 	- If you run into any unforeseen issues, feel free to contact Denislav Nikolov: dnikolov@umich.edu
 
 5. Decoupling parameters and sensitivity metric quantification
