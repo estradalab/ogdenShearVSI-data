@@ -21,6 +21,7 @@ edges{2} = [edges{2};temp];
 edges{1} = [edges{1};funcs{4}(temp)];
 
 R1 = [2;4*(line_res-1);edges{1};edges{2}];
+% R1 = [3;4;-l/2;l/2;l/2;-l/2;-w/2;-w/2;w/2;w/2];
 
 switch hole.yesno
     case 'yes'
@@ -43,6 +44,7 @@ if graph
 subplot(1,3,1)
 pdegplot(model,"EdgeLabels","off")
 axis([-l/1.3 l/1.3 -w/1.3 w/1.3])
+axis off
 end
 
 model_3D = model;
@@ -50,6 +52,7 @@ model_3D.Geometry = extrude(model_3D.Geometry,h);
 if graph
 subplot(1,3,2)
 pdegplot(model_3D,"FaceLabels","off","FaceAlpha",0.5)
+axis off
 end
 
 
@@ -59,4 +62,5 @@ generateMesh(model_3D,'Hmax',hmax*mesh_ref);
 if graph
 subplot(1,3,3)
 pdeplot3D(model_3D)
+axis off
 end

@@ -1,4 +1,4 @@
-Dataset Title: MRI Raw Experimental Data Pipeline (as of 10/06/2022)
+Dataset Title: MRI Raw Experimental Data Pipeline (as of 12/13/2022)
 Dataset Creators: D.P. Nikolov, S. Srivastava, B.A. Abeid, U.M. Scheven, E.M. Arruda, K. Garikipati, J.B. Estrada
 Dataset Contact: J.B. Estrada jbestrad@umich.edu
 Funding: 1729166 (NSF)
@@ -26,6 +26,7 @@ Notes: 		Archive has all datasets and files from prior research and aren't inten
 			- Abaqus2Matlab
 			- Decomposition_Sensitivity
 			- Visualization
+		Additional function createGeometry_v2 with Abaqus2Matlab/Functions is in progress (parameterization for optimization pipeline)
 
 File Inventory:	For further explanation of the datasets in each of these folders, refer to Data_Inventory.xlsx
 		For each run/main function of the dataset, you may utilize the following function to see dependencies and all other functions used in the primary functions:
@@ -79,14 +80,16 @@ Use and Access:
 	- Open Abaqus2Matlab directory
 	- Open DefGrad_sim_v8
 	- Uncomment the following for 'curdir' variable to run for a particular sample:
-		22-0201-5MM_Holes_SS	Holes_Rectangular	2.5 mm & 5 mm
-		22-0301-NoHoles_SS	Solid_Rectangular	2.5 mm & 5 mm & 7 mm
+		22-0201-5MM_Holes_SS	Holes_Rectangular Shear	2.5 mm & 5 mm
+		22-0301-NoHoles_SS	Solid_Rectangular Shear	2.5 mm & 5 mm & 7 mm
 		22-0325-Uniaxial	Uniaxial		7 mm
+		22-1212-Wavy_SS		Wavy_Rectangular Shear	6.5 mm (Solid and Wavy)
 	- A file named 'MRI-3Ddefs_SimpleShear_' curdir '.mat' is produced in the respective 'Simulations_tet\curdir' subdirectory and contains the deformation information on the deformation gradient and displacement of each element
 	- A file named 'refpositions.mat' is produced in the respective 'Simulations_tet\curdir' subdirectory and contains information about the referenece configuration positions
 	- Note: Abaqus simulations don't run by default, since the 'Data' files are already produced. If you'd like to inspect how Abaqus runs in MatLab, simply delete the folder with the respective data in the 'Data' subdirectory
 	- Feel free to use your own input files from Abaqus to investigate DefGrad_sim_v8. Some guidelines to follow:
 		Create a new case for 'curdir' and change the size/hole inclusion in genMesh within the subdirectory 'Functions\'
+		An example of an inclusion of an Abaqus file is implemented for "Shear Wavy"
 	- Note: This code runs for delaunay triangulation within MatLab and hence calculates the deformation gradients for quadratic tetrahedral elements
 		+ For hexahedral elements, you'll need to use the files that are in the folders 'Old_hex' to run them
 	- If you run into any unforeseen issues, feel free to contact Denislav Nikolov: dnikolov@umich.edu
@@ -107,6 +110,7 @@ Use and Access:
 		+ Open 'Plot2DHists_Uniaxial_Both_mu_alpha.m' (You can change whether you'd want filtered data or none and see the effect of filtering helping significantly with the plots)
 		+ Run 'Plot2DHists_Uniaxial_Both_mu_alpha.m' for the plot in figure 7c (Ensure to run Plot2DHists_Both first to populate the appropriate data)
 		+ The figure is save in the directory as 'sens_metric_all_v2.png' and 'sens_metric_all_v2.pdf'
+		+ Open 'Plot2DHists_ShearWavy.m' and run for plots (attempt at creating Gaussian distribution)
 
 6. Visualization of data (Reproduce processing pipeline, and displacement plots figure)
 	- Open Visualization
