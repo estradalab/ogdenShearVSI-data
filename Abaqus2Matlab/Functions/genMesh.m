@@ -1,4 +1,4 @@
-function  [x,y,z,TRI] = genMesh(fileName,mesh,params,write,pres_disp,mesh_ref)
+function  [x,y,z,TRI] = genMesh(curdir,fileName,mesh,params,write,pres_disp,mesh_ref)
 
 fN = erase(fileName,'_tet');
 
@@ -22,20 +22,43 @@ fN = erase(fileName,'_tet');
 % TRI = delaunay(x,y,z);
 
 % Using createGeometry
-switch fN
-    case 'Uniaxial_7MMDisp'
+switch true
+    case (startsWith(fN,'Uniaxial')==1)
         l = 40; w = 8; h = 8.5;
         hole.yesno = 'no';
-    case {'5MMHoles_2_5MMDisp','5MMHoles_5MMDisp'}
+        edge.shape{1} = 'line'; edge.shape{2} = 'line'; edge.shape{3} = 'line'; edge.shape{4} = 'line';
+        line_res = [4 4 4 4]; 
+    case (startsWith(fN,'5MMHoles')==1)
         l = 25.4; w = 19.1; h = 6.4;
         hole.yesno = 'yes'; hole.type = 'two_central_5mm';
-    case {'NoHoles_2_5MMDisp','NoHoles_5MMDisp','NoHoles_7MMDisp'}
+        edge.shape{1} = 'line'; edge.shape{2} = 'line'; edge.shape{3} = 'line'; edge.shape{4} = 'line';
+        line_res = [4 4 4 4]; 
+    case (startsWith(fN,'NoHoles')==1)
         l = 25.4; w = 19.1; h = 6.4;
         hole.yesno = 'no';
+        edge.shape{1} = 'line'; edge.shape{2} = 'line'; edge.shape{3} = 'line'; edge.shape{4} = 'line';
+        line_res = [4 4 4 4]; 
+    case (startsWith(fN,'ShearWavy')==1)
+        l = 40; w = 8; h = 7.5;
+        hole.yesno = 'no';
+        edge.coef{1} = -str2double(erase(fN,'ShearWavy_6.25MMDisp_Amp_'));
+        edge.coef{3} = str2double(erase(fN,'ShearWavy_6.25MMDisp_Amp_'));
+        if str2double(erase(fN,'ShearWavy_6.25MMDisp_Amp_')) == 0
+            edge.shape{1} = 'line'; edge.shape{2} = 'line'; edge.shape{3} = 'line'; edge.shape{4} = 'line';
+        else
+            edge.shape{1} = 'sin'; edge.shape{2} = 'line'; edge.shape{3} = 'sin'; edge.shape{4} = 'line';
+        end
+        edge.period = 5; % edge.amptol = 10^-3;
+        edge.func{1} = @(x) edge.coef{1}*sin(2*pi*edge.period*x/abs(l)) + w/2;
+        edge.func{3} = @(x) edge.coef{3}*sin(2*pi*edge.period*x/abs(l)) - w/2;
+        if str2double(erase(fN,'ShearWavy_6.25MMDisp_Amp_')) == 0
+            line_res = [4 4 4 4];
+        else
+            line_res = [101 4 101 4]; 
+        end
 end
 
-edge.shape{1} = 'line'; edge.shape{2} = 'line'; edge.shape{3} = 'line'; edge.shape{4} = 'line';
-line_res = 4; graph = false;
+graph = false; 
 
 model_3D = createGeometry(l,w,h,line_res,hole,edge,graph,mesh_ref);
 x = model_3D.Mesh.Nodes(1,:)'; y = model_3D.Mesh.Nodes(2,:)'; 
@@ -51,24 +74,50 @@ end
 
 Nodes.gen=[x y z];                                   %(N*2) Nodes Coordinates 
 % Different surfaces for boundary conditions
-Surf.x1 = find(and(x<=max(x)+10^-9,x>=max(x)-10^-9));
-Surf.x2 = find(and(x<=min(x)+10^-9,x>=min(x)-10^-9));
-Surf.y1 = find(and(y<=max(y)+10^-9,y>=max(y)-10^-9));
-Surf.y2 = find(and(y<=min(y)+10^-9,y>=min(y)-10^-9));
-Surf.z1 = find(and(z<=max(z)+10^-9,z>=max(z)-10^-9));
-Surf.z2 = find(and(z<=min(z)+10^-9,z>=min(z)-10^-9));
+switch true
+    case {(startsWith(fN,'Uniaxial')==1),(startsWith(fN,'5MMHoles')==1),(startsWith(fN,'NoHoles')==1)}
+        Surf.x1 = find(and(x<=max(x)+10^-9,x>=max(x)-10^-9));
+        Surf.x2 = find(and(x<=min(x)+10^-9,x>=min(x)-10^-9));
+        Surf.y1 = find(and(y<=max(y)+10^-9,y>=max(y)-10^-9));
+        Surf.y2 = find(and(y<=min(y)+10^-9,y>=min(y)-10^-9));
+        Surf.z1 = find(and(z<=max(z)+10^-9,z>=max(z)-10^-9));
+        Surf.z2 = find(and(z<=min(z)+10^-9,z>=min(z)-10^-9));
+    case (startsWith(fN,'ShearWavy')==1)
+        Surf.x1 = find(and(x<=max(x)+10^-9,x>=max(x)-10^-9));
+        Surf.x2 = find(and(x<=min(x)+10^-9,x>=min(x)-10^-9));
+        Surf.z1 = find(and(z<=max(z)+10^-9,z>=max(z)-10^-9));
+        Surf.z2 = find(and(z<=min(z)+10^-9,z>=min(z)-10^-9));
+        if str2double(erase(fN,'ShearWavy_6.25MMDisp_Amp_')) == 0
+            Surf.y1 = find(and(y<=max(y)+10^-9,y>=max(y)-10^-9));
+            Surf.y2 = find(and(y<=min(y)+10^-9,y>=min(y)-10^-9));
+        else
+            Surf.y1 = []; Surf.y2 = [];
+            for j = 1:length(Nodes.gen)
+                if ismembertol(y(j),edge.func{1}(x(j)))
+                    Surf.y1 = [Surf.y1;j];
+                elseif ismembertol(y(j),edge.func{3}(x(j)))
+                    Surf.y2 = [Surf.y2;j];
+                end
+            end
+        end
+end
 
 % Boundary conditions and surfaces
-switch fN
-    case 'Uniaxial_7MMDisp'
+switch true
+    case (startsWith(fN,'Uniaxial')==1)
         Nodes.bc1 = Surf.x1;
         Nodes.bc2 = Surf.x2;
         Nodes.presDisp.dir = 'x';
-    case {'5MMHoles_2_5MMDisp','5MMHoles_5MMDisp','NoHoles_2_5MMDisp','NoHoles_5MMDisp','NoHoles_7MMDisp'}
+    case {(startsWith(fN,'5MMHoles')==1),(startsWith(fN,'NoHoles')==1)}
         Nodes.bc1 = Surf.z1;
         Nodes.bc2 = Surf.z2;
         Nodes.presDisp.dir = 'x';
+    case (startsWith(fN,'ShearWavy')==1)
+        Nodes.bc1 = Surf.y1;
+        Nodes.bc2 = Surf.y2;
+        Nodes.presDisp.dir = 'x';
 end
+
 Nodes.presDisp.mag = pres_disp;
 
 
@@ -85,8 +134,18 @@ switch mesh
 end
 Elements_Sets{1}.Elements=1:size(TRI,1);               %Elements indices vectors in the element set
 
+% Organizes optimization 'sweeps' into subfolders
+jN = fN;
+if contains(curdir,'sweep','IgnoreCase',true)
+    fN = [curdir '\' fN];
+    if ~exist(['InputFiles\' curdir], 'dir')
+        mkdir(['InputFiles\' curdir])
+        mkdir(['Data\' curdir])
+    end
+end
+
 switch write
     case 'Write'
-        writeInp(Nodes,Elements,Elements_Sets,fN,coef)
+        writeInp(Nodes,Elements,Elements_Sets,fN,coef,jN)
     otherwise
 end

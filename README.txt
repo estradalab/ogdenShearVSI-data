@@ -1,4 +1,4 @@
-Dataset Title: MRI Raw Experimental Data Pipeline (as of 12/13/2022)
+Dataset Title: MRI Raw Experimental Data Pipeline (as of 01/17/2023)
 Dataset Creators: D.P. Nikolov, S. Srivastava, B.A. Abeid, U.M. Scheven, E.M. Arruda, K. Garikipati, J.B. Estrada
 Dataset Contact: J.B. Estrada jbestrad@umich.edu
 Funding: 1729166 (NSF)
@@ -78,16 +78,17 @@ Use and Access:
 
 4. Simulation deformation gradients:
 	- Open Abaqus2Matlab directory
-	- Open DefGrad_sim_v8
+	- Open DefGrad_sim_v9
 	- Uncomment the following for 'curdir' variable to run for a particular sample:
 		22-0201-5MM_Holes_SS	Holes_Rectangular Shear	2.5 mm & 5 mm
 		22-0301-NoHoles_SS	Solid_Rectangular Shear	2.5 mm & 5 mm & 7 mm
 		22-0325-Uniaxial	Uniaxial		7 mm
 		22-1212-Wavy_SS		Wavy_Rectangular Shear	6.5 mm (Solid and Wavy)
+		22-1215-Wavy_Sweep	Wavy Shear 0-2mm Amp	6.5 mm
 	- A file named 'MRI-3Ddefs_SimpleShear_' curdir '.mat' is produced in the respective 'Simulations_tet\curdir' subdirectory and contains the deformation information on the deformation gradient and displacement of each element
 	- A file named 'refpositions.mat' is produced in the respective 'Simulations_tet\curdir' subdirectory and contains information about the referenece configuration positions
 	- Note: Abaqus simulations don't run by default, since the 'Data' files are already produced. If you'd like to inspect how Abaqus runs in MatLab, simply delete the folder with the respective data in the 'Data' subdirectory
-	- Feel free to use your own input files from Abaqus to investigate DefGrad_sim_v8. Some guidelines to follow:
+	- Feel free to use your own input files from Abaqus to investigate DefGrad_sim_v9. Some guidelines to follow:
 		Create a new case for 'curdir' and change the size/hole inclusion in genMesh within the subdirectory 'Functions\'
 		An example of an inclusion of an Abaqus file is implemented for "Shear Wavy"
 	- Note: This code runs for delaunay triangulation within MatLab and hence calculates the deformation gradients for quadratic tetrahedral elements

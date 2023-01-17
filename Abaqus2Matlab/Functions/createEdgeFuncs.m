@@ -5,7 +5,7 @@ param_y = [w,l,-w,-l];
 for i = 1:length(edge.shape)
     switch edge.shape{i}
         case 'sin'
-            B = 2*pi/abs(param(i));
+            B = 2*pi*edge.period/abs(param(i));
             funcs{i} = @(x) edge.coef{i}*sin(B*x) + param_y(i)/2;
         case 'parabol'
             coef = 1;

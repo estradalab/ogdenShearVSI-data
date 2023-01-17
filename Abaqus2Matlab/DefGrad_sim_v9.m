@@ -6,7 +6,8 @@ addpath(genpath('InputFiles'))
 % curdir = '22-0201-5MM_Holes_SS';
 % curdir = '22-0301-NoHoles_SS';
 % curdir = '22-0325-Uniaxial';
-curdir = '22-1212-Wavy_SS';
+% curdir = '22-1212-Wavy_SS';
+curdir = '22-1215-Wavy_Sweep';
 
 params = 'ogden-treloar';
 
@@ -32,6 +33,12 @@ switch curdir
         A{1} = 'ShearRect_6_25MMDisp';
         A{2} = 'ShearWavy_6_25MMDisp';
         pres_disp{1} = 6.25; pres_disp{2} = 6.25;
+    case '22-1215-Wavy_Sweep'
+         sin_sweep = linspace(0,2,11);
+        for iii = 1:length(sin_sweep)
+            A{iii} = ['ShearWavy_6.25MMDisp_Amp_' num2str(sin_sweep(iii))];
+            pres_disp{iii} = 6.25;
+        end
     case '22-0516-Ogden_Methodical'
         % Work in progress
     case '22-0526-Ogden_Methodical_Size'
@@ -47,16 +54,15 @@ end
 if generate_mesh
     mesh = 'tet';
     for i = 1:length(A)
-        if ~isfile(['InputFiles\' A{i} '_tet.inp'])
-            [x_temp,y_temp,z_temp,TRI_temp] = genMesh([A{i} '_tet'],mesh,params,'Write',pres_disp{i},mesh_ref);
+        if ~(isfile(['InputFiles\' A{i} '_tet.inp']) || isfile(['InputFiles\' curdir '\' A{i} '_tet.inp']))
+            [x_temp,y_temp,z_temp,TRI_temp] = genMesh(curdir,[A{i} '_tet'],mesh,params,'Write',pres_disp{i},mesh_ref);
         else
             switch A{i}
                 case {'ShearWavy_6_25MMDisp','ShearRect_6_25MMDisp'}
                     % If inputing your own Abaqus file
-                    % load('InputFiles\ShearWavy_6_25MMDisp_tet_mesh.mat')
                     [x_temp,y_temp,z_temp,TRI_temp] = readInp([A{i} '_tet']);
                 otherwise
-                    [x_temp,y_temp,z_temp,TRI_temp] = genMesh([A{i} '_tet'],mesh,params,'NoWrite',pres_disp{i},mesh_ref);
+                    [x_temp,y_temp,z_temp,TRI_temp] = genMesh(curdir,[A{i} '_tet'],mesh,params,'NoWrite',pres_disp{i},mesh_ref);
             end
         end
         x{i} = x_temp; y{i} = y_temp; z{i} = z_temp; TRI{i} = TRI_temp;
@@ -69,11 +75,12 @@ addpath(genpath('InputFiles'))
 
 %% Main code
 for ii = 1:length(A)
+    % Change A{ii} to ['ShearWavy\' A{ii}] for folder organization
     switch mesh
         case 'hex'
-            [X,Y,Z,ElNode,U] = runAbaqus(A{ii});
+            [X,Y,Z,ElNode,U] = runAbaqus(curdir,A{ii});
         case 'tet'
-            [X,Y,Z,ElNode,U] = runAbaqus([A{ii} '_tet'],x{ii},y{ii},z{ii},TRI{ii});
+            [X,Y,Z,ElNode,U] = runAbaqus(curdir,[A{ii} '_tet'],x{ii},y{ii},z{ii},TRI{ii});
     end
 
     h = waitbar(0,'Progress: 0%');
@@ -153,7 +160,7 @@ if saveset
     switch mesh
         case 'hex'
             switch curdir
-                case {'22-0201-5MM_Holes_SS','22-0301-NoHoles_SS','22-0325-Uniaxial'}
+                case {'22-0201-5MM_Holes_SS','22-0301-NoHoles_SS','22-0325-Uniaxial',}
                     if ~exist(['Simulations\' curdir], 'dir')
                         mkdir(['Simulations\' curdir])
                     end
@@ -168,7 +175,7 @@ if saveset
             end
         case 'tet'
             switch curdir
-                case {'22-0201-5MM_Holes_SS','22-0301-NoHoles_SS','22-0325-Uniaxial','22-1212-Wavy_SS'}
+                case {'22-0201-5MM_Holes_SS','22-0301-NoHoles_SS','22-0325-Uniaxial','22-1212-Wavy_SS','22-1215-Wavy_Sweep'}
                     if ~exist(['Simulations_tet\' curdir], 'dir')
                         mkdir(['Simulations_tet\' curdir])
                     end

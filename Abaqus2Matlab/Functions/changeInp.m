@@ -1,4 +1,4 @@
-function changeInp(fileName,nodeLength,elLength)
+function changeInp(fileName,jobName,nodeLength,elLength)
 % Stores .inp file into MatLab cell array, A
 fid = fopen([fileName '.inp'],'r');
 i=1;
@@ -25,7 +25,7 @@ end
 for i = 1:length(A)
     C = strsplit(A{i},': ');
     if strcmp(C{1},'** Job name') == 1
-        A{i} = ['** Job name: ' fileName '_test Model name: Model-1'];
+        A{i} = ['** Job name: ' jobName '_test Model name: Model-1'];
         break
     end
 end
@@ -41,7 +41,7 @@ A_temp = {B{1:indx-1},'*NODE PRINT, nset=RP, frequency=1','U1,U2,U3',B{indx:end}
 B = A_temp;
 
 % Overwrites the additions into a new file
-fid = fopen([fileName '_test.inp'],'w');
+fid = fopen([jobName '_test.inp'],'w');
 for i = 1:numel(B)
     if B{i+1} == - 1
         fprintf(fid,'%s', B{i});
