@@ -1,6 +1,7 @@
 function  [x,y,z,TRI] = genMesh(curdir,fileName,mesh,params,write,pres_disp,mesh_ref)
 
 fN = erase(fileName,'_tet');
+graph = false;
 
 % Using meshgrid
 % switch fN
@@ -39,26 +40,56 @@ switch true
         edge.shape{1} = 'line'; edge.shape{2} = 'line'; edge.shape{3} = 'line'; edge.shape{4} = 'line';
         line_res = [4 4 4 4]; 
     case (startsWith(fN,'ShearWavy')==1)
-        l = 40; w = 8; h = 7.5;
-        hole.yesno = 'no';
-        edge.coef{1} = -str2double(erase(fN,'ShearWavy_6.25MMDisp_Amp_'));
-        edge.coef{3} = str2double(erase(fN,'ShearWavy_6.25MMDisp_Amp_'));
-        if str2double(erase(fN,'ShearWavy_6.25MMDisp_Amp_')) == 0
-            edge.shape{1} = 'line'; edge.shape{2} = 'line'; edge.shape{3} = 'line'; edge.shape{4} = 'line';
+        if startsWith(fN,'ShearWavyAmp2') || startsWith(fN,'ShearWavyPrd2')
+            l = 40; w = 8; h = 30;
+        elseif startsWith(fN,'ShearWavyWidth1')
+            l = 40; w = 8;
+            h = str2double(erase(fN,'ShearWavyWidth1_6.25MMDisp_Amp_0.6MM_Prd_4_Width_'));
         else
-            edge.shape{1} = 'sin'; edge.shape{2} = 'line'; edge.shape{3} = 'sin'; edge.shape{4} = 'line';
+            l = 40; w = 8; h = 7.5;
         end
-        edge.period = 5; % edge.amptol = 10^-3;
+        hole.yesno = 'no';
+        if startsWith(fN,'ShearWavyPrd1') || startsWith(fN,'ShearWavyPrd2')
+            edge.coef{1} = -0.6;
+            edge.coef{3} = 0.6;
+            edge.shape{1} = 'sin'; edge.shape{2} = 'line'; edge.shape{3} = 'sin'; edge.shape{4} = 'line';
+            line_res = [101 4 101 4]; 
+            edge.period = str2double(erase(fN,'ShearWavyPrd1_6.25MMDisp_Amp_0.6MM_Prd_'));
+            if isnan(edge.period) == 1
+                edge.period = str2double(erase(fN,'ShearWavyPrd2_6.25MMDisp_Amp_0.6MM_Prd_'));
+            end
+        elseif startsWith(fN,'ShearWavyAmp2')
+            edge.coef{1} = -str2double(erase(fN,'ShearWavyAmp2_6.25MMDisp_Amp_'));
+            edge.coef{3} = str2double(erase(fN,'ShearWavyAmp2_6.25MMDisp_Amp_'));
+            if str2double(erase(fN,'ShearWavyAmp2_6.25MMDisp_Amp_')) == 0
+                edge.shape{1} = 'line'; edge.shape{2} = 'line'; edge.shape{3} = 'line'; edge.shape{4} = 'line';
+                line_res = [4 4 4 4];
+            else
+                edge.shape{1} = 'sin'; edge.shape{2} = 'line'; edge.shape{3} = 'sin'; edge.shape{4} = 'line';
+                line_res = [101 4 101 4]; 
+            end
+            edge.period = 5; % edge.amptol = 10^-3;
+        elseif startsWith(fN,'ShearWavyWidth1')
+            edge.coef{1} = -0.6;
+            edge.coef{3} = 0.6;
+            edge.period = 4;
+            edge.shape{1} = 'sin'; edge.shape{2} = 'line'; edge.shape{3} = 'sin'; edge.shape{4} = 'line';
+            line_res = [101 4 101 4]; 
+        else
+            edge.coef{1} = -str2double(erase(fN,'ShearWavy_6.25MMDisp_Amp_'));
+            edge.coef{3} = str2double(erase(fN,'ShearWavy_6.25MMDisp_Amp_'));
+            if str2double(erase(fN,'ShearWavy_6.25MMDisp_Amp_')) == 0
+                edge.shape{1} = 'line'; edge.shape{2} = 'line'; edge.shape{3} = 'line'; edge.shape{4} = 'line';
+                line_res = [4 4 4 4];
+            else
+                edge.shape{1} = 'sin'; edge.shape{2} = 'line'; edge.shape{3} = 'sin'; edge.shape{4} = 'line';
+                line_res = [101 4 101 4]; 
+            end
+            edge.period = 5; % edge.amptol = 10^-3;
+        end
         edge.func{1} = @(x) edge.coef{1}*sin(2*pi*edge.period*x/abs(l)) + w/2;
         edge.func{3} = @(x) edge.coef{3}*sin(2*pi*edge.period*x/abs(l)) - w/2;
-        if str2double(erase(fN,'ShearWavy_6.25MMDisp_Amp_')) == 0
-            line_res = [4 4 4 4];
-        else
-            line_res = [101 4 101 4]; 
-        end
 end
-
-graph = false; 
 
 model_3D = createGeometry(l,w,h,line_res,hole,edge,graph,mesh_ref);
 x = model_3D.Mesh.Nodes(1,:)'; y = model_3D.Mesh.Nodes(2,:)'; 
@@ -87,7 +118,7 @@ switch true
         Surf.x2 = find(and(x<=min(x)+10^-9,x>=min(x)-10^-9));
         Surf.z1 = find(and(z<=max(z)+10^-9,z>=max(z)-10^-9));
         Surf.z2 = find(and(z<=min(z)+10^-9,z>=min(z)-10^-9));
-        if str2double(erase(fN,'ShearWavy_6.25MMDisp_Amp_')) == 0
+        if str2double(erase(fN,'ShearWavy_6.25MMDisp_Amp_')) == 0 || str2double(erase(fN,'ShearWavyAmp2_6.25MMDisp_Amp_')) == 0'
             Surf.y1 = find(and(y<=max(y)+10^-9,y>=max(y)-10^-9));
             Surf.y2 = find(and(y<=min(y)+10^-9,y>=min(y)-10^-9));
         else

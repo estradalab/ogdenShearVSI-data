@@ -3,7 +3,7 @@ function [k,lam,S_mu,S_a,EmptyElList] = param_decoup_main(F_t,og_matprop)
     for i = 1:length(F_t)
         [k{i},lam{i},S_mu{i},S_a{i},EmptyElList{i}] = param_decoup(F_t{i},og_matprop);
         waitbar(i/length(F_t),h,...
-            ['Progress for run #',num2str(i),'/',num2str(length(F_t)),': ',num2str(floor(100*i/length(F_t))),'%'])
+            ['Run #',num2str(i),'/',num2str(length(F_t)),': ',num2str(floor(100*i/length(F_t))),'%'])
     end
     close(h)
 end

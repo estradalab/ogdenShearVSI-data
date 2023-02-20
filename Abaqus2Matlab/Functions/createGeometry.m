@@ -1,5 +1,7 @@
 function [model_3D] = createGeometry(l,w,h,line_res,hole,edge,graph,mesh_ref) % line_res >3
 
+maxelsize = mesh_ref.maxelsize;
+
 model = createpde(1);
 
 funcs = createEdgeFuncs(edge,l,w);
@@ -58,7 +60,11 @@ end
 
 generateMesh(model_3D);
 hmax = model_3D.Mesh.MaxElementSize;
-generateMesh(model_3D,'Hmax',hmax*mesh_ref);
+if exist('maxelsize','var') == 1
+    generateMesh(model_3D,'Hmax',maxelsize);
+else
+    generateMesh(model_3D,'Hmax',hmax*mesh_ref.defsize);
+end
 if graph
 subplot(1,3,3)
 pdeplot3D(model_3D)

@@ -7,11 +7,17 @@ addpath(genpath('InputFiles'))
 % curdir = '22-0301-NoHoles_SS';
 % curdir = '22-0325-Uniaxial';
 % curdir = '22-1212-Wavy_SS';
-curdir = '22-1215-Wavy_Sweep';
+% curdir = '22-1215-Wavy_Sweep';
+% curdir = '23-0119-Wavy_Prd_Sweep';
+% curdir = '23-0202-Wavy-Thick_Amp_Sweep';
+% curdir = '23-0202-Wavy-Thick_Prd_Sweep';
+curdir = '23-0217-Wavy-Thick_Width_Sweep';
 
 params = 'ogden-treloar';
 
-mesh_ref = 0.5; % 50% of default size elements in mesh
+mesh_ref.defsize = 0.5; % 50% of default size elements in mesh
+mesh_ref.maxelsize = 0.8; % Keeps a constant element density throughout the sweep  (overrides mesh_ref.defsize; comment out if defsize is preferred)
+% Ran mesh_ref.maxelsize for 0217 and later
 
 saveset = true;
 generate_mesh = true; % Generate mesh (for false, you'll be using hexahedral elements pre-made in Abaqus)
@@ -37,6 +43,30 @@ switch curdir
          sin_sweep = linspace(0,2,11);
         for iii = 1:length(sin_sweep)
             A{iii} = ['ShearWavy_6.25MMDisp_Amp_' num2str(sin_sweep(iii))];
+            pres_disp{iii} = 6.25;
+        end
+    case '23-0119-Wavy_Prd_Sweep'
+        sin_sweep = 1:10;
+        for iii = 1:length(sin_sweep)
+            A{iii} = ['ShearWavyPrd1_6.25MMDisp_Amp_0.6MM_Prd_' num2str(sin_sweep(iii))];
+            pres_disp{iii} = 6.25;
+        end
+    case '23-0202-Wavy-Thick_Amp_Sweep'
+        sin_sweep = linspace(0,2,11);
+        for iii = 1:length(sin_sweep)
+            A{iii} = ['ShearWavyAmp2_6.25MMDisp_Amp_' num2str(sin_sweep(iii))];
+            pres_disp{iii} = 6.25;
+        end
+    case '23-0202-Wavy-Thick_Prd_Sweep'
+        sin_sweep = 1:10;
+        for iii = 1:length(sin_sweep)
+            A{iii} = ['ShearWavyPrd2_6.25MMDisp_Amp_0.6MM_Prd_' num2str(sin_sweep(iii))];
+            pres_disp{iii} = 6.25;
+        end
+    case '23-0217-Wavy-Thick_Width_Sweep'
+        width_sweep = 5:5:60;
+        for iii = 1:length(width_sweep)
+            A{iii} = ['ShearWavyWidth1_6.25MMDisp_Amp_0.6MM_Prd_4_Width_' num2str(width_sweep(iii))];
             pres_disp{iii} = 6.25;
         end
     case '22-0516-Ogden_Methodical'
@@ -175,7 +205,10 @@ if saveset
             end
         case 'tet'
             switch curdir
-                case {'22-0201-5MM_Holes_SS','22-0301-NoHoles_SS','22-0325-Uniaxial','22-1212-Wavy_SS','22-1215-Wavy_Sweep'}
+                case {'22-0201-5MM_Holes_SS','22-0301-NoHoles_SS','22-0325-Uniaxial',...
+                        '22-1212-Wavy_SS','22-1215-Wavy_Sweep','23-0119-Wavy_Prd_Sweep',...
+                        '23-0202-Wavy-Thick_Amp_Sweep','23-0202-Wavy-Thick_Prd_Sweep',...
+                        '23-0217-Wavy-Thick_Width_Sweep'}
                     if ~exist(['Simulations_tet\' curdir], 'dir')
                         mkdir(['Simulations_tet\' curdir])
                     end
