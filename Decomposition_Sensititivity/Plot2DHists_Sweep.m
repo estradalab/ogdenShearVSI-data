@@ -84,16 +84,23 @@ if entropy_calc
             ttl = 'Width Sweep Entropy Plots';
             xlbl = 'Width [mm]';
     end
+    subplot(1,2,1)
     plot(lbl,squeeze(Sigma(2,2,:))','Color',[94, 201, 98]/255,'linewidth',2);
-    title(ttl,'interpreter','latex');
+    sgtitle(ttl,'interpreter','latex');
     xlabel(xlbl,'interpreter','latex');
     ax = gca;
-    ax.YColor = [53, 183, 121]/255;
+    ax.YColor = [94, 201, 98]/255;
     addaxis(lbl,squeeze(Sigma(1,1,:))','Color',[33, 145, 140]/255,'linewidth',2)
-    addaxis(lbl,all_diff_ent,'Color',[59, 82, 139]/255,'linewidth',2)
+    legend({'Gaussian Std. Dev., $\sigma_k$','Gaussian Std. Dev., $\sigma_\lambda$'},...
+        'interpreter','latex','location','best')
+
+    subplot(1,2,2)
+    plot(lbl,all_diff_ent,'Color',[59, 82, 139]/255,'linewidth',2)
+    xlabel(xlbl,'interpreter','latex');
+    ax = gca;
+    ax.YColor = [59, 82, 139]/255;
     addaxis(lbl,all_pwise_ent,'Color',[68, 1, 84]/255,'linewidth',2)
-    legend({'Gaussian Std. Dev., $\sigma_k$','Gaussian Std. Dev., $\sigma_\lambda$'...
-        'Entropy of Gaussian, $p_{gauss}$','Binwise Entropy, $p_{bin}$'},...
+    legend({'Entropy of Gaussian, $p_{gauss}$','Binwise Entropy, $p_{bin}$'},...
         'interpreter','latex','location','best')
 %     addaxislabel(1,'Gaussian Std. Dev., \sigma_k','interpreter','latex');
 %     addaxislabel(2,'Entropy of Gaussian, p_{gauss}','interpreter','latex');
