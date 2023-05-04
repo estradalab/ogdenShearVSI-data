@@ -1,13 +1,14 @@
 clc;clear;
 clim = [-5 -1.5];%[0 0.05];
-entropy_calc = true;
+entropy_calc = false;
 
 warning off;
 % sweep = '22-1215-Wavy_Sweep';
 % sweep = '23-0119-Wavy_Prd_Sweep';
 % sweep = '23-0202-Wavy-Thick_Amp_Sweep';
 % sweep = '23-0202-Wavy-Thick_Prd_Sweep';
-sweep = '23-0217-Wavy-Thick_Width_Sweep';
+% sweep = '23-0217-Wavy-Thick_Width_Sweep';
+sweep = '23-0405-SingleCompression';
 
 load([sweep '\sensitivity.mat'])
 
@@ -21,6 +22,8 @@ switch sweep
     case {'23-0217-Wavy-Thick_Width_Sweep'}
         width_sweep = 5:5:60;
         lbl = width_sweep;
+    case {'23-0405-SingleCompression'}
+        lbl = 0;
 end
 
 for i = 1:length(k)
@@ -46,6 +49,8 @@ for i = 1:length(k)
             title(['Shear Wavy Simulation (' num2str(lbl(i)) ' Periods; 0.6mm Amp; 6.25mm Disp)'],'interpreter','latex')
         case {'23-0217-Wavy-Thick_Width_Sweep'}
             title(['Shear Wavy Simulation (' num2str(lbl(i)) 'mm Width; 4 Periods; 0.6mm Amp; 6.25mm Disp)'],'interpreter','latex')
+        case {'23-0405-SingleCompression'}
+            title('Biaxial Simulation - 0.15mm Disp','interpreter','latex')
     end
     if ~exist([sweep '\Pics'], 'dir')
         mkdir([sweep '\Pics'])
