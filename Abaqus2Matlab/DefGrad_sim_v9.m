@@ -11,12 +11,13 @@ addpath(genpath('InputFiles'))
 % curdir = '23-0119-Wavy_Prd_Sweep';
 % curdir = '23-0202-Wavy-Thick_Amp_Sweep';
 % curdir = '23-0202-Wavy-Thick_Prd_Sweep';
-curdir = '23-0217-Wavy-Thick_Width_Sweep';
+% curdir = '23-0217-Wavy-Thick_Width_Sweep';
+curdir = '23-0405-SingleCompression';
 
 params = 'ogden-treloar';
 
 mesh_ref.defsize = 0.5; % 50% of default size elements in mesh
-mesh_ref.maxelsize = 0.8; % Keeps a constant element density throughout the sweep  (overrides mesh_ref.defsize; comment out if defsize is preferred)
+mesh_ref.maxelsize = 0.3; % Keeps a constant element density throughout the sweep  (overrides mesh_ref.defsize; comment out if defsize is preferred)
 % Ran mesh_ref.maxelsize for 0217 and later
 
 saveset = true;
@@ -69,6 +70,9 @@ switch curdir
             A{iii} = ['ShearWavyWidth1_6.25MMDisp_Amp_0.6MM_Prd_4_Width_' num2str(width_sweep(iii))];
             pres_disp{iii} = 6.25;
         end
+    case '23-0405-SingleCompression'
+        A{1} = ['SingleCompression_6X6X1_0.15MMDisp'];
+        pres_disp{1} = -0.15;
     case '22-0516-Ogden_Methodical'
         % Work in progress
     case '22-0526-Ogden_Methodical_Size'
@@ -208,7 +212,7 @@ if saveset
                 case {'22-0201-5MM_Holes_SS','22-0301-NoHoles_SS','22-0325-Uniaxial',...
                         '22-1212-Wavy_SS','22-1215-Wavy_Sweep','23-0119-Wavy_Prd_Sweep',...
                         '23-0202-Wavy-Thick_Amp_Sweep','23-0202-Wavy-Thick_Prd_Sweep',...
-                        '23-0217-Wavy-Thick_Width_Sweep'}
+                        '23-0217-Wavy-Thick_Width_Sweep','23-0405-SingleCompression'}
                     if ~exist(['Simulations_tet\' curdir], 'dir')
                         mkdir(['Simulations_tet\' curdir])
                     end

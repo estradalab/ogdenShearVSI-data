@@ -89,6 +89,11 @@ switch true
         end
         edge.func{1} = @(x) edge.coef{1}*sin(2*pi*edge.period*x/abs(l)) + w/2;
         edge.func{3} = @(x) edge.coef{3}*sin(2*pi*edge.period*x/abs(l)) - w/2;
+    case (startsWith(fN,'SingleCompression_6X6X1')==1)
+        l = 6; w = 6; h = 1;
+        hole.yesno = 'no';
+        edge.shape{1} = 'line'; edge.shape{2} = 'line'; edge.shape{3} = 'line'; edge.shape{4} = 'line';
+        line_res = [4 4 4 4]; 
 end
 
 model_3D = createGeometry(l,w,h,line_res,hole,edge,graph,mesh_ref);
@@ -106,7 +111,8 @@ end
 Nodes.gen=[x y z];                                   %(N*2) Nodes Coordinates 
 % Different surfaces for boundary conditions
 switch true
-    case {(startsWith(fN,'Uniaxial')==1),(startsWith(fN,'5MMHoles')==1),(startsWith(fN,'NoHoles')==1)}
+    case {(startsWith(fN,'Uniaxial')==1),(startsWith(fN,'5MMHoles')==1),(startsWith(fN,'NoHoles')==1),...
+            startsWith(fN,'SingleCompression_6X6X1')==1}
         Surf.x1 = find(and(x<=max(x)+10^-9,x>=max(x)-10^-9));
         Surf.x2 = find(and(x<=min(x)+10^-9,x>=min(x)-10^-9));
         Surf.y1 = find(and(y<=max(y)+10^-9,y>=max(y)-10^-9));
@@ -147,6 +153,10 @@ switch true
         Nodes.bc1 = Surf.y1;
         Nodes.bc2 = Surf.y2;
         Nodes.presDisp.dir = 'x';
+    case (startsWith(fN,'SingleCompression_6X6X1')==1)
+        Nodes.bc1 = Surf.z1;
+        Nodes.bc2 = Surf.z2;
+        Nodes.presDisp.dir = 'z';
 end
 
 Nodes.presDisp.mag = pres_disp;
