@@ -42,11 +42,12 @@ for count,tid in enumerate(NumStepList):
 # print(dof_to_vertex_map(V))
 # print(dof_to_vertex_map(W))
 # d2v_vector = dof_to_vertex_map(V)
+
 # random_Class = V.dofmap()
 # print(dir(random_Class))
 a = V.dofmap().tabulate_local_to_global_dofs()
 # print(a)
-
+# print(len(a))
 # exit()
 coordinates = mesh.coordinates()
 
@@ -60,18 +61,25 @@ print('num_coordinate in mesh=',num_coordinate_mesh)
 u_array=np.zeros((num_coordinate_mesh*3, len(NumStepList)))
 
 for i in range(num_coordinate_mesh):
+  
   X=coordinates[i]
   index=-1
   _dist = coordinate_data[:,:]-X*np.ones([num_coordinate_file, 1])
   _dist = np.linalg.norm(_dist,axis = 1)
   index = np.argmin(_dist)
-  # print('i=',i,' index=',index,' X=',X,' coordinate_data=',coordinate_data[index,:])
+  print('i=',i,' index=',index,' X=',X,' coordinate_data=',coordinate_data[index,:])
+  
   for count,tid in enumerate(NumStepList):
     u_array[i*3:i*3+3, count]=np.reshape(displacement_data[count][index,:],(-1))
+    # u_array[i*3:i*3+3, count]=np.reshape([1,2,3],(-1))
+
+
 
 file_1 = XDMFFile(mesh.mpi_comm(),datadir + '/'+file1name+'.xdmf')
 file_2 = HDF5File(MPI.comm_world, datadir + '/'+file2name+'.h5', 'w')
 file_2.write(u,'/mesh')
+
+
 for count,tid in enumerate(NumStepList):
   u.vector().set_local(u_array[a, count])
   u.vector().apply("insert")
