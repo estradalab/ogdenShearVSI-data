@@ -3,7 +3,6 @@ from dolfin import *
 import numpy as np
 import pandas as pd
 
-
 temp = 0
 file1name = 'disp_field_%i'%temp
 file2name = 'specimen_%i'%temp
@@ -20,24 +19,28 @@ meshfilename = '/ShearWavy_6.25MMDisp_Amp_0.6_tet.xdmf'
 datadir = '.'
 NumStepList = [1]#,2,3]
 
-mesh=Mesh()
+mesh=Mesh() # Creating empty mesh object
 
-with XDMFFile(meshdir+meshfilename) as infile:
-    infile.read(mesh)
+with XDMFFile(meshdir+meshfilename) as infile: # create infile, an XDMFFile object imported from the file named in meshname
+    infile.read(mesh) # read in data from .xdmf file to mesh object called infile (used to access geometry/connectivity info about the mesh)
 
 
-V = VectorFunctionSpace(mesh, "CG", 1)
-W = FunctionSpace(mesh, "Lagrange", 1)
+V = VectorFunctionSpace(mesh, "CG", 1) # create vector function space for 'mesh' composed of linear piece-wise continuous Lagrangian functions
+W = FunctionSpace(mesh, "Lagrange", 1) # Create a scalar function space for 'mesh'composed of linear piece-wise continuous Lagrangian functions
 
 # Define functions
 u = Function(V) 
 
-coordinate_data=pd.read_csv(datadir + '/node_pos.txt').to_numpy()[:,0:3]
+coordinate_data=pd.read_csv(datadir + '/node_pos.txt', header=None).to_numpy()[:,0:3] # make coordinate_data variable which contains node positions from node_pos.txt ()
+# print(coordinate_data.shape)
 
-displacement_data = [0]*len(NumStepList)
+displacement_data = [0]*len(NumStepList) # initialize 'displacement_data' as a zeros vector of dimension 1 by len(NumStepList) (currently yields a 1 by 1). should this have the same dimensions as coordinate_data.shape?
+
 for count,tid in enumerate(NumStepList):
-	displacement_data[count]=pd.read_csv(datadir + '/disp_'+str(tid)+'.txt').to_numpy()[:,0:3]
-
+	displacement_data[count]=pd.read_csv(datadir + '/disp_'+str(tid)+'.txt', header=None).to_numpy()[:,0:3]
+# print(count)
+# print(tid)
+# print(displacement_data)
 
 # print(dof_to_vertex_map(V))
 # print(dof_to_vertex_map(W))
@@ -67,7 +70,7 @@ for i in range(num_coordinate_mesh):
   _dist = coordinate_data[:,:]-X*np.ones([num_coordinate_file, 1])
   _dist = np.linalg.norm(_dist,axis = 1)
   index = np.argmin(_dist)
-  print('i=',i,' index=',index,' X=',X,' coordinate_data=',coordinate_data[index,:])
+  # print('i=',i,' index=',index,' X=',X,' coordinate_data=',coordinate_data[index,:])
   
   for count,tid in enumerate(NumStepList):
     u_array[i*3:i*3+3, count]=np.reshape(displacement_data[count][index,:],(-1))
