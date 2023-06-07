@@ -4,8 +4,8 @@ import numpy as np
 import pandas as pd
 
 temp = 0
-file1name = 'disp_field_%i'%temp
-file2name = 'specimen_%i'%temp
+filename_disp = 'disp_field_%i'%temp
+filename_specimen = 'specimen_%i'%temp
 
 #meshdir='../mesh/gmsh/holes_5mm_L%ia'%temp
 #meshfilename = '/test%i.xdmf'%temp
@@ -21,7 +21,7 @@ NumStepList = [1]#,2,3]
 
 mesh=Mesh() # Creating empty mesh object
 
-with XDMFFile(meshdir+meshfilename) as infile: # create infile, an XDMFFile object imported from the file named in meshname
+with XDMFFile(meshdir+meshfilename) as infile: # create 'infile', an XDMFFile object imported from the file named in 'meshfilename'
     infile.read(mesh) # read in data from .xdmf file to mesh object called infile (used to access geometry/connectivity info about the mesh)
 
 
@@ -48,28 +48,35 @@ for count,tid in enumerate(NumStepList):
 
 # random_Class = V.dofmap()
 # print(dir(random_Class))
-a = V.dofmap().tabulate_local_to_global_dofs()
-# print(a)
+a = V.dofmap().tabulate_local_to_global_dofs() # currently this is just print an array going from 0 to 3*NumberOfNodes in increments of 1 (in order) (i.e., simple mapping between local and global DOF)
+# print(mesh)
+# print(a[198065])
 # print(len(a))
 # exit()
-coordinates = mesh.coordinates()
+coordinates_nodes = mesh.coordinates()
 
-num_coordinate_file,_=coordinate_data.shape
-num_coordinate_mesh,_=coordinates.shape
-print('num_coordinate in file =',num_coordinate_file)
-print('num_coordinate in mesh=',num_coordinate_mesh)
-#num_displacement_file,_=displacement_data.shape
-#print('num_displacement in file =',num_displacement_file)
+num_elements_data,_= coordinate_data.shape
+num_nodes_data,_=coordinates_nodes.shape
+print('num_elements =',num_elements_data)
+print('num_nodes =',num_nodes_data)
+# num_displacement_file,_=displacement_data.shape
+# print('num_displacement in file =',num_displacement_file)
 
-u_array=np.zeros((num_coordinate_mesh*3, len(NumStepList)))
+u_array=np.zeros((num_nodes_data*3, len(NumStepList))) # create array (1 x num_coordinate in mesh) of 0's to preallocate
 
-for i in range(num_coordinate_mesh):
-  
-  X=coordinates[i]
+for i in range(num_nodes_data): # looping over all nodes in data and finding near 
+  X=coordinates_nodes[i] # import coordinates for node i in 'mesh'
   index=-1
-  _dist = coordinate_data[:,:]-X*np.ones([num_coordinate_file, 1])
+  # print(coordinate_data[:,:].shape)
+  # test = X*np.ones([num_elements_data, 1])
+  # print(test.shape)
+  # print(X.shape)
+  _dist = coordinate_data[:,:]-X*np.ones([num_elements_data, 1]) 
   _dist = np.linalg.norm(_dist,axis = 1)
   index = np.argmin(_dist)
+  print(index)
+  # print(index)
+  # print(_dist[index])
   # print('i=',i,' index=',index,' X=',X,' coordinate_data=',coordinate_data[index,:])
   
   for count,tid in enumerate(NumStepList):
@@ -78,8 +85,8 @@ for i in range(num_coordinate_mesh):
 
 
 
-file_1 = XDMFFile(mesh.mpi_comm(),datadir + '/'+file1name+'.xdmf')
-file_2 = HDF5File(MPI.comm_world, datadir + '/'+file2name+'.h5', 'w')
+file_1 = XDMFFile(mesh.mpi_comm(),datadir + '/'+filename_disp+'.xdmf')
+file_2 = HDF5File(MPI.comm_world, datadir + '/'+filename_specimen+'.h5', 'w')
 file_2.write(u,'/mesh')
 
 

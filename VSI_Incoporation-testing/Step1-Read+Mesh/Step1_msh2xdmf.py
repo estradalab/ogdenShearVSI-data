@@ -28,33 +28,40 @@ filename = "ShearWavy_6.25MMDisp_Amp_0.6_tet"
 
 def msh2xdmf(loadPath,savePath,filename):
 
-    msh = meshio.read(os.path.join(loadPath, filename + '.inp')) # '.msh'
+    msh = meshio.read(os.path.join(loadPath, filename + '.inp')) # read .inp mesh file from MATLAB and create meshio.Mesh object to store information describing the mesh
     # print(msh.points)
     # print(msh.cells[0].data)
     # exit()
 
     #Find mesh size params
-    NumVertex = msh.points.shape[0]
-    NumCells = msh.cells[0].data.shape[0]
+    num_vertex = msh.points.shape[0] 
+    num_cell = msh.cells[0].data.shape[0]
+    # print(num_vertex)
+    # print(num_cell)
 
-    #Initialize fenics mesh
-    mesh = Mesh()
+    #Initialize FEniCS mesh 
+    mesh = Mesh() # create empty dofin.Mesh object 
 
-    editor = MeshEditor()
-    editor.open(mesh, type="tetrahedron",tdim=3, gdim=3) #"hexahedron"
-    editor.init_vertices(NumVertex)
-    editor.init_cells(NumCells)
+    editor = MeshEditor() # iniate MeshEditor object
+    editor.open(mesh, type="tetrahedron",tdim=3, gdim=3) #"hexahedron" # define tetrahedron mesh with 3 topologic and geometric dimensions
+    editor.init_vertices(num_vertex) # defining verticies
+    editor.init_cells(num_cell) # initialize cells
     #HexCellsDataID = msh.cell_data['gmsh:physical'][0]
 
-    for i in range(NumVertex):
-        editor.add_vertex(i, Point(msh.points[i,:]))
-    for i in range(NumCells):
+    for i in range(num_vertex):
+        editor.add_vertex(i, Point(msh.points[i,:])) # defining coordinates of ith vertex
+        # print(msh.points[i,:].shape)
+        # print(msh.points)
+        # print(msh.points.shape)
+    for i in range(num_cell):
         try:
             #_cell_gmsh = msh.cells[0].data[i,:]
             #_cell_vtk = gmsh2vtk_hex(_cell_gmsh)
             #_cell_vtk = msh.cells[0].data[i,:]
             #_cell_dolfin = vtk2dolfin_hex(_cell_vtk)			
             _cell_dolfin = ufl_simplicial_order(msh.cells[0].data[i,:])
+            print(_cell_dolfin)
+            exit()
             editor.add_cell(i,_cell_dolfin)
         except RuntimeError:
             print("Error in cell index %i"%i)
