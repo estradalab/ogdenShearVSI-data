@@ -1,6 +1,7 @@
 import meshio
-from dolfin import Mesh,MeshFunction,MeshEditor,Point,Measure,assemble
-from dolfin import XDMFFile, HDF5File, MPI, dx, Constant
+#from dolfin import Mesh,MeshFunction,MeshEditor,Point,Measure,assemble
+#from dolfin import XDMFFile, HDF5File, MPI, dx, Constant
+from dolfin import *
 # from dolfin_adjoint import *
 import os
 import numpy as np
@@ -18,7 +19,7 @@ def vtk2gmsh_hex(P):
     return [P[0], P[3], P[2], P[1], P[4], P[5], P[6], P[7]]
 	
 def ufl_simplicial_order(P):
-    return np.sort(np.array(P), axis=None).tolist()	
+    return np.sort(np.array(P), axis=None).tolist()	 # sorts vector P in ascending order
 
 # filename = "STA26_27"
 # loadPath = "./InputFiles/22-1215-Wavy_Sweep_v2/"
@@ -59,10 +60,11 @@ def msh2xdmf(loadPath,savePath,filename):
             #_cell_vtk = gmsh2vtk_hex(_cell_gmsh)
             #_cell_vtk = msh.cells[0].data[i,:]
             #_cell_dolfin = vtk2dolfin_hex(_cell_vtk)			
-            _cell_dolfin = ufl_simplicial_order(msh.cells[0].data[i,:])
-            print(_cell_dolfin)
-            exit()
-            editor.add_cell(i,_cell_dolfin)
+            _cell_dolfin = ufl_simplicial_order(msh.cells[0].data[i,:]) # defining verticies of the ith cell in ascending order 
+            # print(msh.cells[0].data)
+            # print("test")
+            # print(_cell_dolfin)
+            editor.add_cell(i,_cell_dolfin) # add ith cell to MeshEditor object 
         except RuntimeError:
             print("Error in cell index %i"%i)
             print(msh.cells[0].data[i,:4])
@@ -78,8 +80,8 @@ def msh2xdmf(loadPath,savePath,filename):
 
     try:
         print('==============================')
-        mesh.order() 
-        print('Mesh ordered: ', mesh.ordered())
+        mesh.order() # Finding the highest order of basis function used in the mesh
+        print('Mesh ordered: ', mesh.ordered()) # checking that the mesh is well-defined in terms of the ordering of its verticies and cells
         # Subdomains will be the cells 
         # subdomains = MeshFunction('size_t',mesh,mesh.topology().dim())
         #mvc = MeshValueCollection('size_t',mesh,mesh.topology().dim())
@@ -119,20 +121,23 @@ def msh2xdmf(loadPath,savePath,filename):
     # print(assemble(1*ds_custom3))
     # print(assemble(Constant(1)*dx))
 
-    # #Now try opening the file
-    # mesh2 = Mesh()
+    #Now try opening the file
+    mesh = Mesh()
 
-    # try:
-    #     print('==============================')
-    #     with XDMFFile(MPI.comm_world,filename+'.xdmf') as file:
-    #         file.read(mesh2)
-    #         mvc = MeshValueCollection('size_t',mesh2,mesh2.topology().dim())
-    #         file.read(mvc,'f')
-    #         mf = cpp.mesh.MeshFunctionSizet(mesh, mvc)
-    #         print(mf.array()[:])
-    #         #mf2 = MeshFunction('size_t',mesh2,mesh2.topology().dim())
-    #         print('Mesh is readable')	
-    # except RuntimeError as err:
-    #     print("Error in reading the file")
-    #     print(err)
+    try:
+        print('==============================')
+        with XDMFFile(MPI.comm_world,filename+'.xdmf') as file:
+            file.read(mesh)
+            V = VectorFunctionSpace(mesh, "CG", 1)
+            a = dof_to_vertex_map(V)
+            np.savetxt('dof2vertex.txt',a, fmt='%i')
+            # mvc = MeshValueCollection('size_t',mesh2,mesh2.topology().dim())
+            # file.read(mvc,'f')
+            # mf = cpp.mesh.MeshFunctionSizet(mesh, mvc)
+            # print(mf.array()[:])
+            # #mf2 = MeshFunction('size_t',mesh2,mesh2.topology().dim())
+            print('Mesh is readable')	
+    except RuntimeError as err:
+        print("Error in reading the file")
+        print(err)
 msh2xdmf(loadPath,savePath,filename)
