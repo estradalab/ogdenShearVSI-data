@@ -10,7 +10,7 @@
         <Geometry GeometryType="XYZ">
           <DataItem Dimensions="66022 3" Format="HDF">disp_field_0.h5:/Mesh/0/mesh/geometry</DataItem>
         </Geometry>
-        <Time Value="1" />
+        <Time Value="3" />
         <Attribute Name="f_10" AttributeType="Vector" Center="Node">
           <DataItem Dimensions="66022 3" Format="HDF">disp_field_0.h5:/VisualisationVector/0</DataItem>
         </Attribute>

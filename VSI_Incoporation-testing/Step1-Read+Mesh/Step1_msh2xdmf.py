@@ -28,29 +28,29 @@ filename = "ShearWavy_6.25MMDisp_Amp_0.6_tet"
 # Convert MATLAB mesh (.inp) to a python mesh (.xdmf/.h5)
 def msh2xdmf(loadPath,savePath,filename):
 
-    msh_matlab = meshio.read(os.path.join(loadPath, filename + '.inp')) # read .inp mesh file from MATLAB and create meshio.Mesh object to store information describing the mesh
+    mesh_matlab = meshio.read(os.path.join(loadPath, filename + '.inp')) # read .inp mesh file from MATLAB and create meshio.Mesh object to store information describing the mesh
 
-    #Find mesh size params
-    num_vertex = msh_matlab.points.shape[0] 
-    num_cell = msh_matlab.cells[0].data.shape[0]
+    #Find MATLAB mesh size params
+    num_vertex = mesh_matlab.points.shape[0] 
+    num_cell = mesh_matlab.cells[0].data.shape[0]
 
     #Initialize FEniCS mesh 
     mesh_py = Mesh() # create empty dofin.Mesh object 
 
     editor = MeshEditor() # iniate MeshEditor object
     editor.open(mesh_py, type="tetrahedron",tdim=3, gdim=3) # define tetrahedron (or "hexahedron") mesh with 3 topologic and geometric dimensions
-    editor.init_vertices(num_vertex) # defining verticies
-    editor.init_cells(num_cell) # initialize cells
+    editor.init_vertices(num_vertex) # defining verticies in python mesh to be the same as MATLAB
+    editor.init_cells(num_cell) # initialize cells in python mesh to be the same as MATLAB
 
     for i in range(num_vertex):
-        editor.add_vertex(i, Point(msh_matlab.points[i,:])) # defining coordinates of ith vertex
+        editor.add_vertex(i, Point(mesh_matlab.points[i,:])) # defining coordinates of ith vertex
     for i in range(num_cell):
         try:		
-            _cell_dolfin = ufl_simplicial_order(msh_matlab.cells[0].data[i,:]) # defining verticies of the ith cell in ascending order 
+            _cell_dolfin = ufl_simplicial_order(mesh_matlab.cells[0].data[i,:]) # defining verticies of the ith cell in ascending order 
             editor.add_cell(i,_cell_dolfin) # add ith cell to MeshEditor object 
         except RuntimeError:
             print("Error in cell index %i"%i)
-            print(msh_matlab.cells[0].data[i,:4])
+            print(mesh_matlab.cells[0].data[i,:4])
             raise
     try: 
         print('==============================')
@@ -81,6 +81,7 @@ def msh2xdmf(loadPath,savePath,filename):
     # Now try opening the file
     mesh_py = Mesh()
 
+    # Final check on .xdmf form of Python mesh
     try:
         print('==============================')
         with XDMFFile(MPI.comm_world,filename+'.xdmf') as file:
@@ -92,4 +93,5 @@ def msh2xdmf(loadPath,savePath,filename):
     except RuntimeError as err:
         print("Error in reading the file")
         print(err)
+
 msh2xdmf(loadPath,savePath,filename)
