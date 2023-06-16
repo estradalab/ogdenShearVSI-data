@@ -1,4 +1,4 @@
-Dataset Title: MRI Raw Experimental Data Pipeline (as of 05/25/2023)
+Dataset Title: MRI Raw Experimental Data Pipeline (as of 06/16/2023)
 Dataset Creators: D.P. Nikolov, S. Srivastava, B.A. Abeid, U.M. Scheven, E.M. Arruda, K. Garikipati, J.B. Estrada
 Dataset Contact: J.B. Estrada jbestrad@umich.edu
 Funding: 1729166 (NSF)
@@ -18,6 +18,7 @@ Instruments:
 Software: MathWorks MATLAB v. 2020b or later (Natick, MA); Abaqus FEA (Providence, RI)
 
 Work in Progress: VSI_Incorporation (implementing experimental optimization pipeline)
+Work in Progress: Topological_Optimization (implementing sin wave shear testing sample shape optimization)
 -------------------------------------------
 Notes: 		Archive has all datasets and files from prior research and aren't intended for the main investigation of this paper
       		It's intended for future investigations of the authors of this paper, however the resources are publically available for miscellaneous investigation
