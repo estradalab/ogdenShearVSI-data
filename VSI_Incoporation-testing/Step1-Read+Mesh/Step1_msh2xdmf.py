@@ -1,3 +1,5 @@
+# Overview: read mesh defined by <filename>.inp and write mesh to <filename>.xdmf/.h5
+
 import meshio
 from dolfin import *
 # from dolfin_adjoint import *
@@ -21,9 +23,12 @@ def ufl_simplicial_order(P):
 
 # filename = "STA26_27"
 # loadPath = "./InputFiles/22-1215-Wavy_Sweep_v2/"
-loadPath = "./"
+loadPath = "./"  
 savePath = "."
-filename = "ShearWavy_6.25MMDisp_Amp_0.6_tet"
+# filename = "ShearWavy_6.25MMDisp_Amp_0.6_tet"
+filename = "sq-8mm_sin-per-4_sin-amp-2mm_tet"
+# filename = "ShearRect_6_25MMDisp_tet_test"
+# filename = "ShearWavy_6.25MMDisp_Amp_0.6_tet_new"
 
 # Convert MATLAB mesh (.inp) to a python mesh (.xdmf/.h5)
 def msh2xdmf(loadPath,savePath,filename):
@@ -36,7 +41,6 @@ def msh2xdmf(loadPath,savePath,filename):
 
     #Initialize FEniCS mesh 
     mesh_py = Mesh() # create empty dofin.Mesh object 
-
     editor = MeshEditor() # iniate MeshEditor object
     editor.open(mesh_py, type="tetrahedron",tdim=3, gdim=3) # define tetrahedron (or "hexahedron") mesh with 3 topologic and geometric dimensions
     editor.init_vertices(num_vertex) # defining verticies in python mesh to be the same as MATLAB
@@ -47,10 +51,12 @@ def msh2xdmf(loadPath,savePath,filename):
     for i in range(num_cell):
         try:		
             _cell_dolfin = ufl_simplicial_order(mesh_matlab.cells[0].data[i,:]) # defining verticies of the ith cell in ascending order 
-            editor.add_cell(i,_cell_dolfin) # add ith cell to MeshEditor object 
+            # print(_cell_dolfin[0:4])
+            # exit()
+            editor.add_cell(i,_cell_dolfin[0:4]) # add first 4 nodes (linear portion of tet) to ith connectivity matrix  to MeshEditor object 
         except RuntimeError:
             print("Error in cell index %i"%i)
-            print(mesh_matlab.cells[0].data[i,:4])
+            print(mesh_matlab.cells[0].data[i,:4]) # only read first 4 nodes of tet mesh element connectivity. effectively only reads linear part of quad tet.
             raise
     try: 
         print('==============================')
@@ -67,7 +73,6 @@ def msh2xdmf(loadPath,savePath,filename):
     except RuntimeError:
         print("Error ordering the mesh and generating mesh function")
         raise
-    
     # Saving python mesh to .xdmf file
     try:
         print('==============================')
@@ -88,7 +93,7 @@ def msh2xdmf(loadPath,savePath,filename):
             file.read(mesh_py)
             V = VectorFunctionSpace(mesh_py, "CG", 1)
             a = dof_to_vertex_map(V)
-            # np.savetxt('dof2vertex.txt',a, fmt='%i') # check DOF to vertex map
+            np.savetxt('dof2vertex.txt',a, fmt='%i') # save DOF to vertex map
             print('Mesh is readable')	
     except RuntimeError as err:
         print("Error in reading the file")
