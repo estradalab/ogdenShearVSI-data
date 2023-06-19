@@ -4,6 +4,7 @@ from dolfin import *
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 
 temp = 0
 filename_disp = 'disp_field_%i'%temp
@@ -25,25 +26,31 @@ W = FunctionSpace(mesh_py, "Lagrange", 1) # Create a scalar function space for '
 
 u = Function(V) # initialize function object
 
-X_node_Abaqus=pd.read_csv(datadir + '/X_061623_validationtest2.csv', header=None).to_numpy()[:,0:3] # make coordinate_data variable which contains node positions from ABAQUS .txt data
+X_Abaqus=pd.read_csv(datadir + '/X_061623_validationtest2.csv', header=None).to_numpy()[:,0:3] # make coordinate_data variable which contains node positions from ABAQUS .txt data
 displacement_elem_Abaqus = [0]*len(TimeStep) # initialize 'displacement_data' as a zeros vector of dimension 1 by len(NumStepList) (currently yields a 1 by 1).
 
 # Check geometries are the same between Abaqus output and mesh object from .inp file in Step1
-check_pos = mesh_py.coordinates()
-check_disp = u.compute_vertex_values(mesh_py)
+X_mesh = mesh_py.coordinates()
+U_mesh = u.compute_vertex_values(mesh_py)
 filename_geom = "GeometryCheck.png"
 if os.path.exists(filename_geom):
     os.remove(filename_geom)
 fig, axs = plt.subplots(1, 2, figsize=(10, 5))
-plt.xlabel("x (mm)")
-plt.ylabel("y (mm)")
-axs[0].scatter(X_node_Abaqus[:,0],X_node_Abaqus[:,1],marker=",",alpha=0.1,color='blue',label='From .txt ABAQUS results file')
-axs[0].set_title('From .txt ABAQUS results file')
-axs[1].scatter(check_pos[:,0],check_pos[:,1],marker=",",alpha=0.1,color='red',label='From .inp file')
-axs[1].set_title('From .inp file')
-plt.legend()
+axs[0].scatter(X_Abaqus[:,0],X_Abaqus[:,1],marker=",",alpha=0.1,color='blue',label='From .txt ABAQUS results file')
+axs[0].set_title('From .csv Abaqus output')
+axs[0].axis('equal')
+axs[0].set_xlabel("x (mm)")
+axs[0].set_ylabel("y (mm)")
+axs[1].scatter(X_mesh[:,0],X_mesh[:,1],marker=",",alpha=0.1,color='red',label='From .inp file')
+axs[1].set_title('From .inp file Abaqus input')
+axs[1].axis('equal')
+axs[1].set_xlabel("x (mm)")
+axs[1].set_ylabel("y (mm)")
 plt.savefig(filename_geom)
 plt.close()
+print("x lims [",np.min(X_mesh[:,0]),np.max(X_mesh[:,0]),"]")
+print("y lims [",np.min(X_mesh[:,1]),np.max(X_mesh[:,1]),"]")
+print("z lims [",np.min(X_mesh[:,2]),np.max(X_mesh[:,2]),"]")
 
 for count,tid in enumerate(TimeStep):
 	# displacement_elem_ABAQUS[count]=pd.read_csv(datadir + '/disp_'+str(tid)+'.txt', header=None).to_numpy()[:,0:3]
@@ -53,24 +60,24 @@ DOF2VertexMap = pd.read_csv('dof2vertex.txt', header=None).to_numpy()[:,0:3] # R
 
 X_node_mesh = mesh_py.coordinates()
 
-num_nodes_csv,_= X_node_Abaqus.shape
+num_nodes_csv,_= X_Abaqus.shape
 num_nodes_mesh,_=X_node_mesh.shape
 # print('num_nodes_csv =',num_nodes_csv)
 # print('num_nodes_inp =',num_nodes_mesh)
 
 u_array=np.zeros((num_nodes_mesh*3, len(TimeStep))) # create array (1 x num_coordinate in mesh) of 0's to preallocate
 index_test = np.zeros(num_nodes_mesh)
-if X_node_Abaqus.shape == X_node_mesh.shape:
+if X_Abaqus.shape == X_node_mesh.shape:
   print("Abaqus output and 'mesh' have the same number of nodes")
-  if np.max(np.linalg.norm(X_node_Abaqus-X_node_mesh))/X_node_Abaqus.shape[0] < 0.0001: # interpolate if nodes are far from each other
+  if np.max(np.linalg.norm(X_Abaqus-X_node_mesh))/X_Abaqus.shape[0] > 0.0001: # interpolate if nodes are far from each other
     print("WARNING: Nodal points or ordering may be different between mesh and Abaqus output.")
-    print("WARNING: The average spacing between data and mesh nodes is",np.sum(np.linalg.norm(X_node_Abaqus-X_node_mesh))/X_node_Abaqus.shape[0])
-    print("WARNING: The max spacing between data and mesh nodes is",np.max(np.linalg.norm(X_node_Abaqus-X_node_mesh))/X_node_Abaqus.shape[0])
+    print("WARNING: The average spacing between data and mesh nodes is",np.sum(np.linalg.norm(X_Abaqus-X_node_mesh))/X_Abaqus.shape[0])
+    print("WARNING: The max spacing between data and mesh nodes is",np.max(np.linalg.norm(X_Abaqus-X_node_mesh))/X_Abaqus.shape[0])
     for i in range(num_nodes_mesh): # looping over all nodes in data 
       # Find nearest csv node for each node in 'mesh' made with .inp file
       X=X_node_mesh[i] # import coordinates for node i in 'mesh'
       index=-1
-      _dist = X_node_Abaqus[:,:]-X*np.ones([num_nodes_csv, 1]) 
+      _dist = X_Abaqus[:,:]-X*np.ones([num_nodes_csv, 1]) 
       _dist = np.linalg.norm(_dist,axis = 1) # calculating distance from X[i] to each node 
       index = np.argmin(_dist) # index of element located closest to the ith node
       index_test[i] = index
