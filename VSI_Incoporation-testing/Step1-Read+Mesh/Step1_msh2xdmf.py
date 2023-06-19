@@ -21,17 +21,14 @@ def vtk2gmsh_hex(P):
 def ufl_simplicial_order(P):
     return np.sort(np.array(P), axis=None).tolist()	 # sorts vector P in ascending order
 
-# filename = "STA26_27"
 # loadPath = "./InputFiles/22-1215-Wavy_Sweep_v2/"
 loadPath = "./"  
 savePath = "."
-# filename = "ShearWavy_6.25MMDisp_Amp_0.6_tet"
 filename = "sq-8mm_sin-per-4_sin-amp-2mm_tet"
-# filename = "ShearRect_6_25MMDisp_tet_test"
-# filename = "ShearWavy_6.25MMDisp_Amp_0.6_tet_new"
 
-# Convert MATLAB mesh (.inp) to a python mesh (.xdmf/.h5)
-def msh2xdmf(loadPath,savePath,filename):
+
+# Convert Abaqus/MATLAB quad tet mesh (.inp) to a linear tet python mesh (.xdmf/.h5)
+def inp2xdmf(loadPath,savePath,filename):
 
     mesh_matlab = meshio.read(os.path.join(loadPath, filename + '.inp')) # read .inp mesh file from MATLAB and create meshio.Mesh object to store information describing the mesh
 
@@ -53,10 +50,10 @@ def msh2xdmf(loadPath,savePath,filename):
             _cell_dolfin = ufl_simplicial_order(mesh_matlab.cells[0].data[i,:]) # defining verticies of the ith cell in ascending order 
             # print(_cell_dolfin[0:4])
             # exit()
-            editor.add_cell(i,_cell_dolfin[0:4]) # add first 4 nodes (linear portion of tet) to ith connectivity matrix  to MeshEditor object 
+            editor.add_cell(i,_cell_dolfin[0:4]) # add first 4 nodes (linear portion of tet) to ith connectivity matrix  to MeshEditor object. Effectively converts quad --> linear tet mesh.
         except RuntimeError:
             print("Error in cell index %i"%i)
-            print(mesh_matlab.cells[0].data[i,:4]) # only read first 4 nodes of tet mesh element connectivity. effectively only reads linear part of quad tet.
+            print(mesh_matlab.cells[0].data[i,:4])
             raise
     try: 
         print('==============================')
@@ -93,10 +90,10 @@ def msh2xdmf(loadPath,savePath,filename):
             file.read(mesh_py)
             V = VectorFunctionSpace(mesh_py, "CG", 1)
             a = dof_to_vertex_map(V)
-            np.savetxt('dof2vertex.txt',a, fmt='%i') # save DOF to vertex map
+            np.savetxt('dof2vertex.txt',a, fmt='%i') # save DOF to vertex map for S1_copyDisp2Mesh.py
             print('Mesh is readable')	
     except RuntimeError as err:
         print("Error in reading the file")
         print(err)
 
-msh2xdmf(loadPath,savePath,filename)
+inp2xdmf(loadPath,savePath,filename)
