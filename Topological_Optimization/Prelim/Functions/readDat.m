@@ -1,4 +1,4 @@
-function [U,F] = readDat(fileName,nodeLength)
+function [U,F,S12,sig] = readDat(fileName,nodeLength)
 % Stores .dat file into MatLab cell array, A
 fid = fopen([fileName '_test.dat'],'r');
 i=1;
@@ -19,43 +19,82 @@ for j = 1:length(A)-1
         idx_search = [idx_search j];
     end
 end
-
 indx = max(idx_search);
 ii = indx(end)+19;
 
 % Store displacement gradient into F cell matrix
 while length(strsplit(A{ii})) > 1
     temp = strsplit(A{ii});
-    if str2double(temp{3}) ~= 1
-        F_temp{1,1}(str2double(temp{2})) = F_temp{1,1}(str2double(temp{2}))+str2double(temp{4});
-        F_temp{2,2}(str2double(temp{2})) = F_temp{2,2}(str2double(temp{2}))+str2double(temp{5});
-        F_temp{3,3}(str2double(temp{2})) = F_temp{3,3}(str2double(temp{2}))+str2double(temp{6});
-        F_temp{1,2}(str2double(temp{2})) = F_temp{1,2}(str2double(temp{2}))+str2double(temp{7});
-        F_temp{1,3}(str2double(temp{2})) = F_temp{1,3}(str2double(temp{2}))+str2double(temp{8});
-        F_temp{2,3}(str2double(temp{2})) = F_temp{2,3}(str2double(temp{2}))+str2double(temp{9});
-        F_temp{2,1}(str2double(temp{2})) = F_temp{2,1}(str2double(temp{2}))+str2double(temp{10});
-        F_temp{3,1}(str2double(temp{2})) = F_temp{3,1}(str2double(temp{2}))+str2double(temp{11});
-        F_temp{3,2}(str2double(temp{2})) = F_temp{3,2}(str2double(temp{2}))+str2double(temp{12});
-    else
-        F_temp{1,1}(str2double(temp{2})) = str2double(temp{4});
-        F_temp{2,2}(str2double(temp{2})) = str2double(temp{5});
-        F_temp{3,3}(str2double(temp{2})) = str2double(temp{6});
-        F_temp{1,2}(str2double(temp{2})) = str2double(temp{7});
-        F_temp{1,3}(str2double(temp{2})) = str2double(temp{8});
-        F_temp{2,3}(str2double(temp{2})) = str2double(temp{9});
-        F_temp{2,1}(str2double(temp{2})) = str2double(temp{10});
-        F_temp{3,1}(str2double(temp{2})) = str2double(temp{11});
-        F_temp{3,2}(str2double(temp{2})) = str2double(temp{12});
+    F{1,1}(str2double(temp{2})) = str2double(temp{3});
+    F{2,2}(str2double(temp{2})) = str2double(temp{4});
+    F{3,3}(str2double(temp{2})) = str2double(temp{5});
+    F{1,2}(str2double(temp{2})) = str2double(temp{6});
+    F{1,3}(str2double(temp{2})) = str2double(temp{7});
+    F{2,3}(str2double(temp{2})) = str2double(temp{8});
+    F{2,1}(str2double(temp{2})) = str2double(temp{9});
+    F{3,1}(str2double(temp{2})) = str2double(temp{10});
+    F{3,2}(str2double(temp{2})) = str2double(temp{11});
+    ii = ii + 1;
+end
+
+% Finds the locations that lists all element shear stresses
+% Displacement-controlled surface
+idx_search = [];
+for j = 1:length(A)-1
+    splitline = strsplit(A{j});
+    if ~isempty(find(strcmp(splitline, 'ASSEMBLY_BC-SET-1'),1))
+        idx_search = [idx_search j];
     end
-    F{1,1}(str2double(temp{2})) = F_temp{1,1}(str2double(temp{2}))/(str2double(temp{3}));
-    F{2,2}(str2double(temp{2})) = F_temp{2,2}(str2double(temp{2}))/(str2double(temp{3}));
-    F{3,3}(str2double(temp{2})) = F_temp{3,3}(str2double(temp{2}))/(str2double(temp{3}));
-    F{1,2}(str2double(temp{2})) = F_temp{1,2}(str2double(temp{2}))/(str2double(temp{3}));
-    F{1,3}(str2double(temp{2})) = F_temp{1,3}(str2double(temp{2}))/(str2double(temp{3}));
-    F{2,3}(str2double(temp{2})) = F_temp{2,3}(str2double(temp{2}))/(str2double(temp{3}));
-    F{2,1}(str2double(temp{2})) = F_temp{2,1}(str2double(temp{2}))/(str2double(temp{3}));
-    F{3,1}(str2double(temp{2})) = F_temp{3,1}(str2double(temp{2}))/(str2double(temp{3}));
-    F{3,2}(str2double(temp{2})) = F_temp{3,2}(str2double(temp{2}))/(str2double(temp{3}));
+end
+indx = max(idx_search);
+ii = indx(end)+5;
+
+while length(strsplit(A{ii})) > 1
+    temp = strsplit(A{ii});
+    S12.bc1(str2double(temp{2})) = str2double(temp{3});
+    ii = ii + 1;
+end
+S12.bc1(S12.bc1==0) = NaN; % All non-bc elements are NaN values
+S12.bc1(length(S12.bc1)+1:length(F{1,2})) = NaN;
+
+% Encastered surface
+idx_search = [];
+for j = 1:length(A)-1
+    splitline = strsplit(A{j});
+    if ~isempty(find(strcmp(splitline, 'ASSEMBLY_BC-SET-2'),1))
+        idx_search = [idx_search j];
+    end
+end
+indx = max(idx_search);
+ii = indx(end)+5;
+
+while length(strsplit(A{ii})) > 1
+    temp = strsplit(A{ii});
+    S12.bc2(str2double(temp{2})) = str2double(temp{3});
+    ii = ii + 1;
+end
+S12.bc2(S12.bc2==0) = NaN; % All non-bc elements are NaN values
+S12.bc2(length(S12.bc2)+1:length(F{1,2})) = NaN;
+
+% All stress elements
+idx_search = [];
+for j = 1:length(A)-1
+    splitline = strsplit(A{j});
+    if ~isempty(find(strcmp(splitline, 'S11'),1)) && ~isempty(find(strcmp(splitline, 'S22'),1)) && ~isempty(find(strcmp(splitline, 'S33'),1))
+        idx_search = [idx_search j];
+    end
+end
+indx = max(idx_search);
+ii = indx(end)+3;
+
+while length(strsplit(A{ii})) > 1
+    temp = strsplit(A{ii});
+    sig{1,1}(str2double(temp{2})) = str2double(temp{3});
+    sig{2,2}(str2double(temp{2})) = str2double(temp{4});
+    sig{3,3}(str2double(temp{2})) = str2double(temp{5});
+    sig{1,2}(str2double(temp{2})) = str2double(temp{6});
+    sig{1,3}(str2double(temp{2})) = str2double(temp{7});
+    sig{2,3}(str2double(temp{2})) = str2double(temp{8});
     ii = ii + 1;
 end
 

@@ -31,13 +31,19 @@ for i = 1:length(A)
 end
 
 % Finds location to add a set of nodes, RP, and requests an output of
-% displacements, U1, U2, U3
-indx = find(strcmp(A,'*End Instance'));
-A_temp = {A{1:indx+1},['*Nset, nset=RP, instance=' instance_name ', generate'],['     1,  ' num2str(nodeLength) ',      1']...
-    ,'*Elset, elset=RP, instance=Part-1-1, generate',['     1,  ' num2str(elLength) ',      1'],A{indx+2:end}};
-B = A_temp;
+% displacements, U, DG, S12
+% indx = find(strcmp(A,'*End Instance'));
+% A_temp = {A{1:indx+1},['*Nset, nset=RP, instance=' instance_name ', generate'],['     1,  ' num2str(nodeLength) ',      1']...
+%     ,'*Elset, elset=RP, instance=Part-1-1, generate',['     1,  ' num2str(elLength) ',      1'],A{indx+2:end}};
+B = A; % B = A_temp;
 indx = find(strcmp(B,'*End Step')); % Only for 1-step files
-A_temp = {B{1:indx-1},'*EL PRINT','DG',B{indx:end}};
+A_temp = {B{1:indx-1},'*EL PRINT, position = centroidal','S',B{indx:end}};
+B = A_temp;
+A_temp = {B{1:indx-1},'*EL PRINT, elset = bc-set-2, position = centroidal','S12',B{indx:end}};
+B = A_temp;
+A_temp = {B{1:indx-1},'*EL PRINT, elset = bc-set-1, position = centroidal','S12',B{indx:end}};
+B = A_temp;
+A_temp = {B{1:indx-1},'*EL PRINT, position = centroidal','DG',B{indx:end}};
 B = A_temp;
 A_temp = {B{1:indx-1},'*NODE PRINT','U',B{indx:end}};
 B = A_temp;

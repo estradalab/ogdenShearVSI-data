@@ -41,6 +41,14 @@ switch params
         coef.model = 'Og_3';
         coef.val = [0.4017 1.3 0.00295 5 0.00981 -2 0 0 0];
                       % [mu_1 a_1 mu_2 a_2 mu_3 a_3 k_1 k_2 k_3]
+                      % Units are in MPa
+                      % See https://solidmechanics.org/text/Chapter3_5/Chapter3_5.htm
+                      % Note the correction from the original Treloar data
+                      % factors. This is due to the original paper
+                      % utilizing the original formulation of the Ogden
+                      % model. For the Abaqus formulation, all mu_i values
+                      % should be positive (https://polymerfem.com/4-things-you-didnt-know-about-the-ogden-model/).
+                      % Correction factor: mu_i =a_i*mu_orig_i/2;
 end
 
 % Set all node coordinates as a matrix
@@ -70,6 +78,21 @@ Nodes.bc1 = Surf.y1;
 Nodes.bc2 = Surf.y2;
 Nodes.presDisp.dir = 'x';
 Nodes.presDisp.mag = pres_disp;
+
+% Creating the element set associated with boundary conditions
+idx1 = [];
+for k = 1:length(Nodes.bc1)
+    [row1,~] = find(TRI==Nodes.bc1(k));
+    idx1 = [idx1;row1];
+end
+Elements_Sets{1}.bc1 = unique(idx1);
+
+idx2 = [];
+for k = 1:length(Nodes.bc2)
+    [row2,~] = find(TRI==Nodes.bc2(k));
+    idx2 = [idx2;row2];
+end
+Elements_Sets{1}.bc2 = unique(idx2);
 
  % Nodes indices vector for each Elements{i}
 for i=1:1:size(TRI,1) 

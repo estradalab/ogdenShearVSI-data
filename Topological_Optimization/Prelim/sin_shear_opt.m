@@ -11,10 +11,16 @@ function output = sin_shear_opt(d,N,A,varargin)
 % varargin - test settings (provided as test_settings.mat as provided)
 
 % Output structure:
-% X_ref_node - [X,Y,Z] coordinates of all nodes
-%       reference position array is in the form X_ref_node(node,dir_[1/2/3])
+% X_ref - [X,Y,Z] coordinates of all nodes (X_ref.node) and elements (X_ref.el)
+%       reference position array is in the form X_ref.[node/el](node,dir_[1/2/3])
 % U - [U1,U2,U3] displacements in all three cartesian direction of all nodes
 %       displacement array is in the form U(node,dir_[1/2/3])
+% S12 - shear stress along boundary controlled surfaces
+%       S12.bc1 is displaced surface; S12.bc2 is encastered surface
+%       All other elements that are not of the boundary surfaces are NaN values
+% sig - stress tensor for all elements
+%       stress tensor is in the form sig{i,j}(element)
+% traction - traction required to pull specimen in shear (units - Newtons)
 % F_t - deformation gradient for a single time step for all elements
 %       deformation gradient is in the form F_t{time}{i,j}(element)
 % k - stretch state decomposition for all elements
@@ -23,6 +29,9 @@ function output = sin_shear_opt(d,N,A,varargin)
 % Salpha_all - alpha sensitivity map for pre-selected alpha parameter
 % Smu_all - mu sensitivity map for pre-selected alpha parameter
 %       sensitivity maps are in the form S_all(lambda,alpha,k)
+% H - 2D histogram of simulation
+%       histograms are in the form H(lambda,k)
+% S(1) - alpha goodness metric; S(2) - mu goodness metric
 
 % Computer specs for approximate times:
 %   Processor: Intel(R) Xeon(R) CPU E5-1620 v2 @ 3.70GHz
@@ -60,14 +69,35 @@ end
 
 fileName = ['sq-' num2str(d) 'mm_sin-per-' num2str(N) '_sin-amp-' num2str(A) 'mm_' settings.mesh];
 
-% Approximate processing time for test settings mesh generation: 10 seconds
+% Approximate processing time for test settings mesh generation: 15 seconds
+tic
 [X,Y,Z,ElNode] = genMesh(fileName,settings.mesh,settings.params,settings.pres_disp,...
     settings.mesh_ref,settings.abaqus_ver,settings.elementType,d,N,A,settings.l);
-output.X_ref_node = [X,Y,Z]; % Nodal positions
-% Approximate processing time for test settings simulation: 150 seconds
+output.X_ref.node = [X,Y,Z]; % Nodal positions
+% Element centroidal positions
+for idx = 1:length(ElNode)
+    for i = 1:8
+        n(i) = ElNode(idx,i);
+    end
+    output.X_ref.el(idx,:) = [mean(X(n(:))),mean(Y(n(:))),mean(Z(n(:)))];
+end
+toc
+
+% Approximate processing time for test settings simulation: 144 seconds
 % Output deformation gradient
-[output.U,F] = runAbaqus(fileName,X,Y,Z,ElNode);
+tic
+[output.U,F,output.S12,output.sig] = runAbaqus(fileName,X,Y,Z,ElNode);
 movefile([fileName '.inp'],['Data/' fileName]);
+toc
+
+% Calculation for traction force
+% First, calculate arc length of sine wave
+x = linspace(0,settings.l,100); dx = diff(x);
+y = A*sin(2*pi*N*x/settings.l); dy = diff(y);
+arc_l = sum(sqrt(dx.^2+dy.^2));
+% Then, backward calculate V = tau*A to determine shear force, and thus traction
+area = arc_l*d;
+output.traction = area*nanmean([nanmean(output.S12.bc1) nanmean(output.S12.bc2)]);
 
 % Approximate processing time for test settings decomposition calculation: 4 seconds
 % Carry out the decomposition of F to k/lambdabda
@@ -95,6 +125,7 @@ end
 
 % Make 2D histogram data
 [~,~,h] = ndhist(output.lam{1}(:),output.k{1}(:),'axis',[1,0;settings.maxLam,1],'fixed_bin_res',settings.bin_res);
+close all % Closes 2D histogram of the data
 output.H = h';
 
 % Cross-convolution to determine goodness metric, S(1) = S_alpha; S(2) = S_mu;

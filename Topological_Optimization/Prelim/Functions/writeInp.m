@@ -48,10 +48,14 @@ fprintf(fileID,['*Nset, nset=' Elements_Sets{1}.Name ', generate\n1, ' num2str(N
 % Prescribed boundary condition
 fprintf(fileID,'*Nset, nset=bc-set-1, instance=Part-1-1\n');
 bc(fileID,Nodes.bc1)
+fprintf(fileID,'*Elset, elset=bc-set-1, instance=Part-1-1\n');
+bc(fileID,Elements_Sets{1}.bc1)
 
 % Fixed boundary condition
 fprintf(fileID,'*Nset, nset=bc-set-2, instance=Part-1-1\n');
 bc(fileID,Nodes.bc2)
+fprintf(fileID,'*Elset, elset=bc-set-2, instance=Part-1-1\n');
+bc(fileID,Elements_Sets{1}.bc2)
 
 fprintf(fileID,['*End Assembly\n**\n** ELEMENT CONTROLS\n**\n*Section' ...
     ' Controls, name=EC-1, hourglass=ENHANCED\n1., 1., 1.\n**\n** MATERIALS\n' ...
