@@ -41,13 +41,13 @@ function output = sin_shear_opt(d,N,A,varargin)
 %   MATLAB: R2022a
 
 % For test case in the approximate time calculations, use 
-% clc;clear;addpath(genpath('Functions'));load('test_settings_10000.mat');output = sin_shear_opt(8,4,2,settings); fileName = 'sq-8mm_sin-per-4_sin-amp-2mm_tet'; save(['Data/' fileName '/output.mat'],'output');
+% Run test_100.m
 
 % For fast test case, use
-% clc;clear;addpath(genpath('Functions'));load('test_settings_100.mat');output = sin_shear_opt(8,4,0.6,settings); fileName = 'sq-8mm_sin-per-4_sin-amp-0.6mm_tet'; save(['Data/' fileName '/output.mat'],'output');
+% Run test_10000.m
 
-% If you'd like to rerun test cases, make sure to move or delete the files
-% rmdir(['Data/' fileName], 's')
+% If you'd like to rerun test cases, files will be overwritten, so do save
+% locally before running multiple times.
 
 addpath(genpath('Functions'))
 
@@ -69,8 +69,7 @@ end
 
 fileName = ['sq-' num2str(d) 'mm_sin-per-' num2str(N) '_sin-amp-' num2str(A) 'mm_' settings.mesh];
 
-% Approximate processing time for test settings mesh generation: 15 seconds
-tic
+% Approximate processing time for test settings mesh generation: 23 seconds
 [X,Y,Z,ElNode] = genMesh(fileName,settings.mesh,settings.params,settings.pres_disp,...
     settings.mesh_ref,settings.abaqus_ver,settings.elementType,d,N,A,settings.l);
 output.X_ref.node = [X,Y,Z]; % Nodal positions
@@ -81,14 +80,11 @@ for idx = 1:length(ElNode)
     end
     output.X_ref.el(idx,:) = [mean(X(n(:))),mean(Y(n(:))),mean(Z(n(:)))];
 end
-toc
 
-% Approximate processing time for test settings simulation: 144 seconds
+% Approximate processing time for test settings simulation: 115 seconds
 % Output deformation gradient
-tic
 [output.U,F,output.S12,output.sig] = runAbaqus(fileName,X,Y,Z,ElNode);
 movefile([fileName '.inp'],['Data/' fileName]);
-toc
 
 % Calculation for traction force
 % First, calculate arc length of sine wave

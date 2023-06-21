@@ -47,7 +47,7 @@ switch params
                       % factors. This is due to the original paper
                       % utilizing the original formulation of the Ogden
                       % model. For the Abaqus formulation, all mu_i values
-                      % should be positive.
+                      % should be positive (https://polymerfem.com/4-things-you-didnt-know-about-the-ogden-model/).
                       % Correction factor: mu_i =a_i*mu_orig_i/2;
 end
 
@@ -65,9 +65,9 @@ if A == 0 || N == 0
 else % For sinusoidal surfaces
     Surf.y1 = []; Surf.y2 = [];
     for j = 1:length(Nodes.gen)
-        if ismembertol(y(j),edge.func{1}(x(j)))
+        if ismembertol(y(j),edge.func{1}(x(j)),1e-4)
             Surf.y1 = [Surf.y1;j];
-        elseif ismembertol(y(j),edge.func{3}(x(j)))
+        elseif ismembertol(y(j),edge.func{3}(x(j)),1e-4)
             Surf.y2 = [Surf.y2;j];
         end
     end
@@ -89,7 +89,7 @@ Elements_Sets{1}.bc1 = unique(idx1);
 
 idx2 = [];
 for k = 1:length(Nodes.bc2)
-    [row2,~] = find(TRI==Nodes.bc1(k));
+    [row2,~] = find(TRI==Nodes.bc2(k));
     idx2 = [idx2;row2];
 end
 Elements_Sets{1}.bc2 = unique(idx2);

@@ -8,6 +8,8 @@ w = d; h = d;
 
 % Determine maximum element size
 mesh_ref.maxelsize = nthroot(l*w*h*6*sqrt(2)/mesh_ref.num_of_el,3);
+sin_ref_scale = 3;
+tol = 0.01;
 
 % Sinusoidal parameters
 edge.coef{1} = -A; % Amplitude
@@ -20,7 +22,7 @@ if A == 0 || N == 0
     line_res = [4 4 4 4];
 else
     edge.shape{1} = 'sin'; edge.shape{2} = 'line'; edge.shape{3} = 'sin'; edge.shape{4} = 'line';
-    line_res = [round(l/mesh_ref.maxelsize)+4 4 round(l/mesh_ref.maxelsize)+4 4]; 
+    line_res = [sin_ref_scale*round(l/mesh_ref.maxelsize)+4 4 sin_ref_scale*round(l/mesh_ref.maxelsize)+4 4]; 
 end
 edge.func{1} = @(x) edge.coef{1}*sin(2*pi*edge.period*x/abs(l)) + w/2;
 edge.func{3} = @(x) edge.coef{3}*sin(2*pi*edge.period*x/abs(l)) - w/2;
@@ -65,9 +67,9 @@ if A == 0 || N == 0
 else % For sinusoidal surfaces
     Surf.y1 = []; Surf.y2 = [];
     for j = 1:length(Nodes.gen)
-        if ismembertol(y(j),edge.func{1}(x(j)))
+        if ismembertol(y(j),edge.func{1}(x(j)),tol*mesh_ref.maxelsize)
             Surf.y1 = [Surf.y1;j];
-        elseif ismembertol(y(j),edge.func{3}(x(j)))
+        elseif ismembertol(y(j),edge.func{3}(x(j)),tol*mesh_ref.maxelsize)
             Surf.y2 = [Surf.y2;j];
         end
     end
