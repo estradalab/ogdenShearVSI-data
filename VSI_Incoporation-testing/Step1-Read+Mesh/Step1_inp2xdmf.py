@@ -102,11 +102,11 @@ def inp2xdmf(loadPath,savePath,filename):
         print(err)
 
 # LOOPING CODE: comment out regular inp2xdmf function call at the end of the code and uncomment the code below to run the script in a loop 
-filenames = ["sq-8mm_sin-per-2_sin-amp-1mm_tet","sq-8mm_sin-per-2_sin-amp-2mm_tet","sq-8mm_sin-per-2_sin-amp-3mm_tet","sq-8mm_sin-per-4_sin-amp-1mm_tet","sq-8mm_sin-per-4_sin-amp-2mm_tet","sq-8mm_sin-per-4_sin-amp-3mm_tet"]
-for i in range(len(filenames)):
-    print("Running file",i+1,"of",len(filenames))
-    loadPath_loop = "/home/fenics/shared/ogdenShearVSI-data/sensitivity_data/" + str(filenames[i]) + "/"
-    savePath_loop = loadPath_loop + "VSI/"
-    inp2xdmf(loadPath_loop,savePath_loop,str(filenames[i]))
+# filenames = ["sq-8mm_sin-per-2_sin-amp-1mm_tet","sq-8mm_sin-per-2_sin-amp-2mm_tet","sq-8mm_sin-per-2_sin-amp-3mm_tet","sq-8mm_sin-per-4_sin-amp-1mm_tet","sq-8mm_sin-per-4_sin-amp-2mm_tet","sq-8mm_sin-per-4_sin-amp-3mm_tet"]
+# for i in range(len(filenames)):
+#     print("Running file",i+1,"of",len(filenames))
+#     loadPath_loop = "/home/fenics/shared/ogdenShearVSI-data/sensitivity_data/" + str(filenames[i]) + "/"
+#     savePath_loop = loadPath_loop + "VSI/"
+#     inp2xdmf(loadPath_loop,savePath_loop,str(filenames[i]))
 
-# inp2xdmf(loadPath,savePath,filename)
+inp2xdmf(loadPath,savePath,filename)
