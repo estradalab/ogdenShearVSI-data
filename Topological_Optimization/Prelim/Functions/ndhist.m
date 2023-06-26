@@ -116,6 +116,7 @@
 %%
 function [edgesX2,edgesY2,N,h] = ndhist(z,varargin)
 
+figure(10) % Only data required (changed ln 509 too)
 % hold_state = ishold;
 colormap(linspecer);
 %% Errors and warning for bad data
@@ -504,6 +505,8 @@ if pointsFlag
 end
 
 % if ~hold_state, hold off; end;
+
+close(10)
 
 end % ndhist function over 
 

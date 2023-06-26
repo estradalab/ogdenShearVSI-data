@@ -49,13 +49,12 @@ function output = sin_shear_opt(d,N,A,varargin)
 % If you'd like to rerun test cases, files will be overwritten, so do save
 % locally before running multiple times.
 
-addpath(genpath('Functions'))
-
 % Set parameters
 if isempty(varargin)
+    % Current settings are meant for the Nelder-Mead optimizer
     settings.params = 'ogden-treloar'; % Utilizing treloar data for ogden model parameters
     settings.mesh_ref.num_of_el = 10000; % Sets approximate number of elements of the mesh
-    settings.pres_disp = 3; % Prescribed displacement of 3 mm (minimum of a = 8 mm is required)
+    settings.pres_disp = 3; % Prescribed displacement of 3 mm
     settings.mesh = 'tet'; % Quadratic tetrahedral elements (other element types are in progress)
     settings.l = 40; % Sample length is 40 mm
     settings.abaqus_ver = '2021'; % Abaqus version
@@ -63,6 +62,9 @@ if isempty(varargin)
     settings.alpha = 2; % Alpha parameter of Ogden model used to calculate sensitivity mapping
     settings.maxLam = 2; % Maximum lambda used for the 2D histogram and sensitivity plots (2 decimal point-limit)
     settings.bin_res = 0.01; % Bin resolution for 2D histogram and sensitivity plot
+    settings.parallel = false; % Uses parfor loop in decomposition loop. Required as false for optimization
+    settings.sigma_calc = false; % Optional acquisition of sigma tensor for entire sample
+    settings.save = 'optim'; % 'none' - doesn't save data; 'test' - saves data for test; 'optim' - saves data for optimization runs
 else
     settings = varargin{1};
 end
@@ -81,9 +83,9 @@ for idx = 1:length(ElNode)
     output.X_ref.el(idx,:) = [mean(X(n(:))),mean(Y(n(:))),mean(Z(n(:)))];
 end
 
-% Approximate processing time for test settings simulation: 115 seconds
+% Approximate processing time for test settings simulation: 99 seconds
 % Output deformation gradient
-[output.U,F,output.S12,output.sig] = runAbaqus(fileName,X,Y,Z,ElNode);
+[output.U,F,output.S12,output.sig] = runAbaqus(fileName,X,settings.sigma_calc);
 movefile([fileName '.inp'],['Data/' fileName]);
 
 % Calculation for traction force
@@ -95,10 +97,10 @@ arc_l = sum(sqrt(dx.^2+dy.^2));
 area = arc_l*d;
 output.traction = area*nanmean([nanmean(output.S12.bc1) nanmean(output.S12.bc2)]);
 
-% Approximate processing time for test settings decomposition calculation: 4 seconds
+% Approximate processing time for test settings decomposition calculation: 1 seconds
 % Carry out the decomposition of F to k/lambdabda
 output.F_t{1} = F;
-[output.k,output.lam,~] = param_decoup_main(output.F_t);
+[output.k,output.lam,~] = param_decoup_main(output.F_t,settings.parallel);
 
 % Store the lambda as a column vector
 lambda = 1:settings.bin_res:settings.maxLam;
@@ -121,7 +123,6 @@ end
 
 % Make 2D histogram data
 [~,~,h] = ndhist(output.lam{1}(:),output.k{1}(:),'axis',[1,0;settings.maxLam,1],'fixed_bin_res',settings.bin_res);
-close all % Closes 2D histogram of the data
 output.H = h';
 
 % Cross-convolution to determine goodness metric, S(1) = S_alpha; S(2) = S_mu;
@@ -130,5 +131,19 @@ mat_temp2 = squeeze(output.Smu_all(:,1,:));
 nrmlz = sum(output.H(:));
 output.S(1) = sum(output.H(:).*mat_temp(:))/nrmlz;
 output.S(2) = sum(output.H(:).*mat_temp2(:))/nrmlz;
+
+switch settings.save
+    case 'none'
+    case 'test'
+        writematrix(output.X_ref.node,['Data/' fileName '/x_ref_' fileName '.csv']); 
+        writematrix(output.U,['Data/' fileName '/node_disp_' fileName '.csv']); 
+        save(['Data/' fileName '/output.mat'],'output');
+        movefile(['Data/' fileName],['Data/Test_' fileName]);
+    case 'optim'
+        writematrix(output.X_ref.node,['Data/' fileName '/x_ref_' fileName '.csv']); 
+        writematrix(output.U,['Data/' fileName '/node_disp_' fileName '.csv']); 
+        save(['Data/' fileName '/output.mat'],'output');
+        movefile(['Data/' fileName],['Data/Iter' num2str(length(dir('Data/Iter*'))+1) '_' fileName]);
+end
 
 end

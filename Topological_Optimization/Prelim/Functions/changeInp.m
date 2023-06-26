@@ -1,4 +1,4 @@
-function changeInp(fileName,nodeLength,elLength)
+function changeInp(fileName,sigma_calc)
 % Stores .inp file into MatLab cell array, A
 fid = fopen([fileName '.inp'],'r');
 i=1;
@@ -32,13 +32,12 @@ end
 
 % Finds location to add a set of nodes, RP, and requests an output of
 % displacements, U, DG, S12
-% indx = find(strcmp(A,'*End Instance'));
-% A_temp = {A{1:indx+1},['*Nset, nset=RP, instance=' instance_name ', generate'],['     1,  ' num2str(nodeLength) ',      1']...
-%     ,'*Elset, elset=RP, instance=Part-1-1, generate',['     1,  ' num2str(elLength) ',      1'],A{indx+2:end}};
-B = A; % B = A_temp;
+B = A;
 indx = find(strcmp(B,'*End Step')); % Only for 1-step files
-A_temp = {B{1:indx-1},'*EL PRINT, position = centroidal','S',B{indx:end}};
-B = A_temp;
+if sigma_calc
+    A_temp = {B{1:indx-1},'*EL PRINT, position = centroidal','S',B{indx:end}};
+    B = A_temp;
+end
 A_temp = {B{1:indx-1},'*EL PRINT, elset = bc-set-2, position = centroidal','S12',B{indx:end}};
 B = A_temp;
 A_temp = {B{1:indx-1},'*EL PRINT, elset = bc-set-1, position = centroidal','S12',B{indx:end}};

@@ -1,10 +1,10 @@
-function [k,lam,EmptyElList] = param_decoup_main(F_t)
+function [k,lam,EmptyElList] = param_decoup_main(F_t,parallel)
     for i = 1:length(F_t)
-        [k{i},lam{i},EmptyElList{i}] = param_decoup(F_t{i});
+        [k{i},lam{i},EmptyElList{i}] = param_decoup(F_t{i},parallel);
     end
 end
 
-function [k,lam,EmptyElList] = param_decoup(F_t)
+function [k,lam,EmptyElList] = param_decoup(F_t,parallel)
     digits(4);
     sz = size(F_t{1,1});
     if sz(1) == 1
@@ -16,17 +16,33 @@ function [k,lam,EmptyElList] = param_decoup(F_t)
     EmptyElList = [];
     lam = NaN(size(def_grad2));
     k = NaN(size(def_grad2));
-    parfor ii = 1:numel(def_grad)
-        if sum(isnan(def_grad2{ii})) == 0
-            F = def_grad2{ii};
-            F = F/(det(F)^(1/3));
-            [lam_temp,k_temp] = FToLamAndK_v2(F);
-            if isempty(lam_temp) == true || isreal(lam_temp) == 0 || isreal(k_temp) == 0
-                EmptyElList = [EmptyElList ii];
-            else
-                lam(ii) = lam_temp; k(ii) = k_temp;
+    switch parallel
+        case 1
+            parfor ii = 1:numel(def_grad)
+                if sum(isnan(def_grad2{ii})) == 0
+                    F = def_grad2{ii};
+                    F = F/(det(F)^(1/3));
+                    [lam_temp,k_temp] = FToLamAndK_v2(F);
+                    if isempty(lam_temp) == true || isreal(lam_temp) == 0 || isreal(k_temp) == 0
+                        EmptyElList = [EmptyElList ii];
+                    else
+                        lam(ii) = lam_temp; k(ii) = k_temp;
+                    end
+                end
             end
-        end
+        case 0
+            for ii = 1:numel(def_grad)
+                if sum(isnan(def_grad2{ii})) == 0
+                    F = def_grad2{ii};
+                    F = F/(det(F)^(1/3));
+                    [lam_temp,k_temp] = FToLamAndK_v2(F);
+                    if isempty(lam_temp) == true || isreal(lam_temp) == 0 || isreal(k_temp) == 0
+                        EmptyElList = [EmptyElList ii];
+                    else
+                        lam(ii) = lam_temp; k(ii) = k_temp;
+                    end
+                end
+            end
     end
     if sz(1) ~= 1
         % Experimental
