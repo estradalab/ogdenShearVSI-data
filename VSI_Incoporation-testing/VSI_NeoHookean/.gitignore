@@ -43,6 +43,10 @@ Ogden_RawMRData/20220124-ogdenss-0020-5MMH/silicone_0020_5mmhole01/DESTE_strains
 Ogden_RawMRData/20220124-ogdenss-0020-5MMH/silicone_0020_5mmhole01/DESTE_strains_1139_1204_1113_0852_blurvec0.80.80.8.mat
 Ogden_RawMRData/20220209-ogdenss-0020-2loadsteps_translation/no_holes_strain/DESTE_strains_1336_1402_1429_1554_blurvec0.80.80.8.mat
 Ogden_RawMRData/20220209-ogdenss-0020-2loadsteps_translation/no_holes_strain/DESTE_strains_1456_1521_1546_1554_blurvec0.80.80.8.mat
+v0
+v0_redone
+v1_check
+v1_quadptsremoved
 *.png
 *.txt
 *.h5

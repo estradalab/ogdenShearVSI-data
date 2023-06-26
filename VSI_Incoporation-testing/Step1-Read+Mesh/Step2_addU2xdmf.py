@@ -26,6 +26,7 @@ W = FunctionSpace(mesh_py, "Lagrange", 1) # Create a scalar function space for '
 u = Function(V) # initialize function object
 
 X_Abaqus=pd.read_csv(datadir + '/X_062123_crop.csv', header=None).to_numpy()[:,0:3] # make coordinate_data variable which contains node positions from ABAQUS .txt data
+# X_Abaqus=pd.read_csv(datadir + '/X_061623_validationtest2.csv', header=None).to_numpy()[:,0:3] # make coordinate_data variable which contains node positions from ABAQUS .txt data
 displacement_elem_Abaqus = [0]*len(TimeStep) # initialize 'displacement_data' as a zeros vector of dimension 1 by len(NumStepList) (currently yields a 1 by 1).
 
 # Check geometries are the same between Abaqus output and mesh object from .inp file in Step1
@@ -54,6 +55,7 @@ print("z lims [",np.min(X_mesh[:,2]),np.max(X_mesh[:,2]),"]")
 for count,tid in enumerate(TimeStep):
 	# displacement_elem_ABAQUS[count]=pd.read_csv(datadir + '/disp_'+str(tid)+'.txt', header=None).to_numpy()[:,0:3]
   displacement_elem_Abaqus[count]=pd.read_csv(datadir + '/U_062123_crop.csv', header=None).to_numpy()[:,0:3]
+  # displacement_elem_Abaqus[count]=pd.read_csv(datadir + '/U_061623_validationtest_2.csv', header=None).to_numpy()[:,0:3]
 
 DOF2VertexMap = pd.read_csv('dof2vertex.txt', header=None).to_numpy()[:,0:3] # Read in dof2vertex.txt map
 
@@ -108,6 +110,7 @@ for count,tid in enumerate(TimeStep):
   # Save solution to .xdmf/.h5
   file_1.write(u, tid)
   file_2.write(u,'/disp%i'%tid)
+  print('/disp%i'%tid)
 
 # Check u
 print("The displacement field name is ",u)

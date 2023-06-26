@@ -21,10 +21,10 @@ def vtk2gmsh_hex(P):
 def ufl_simplicial_order(P):
     return np.sort(np.array(P), axis=None).tolist()	 # sorts vector P in ascending order
 
-loadPath = "./"  
+# loadPath = "./"
+loadPath = "./sq-8mm_sin-per-4_sin-amp-2mm_tet/"  
 savePath = "."
 filename = "sq-8mm_sin-per-4_sin-amp-2mm_tet"
-
 
 # Convert quad tet mesh (.inp) to a linear tet python mesh (.xdmf/.h5)
 def inp2xdmf(loadPath,savePath,filename):
@@ -40,10 +40,11 @@ def inp2xdmf(loadPath,savePath,filename):
     mesh_py = Mesh() # create empty dofin.Mesh object 
     editor = MeshEditor() # iniate MeshEditor object
     editor.open(mesh_py, type="tetrahedron",tdim=3, gdim=3) # define tetrahedron (or "hexahedron") mesh with 3 topologic and geometric dimensions
+    # editor.init_vertices(num_vertex) # initialize cells in dolfin mesh - the number of verticies is equal to the number of linear nodes on the quad tet mesh 
     editor.init_vertices(np.max(mesh_matlab.cells[0].data[:,:4])+1) # initialize cells in dolfin mesh - the number of verticies is equal to the number of linear nodes on the quad tet mesh 
     editor.init_cells(num_cell) # initialize cells in python mesh - the number of elements is equal to the quad tet mesh
 
-    # for i in range(num_vertex):
+    # for i in range(num_vertex): 
     for i in range(np.max(mesh_matlab.cells[0].data[:,:4])+1): 
         editor.add_vertex(i, Point(mesh_matlab.points[i,:])) # defining coordinates of ith vertex from the nodes included on the linear portion of the quadratic tets
     for i in range(num_cell):
@@ -90,14 +91,22 @@ def inp2xdmf(loadPath,savePath,filename):
     # Final check on .xdmf form of Python mesh
     try:
         print('==============================')
-        with XDMFFile(MPI.comm_world,filename+'.xdmf') as file:
+        with XDMFFile(MPI.comm_world,os.path.join(savePath,filename+'.xdmf')) as file:
             file.read(mesh_py)
             V = VectorFunctionSpace(mesh_py, "CG", 1)
             a = dof_to_vertex_map(V)
-            np.savetxt('dof2vertex.txt',a, fmt='%i') # save DOF to vertex map for linear tet mesh
+            np.savetxt(os.path.join(savePath, 'dof2vertex.txt'),a, fmt='%i') # save DOF to vertex map for linear tet mesh
             print('Mesh is readable')	
     except RuntimeError as err:
         print("Error in reading the file")
         print(err)
 
-inp2xdmf(loadPath,savePath,filename)
+# LOOPING CODE: comment out regular inp2xdmf function call at the end of the code and uncomment the code below to run the script in a loop 
+filenames = ["sq-8mm_sin-per-2_sin-amp-1mm_tet","sq-8mm_sin-per-2_sin-amp-2mm_tet","sq-8mm_sin-per-2_sin-amp-3mm_tet","sq-8mm_sin-per-4_sin-amp-1mm_tet","sq-8mm_sin-per-4_sin-amp-2mm_tet","sq-8mm_sin-per-4_sin-amp-3mm_tet"]
+for i in range(len(filenames)):
+    print("Running file",i+1,"of",len(filenames))
+    loadPath_loop = "/home/fenics/shared/ogdenShearVSI-data/sensitivity_data/" + str(filenames[i]) + "/"
+    savePath_loop = loadPath_loop + "VSI/"
+    inp2xdmf(loadPath_loop,savePath_loop,str(filenames[i]))
+
+# inp2xdmf(loadPath,savePath,filename)
