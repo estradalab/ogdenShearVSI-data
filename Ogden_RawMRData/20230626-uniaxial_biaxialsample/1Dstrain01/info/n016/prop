@@ -1,0 +1,8 @@
+type LIB
+status Completed
+title lig_gems pos=3mm
+exp lig_gems
+lock on
+time null
+macro xmrtpar
+data 1025_lig_gems_pos_3mm01

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE template>
+<template>
+    <action type="LIB" id="n006" status="Completed" lock="on" title="scout" exp="scout" time="null" macro="xmrtpar" data="0941_scout_01" />
+    <action type="LIB" id="n007" status="Completed" lock="on" title="scout" exp="scout" time="null" macro="xmrtpar" data="0941_scout_02" />
+    <action type="LIB" id="n005" status="Completed" lock="on" title="lig_gems" exp="lig_gems" time="null" macro="xmrtpar" data="0943_lig_gems_01" />
+    <action type="LIB" id="n008" status="Completed" lock="on" title="lig_gems" exp="lig_gems" time="null" macro="xmrtpar" data="0945_lig_gems_01" />
+    <action type="LIB" id="n001" status="Completed" lock="on" title="spuls" exp="spuls" time="null" macro="xmrtpar" data="0948_spuls_01" />
+    <action type="LIB" id="n015" status="Completed" lock="on" title="lig_gems ref" exp="lig_gems" time="null" macro="xmrtpar" data="1023_lig_gems_ref01" />
+    <action type="LIB" id="n016" status="Completed" lock="on" title="lig_gems pos=3mm" exp="lig_gems" time="null" macro="xmrtpar" data="1025_lig_gems_pos_3mm01" />
+    <action type="LIB" id="n011" status="Completed" lock="on" title="lig_ge3d pos=3mm" exp="lig_ge3d" time="null" macro="xmrtpar" data="1029_lig_ge3d_pos_3mm01" />
+    <action type="LIB" id="n009" status="Completed" lock="on" title="lig_ge3d pos=3mm" exp="lig_ge3d" time="null" macro="xmrtpar" data="1036_lig_ge3d_pos_3mm01" />
+    <action type="LIB" id="n010" status="Completed" lock="on" title="lig_ge3d ref" exp="lig_ge3d" time="null" macro="xmrtpar" data="1044_lig_ge3d_ref01" />
+    <action type="LIB" id="n002" status="Completed" lock="on" title="lig_stems_noalt_RO wiggle=pm3mm lambda=1mm" exp="lig_stems_noalt_RO" time="null" macro="xmrtpar" data="1056_lig_stems_noalt_RO_wiggle_pm3mm_lambda_1mm01" />
+    <action type="LIB" id="n012" status="Completed" lock="on" title="lig_stems_noalt_PE wiggle=pm3mm lambda=1mm" exp="lig_stems_noalt_PE" time="null" macro="xmrtpar" data="1103_lig_stems_noalt_PE_wiggle_pm3mm_lambda_1mm01" />
+    <action type="LIB" id="n013" status="Completed" lock="on" title="lig_stems_noalt_SL wiggle=pm3mm lambda=1mm" exp="lig_stems_noalt_SL" time="null" macro="xmrtpar" data="1110_lig_stems_noalt_SL_wiggle_pm3mm_lambda_1mm01" />
+    <action type="LIB" id="n003" status="Completed" lock="on" title="lig_stems_noalt_RO wiggle=pm3mm lambda=3mm" exp="lig_stems_noalt_RO" time="null" macro="xmrtpar" data="1118_lig_stems_noalt_RO_wiggle_pm3mm_lambda_3mm01" />
+    <action type="LIB" id="n004" status="Completed" lock="on" title="scout 2D sample" exp="scout" time="null" macro="xmrtpar" data="1132_scout_2D_sample01" />
+    <action type="LIB" id="n014" status="Completed" lock="on" title="scout 2D sample" exp="scout" time="null" macro="xmrtpar" data="1133_scout_2D_sample01" />
+    <action type="LIB" id="n017" status="Completed" lock="on" title="scout 2D sample" exp="scout" time="null" macro="xmrtpar" data="1133_scout_2D_sample02" />
+    <action type="LIB" id="n018" status="Completed" lock="on" title="lig_gems ref" exp="lig_gems" time="null" macro="xmrtpar" data="1135_lig_gems_ref01" />
+    <action type="LIB" id="n019" status="Completed" lock="on" title="lig_stems_noalt_RO wiggle=pm3mm lambda=1mm" exp="lig_stems_noalt_RO" time="null" macro="xmrtpar" data="1144_lig_stems_noalt_RO_wiggle_pm3mm_lambda_1mm01" />
+    <action type="LIB" id="n020" status="Completed" lock="on" title="lig_stems_noalt_PE wiggle=pm3mm lambda=1mm" exp="lig_stems_noalt_PE" time="null" macro="xmrtpar" data="1151_lig_stems_noalt_PE_wiggle_pm3mm_lambda_1mm01" />
+    <action type="LIB" id="n021" status="Completed" lock="on" title="lig_stems_noalt_SL wiggle=pm3mm lambda=1mm" exp="lig_stems_noalt_SL" time="null" macro="xmrtpar" data="1159_lig_stems_noalt_SL_wiggle_pm3mm_lambda_1mm01" />
+    <action type="LIB" id="n022" status="Completed" lock="on" title="lig_ge3d ref" exp="lig_ge3d" time="null" macro="xmrtpar" data="1210_lig_ge3d_ref01" />
+    <action type="LIB" id="n024" status="Completed" lock="on" title="lig_stems_noalt_RO wiggle=pm3mm lambda=3mm" exp="lig_stems_noalt_RO" time="null" macro="xmrtpar" data="1206_lig_stems_noalt_RO_wiggle_pm3mm_lambda_3mm01" />
+    <action type="LIB" id="n023" status="Completed" lock="on" title="lig_ge3d pm3mm" exp="lig_ge3d" time="null" macro="xmrtpar" data="1214_lig_ge3d_pm3mm01" />
+</template>

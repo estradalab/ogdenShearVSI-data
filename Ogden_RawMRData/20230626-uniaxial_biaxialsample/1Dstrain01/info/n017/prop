@@ -1,0 +1,8 @@
+type LIB
+status Completed
+title scout 2D sample
+exp scout
+lock on
+time null
+macro xmrtpar
+data 1133_scout_2D_sample02

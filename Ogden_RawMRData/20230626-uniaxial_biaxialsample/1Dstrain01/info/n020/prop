@@ -1,0 +1,8 @@
+type LIB
+status Completed
+title lig_stems_noalt_PE wiggle=pm3mm lambda=1mm
+exp lig_stems_noalt_PE
+lock on
+time null
+macro xmrtpar
+data 1151_lig_stems_noalt_PE_wiggle_pm3mm_lambda_1mm01

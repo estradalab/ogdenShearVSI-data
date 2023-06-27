@@ -1,0 +1,8 @@
+type LIB
+status Completed
+title lig_gems ref
+exp lig_gems
+lock on
+time null
+macro xmrtpar
+data 1023_lig_gems_ref01
