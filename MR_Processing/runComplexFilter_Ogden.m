@@ -614,7 +614,7 @@ for hidx = 1:length(hfilts)
         
         %% Strain plots in 3D using my custom function scatterColor3
         
-        if ~pl3d
+        if pl3d
             close all;
             %magmaVals = colormap(magma);
             rbVals = flipud(brewermap(256,'RdYlBu'));
