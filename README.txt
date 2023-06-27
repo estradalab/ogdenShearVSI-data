@@ -1,4 +1,4 @@
-Dataset Title: MRI Raw Experimental Data Pipeline (as of 06/16/2023)
+Dataset Title: MRI Raw Experimental Data Pipeline (as of 06/27/2023)
 Dataset Creators: D.P. Nikolov, S. Srivastava, B.A. Abeid, U.M. Scheven, E.M. Arruda, K. Garikipati, J.B. Estrada
 Dataset Contact: J.B. Estrada jbestrad@umich.edu
 Funding: 1729166 (NSF)
@@ -52,6 +52,7 @@ Use and Access:
 	220124		Holes_Rectangle 	2.5 mm					1139, 1204, 1113, 0852
 	220209		Solid_Rectangular 	5 mm					1336, 1402, 1429, 1554
 	220209		Solid_Rectangular 	2.5 mm					1456, 1521, 1546, 1554
+	230627		In-progress
 
 3. Numerical differentiation for kinematic quantities
 	- Open MR_Processing directory

@@ -18,7 +18,9 @@ end
 
 % sampleName = '20211012-ogdenss';
 % sampleName = '20220124-ogdenss_5MMH_apod_64_16'; % Most optimal
-sampleName = '20220209-ogdenss_2moreloadsteps';
+% sampleName = '20220209-ogdenss_2moreloadsteps';
+sampleName = '20230627-eco_biaxial';
+% sampleName = '20230627-eco_uniaxial';
 cd(sampleName)
 
 switch sampleName
@@ -37,6 +39,18 @@ switch sampleName
         refnum = '1554';
         fixedpt = [89,6,6];
         maskparam = 600;
+    case '20230627-eco_biaxial'
+        fnums = {'1144'};
+        refnum = '1135';
+        fixedpt = [100,16,16];
+        maskparam = 900;
+        disp_corr = 1.5; % Initial compression effected the wiggle
+    case '20230627-eco_uniaxial'
+        fnums = {'1044'};
+        refnum = '1056';
+        fixedpt = [113,16,16];
+        maskparam = 900;
+        disp_corr = -2; % Motor went from 3mm to 1mm wiggles
 end
 
 % hfilts = {[0 0 0],[1 1 1],[2 2 2],[3 3 3],[4 4 4],[8 8 8]};
@@ -65,7 +79,7 @@ for hidx = 1:length(hfilts)
         %save unwrap files, mechanical fields
         saving = false;
         %view 3d plots
-        pl3d = true;
+        pl3d = false;
         %use origdata instead of HIRES
         origTF = true;
         %If we want to Gaussian filter (blur3d) complex data before unwrapping
@@ -85,7 +99,7 @@ for hidx = 1:length(hfilts)
         %use weighted reliability algorithm, which fills in edges last
         weighting = true;
         %only include the largest single connected mask object
-        largestConnectedObjectMasking=false;
+        largestConnectedObjectMasking=true;
         %open view3dgui plots
         plView3Ds = true;
         %Dilate mask
@@ -93,6 +107,8 @@ for hidx = 1:length(hfilts)
         fillmiss = true;
         %Corrected MRI
         corrMRI = true;
+        %Boundary condition
+        bound_cond = 'uniaxial'; %'shear'
         
         
         %%%%%%%%
@@ -732,11 +748,21 @@ for hidx = 1:length(hfilts)
                 E_t{idx}{i,j} = Eij{i,j}.*mask;
             end
         end
-        prescribedU(idx) = wiggle(1);
+
+        if exist('disp_corr')
+            prescribedU(idx) = wiggle(1)+disp_corr;
+        else
+            prescribedU(idx) = wiggle(1);
+        end
 
         % Boundary condition
-        uicorr{3}(1:64,:,:) = uicorr{3}(1:64,:,:) + (prescribedU(idx)-max(uicorr{3}(1:64,:,:),[],'all')); % x mm at traction surface
-        uicorr{3}(64:128,:,:) = uicorr{3}(64:128,:,:) + (prescribedU(idx)-max(uicorr{3}(64:128,:,:),[],'all'));
+        switch bound_cond
+            case 'shear'
+                uicorr{3}(1:64,:,:) = uicorr{3}(1:64,:,:) + (prescribedU(idx)-max(uicorr{3}(1:64,:,:),[],'all')); % x mm at traction surface
+                uicorr{3}(64:128,:,:) = uicorr{3}(64:128,:,:) + (prescribedU(idx)-max(uicorr{3}(64:128,:,:),[],'all'));
+            case 'uniaxial'
+                uicorr{1} = uicorr{1} + (prescribedU(idx)-max(uicorr{1}(:)));
+        end
         
         if corrMRI
             U_t{idx} = uicorr;
