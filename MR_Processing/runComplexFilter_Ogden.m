@@ -46,8 +46,8 @@ switch sampleName
         maskparam = 900;
         disp_corr = 1.5; % Initial compression effected the wiggle
     case '20230627-eco_uniaxial'
-        fnums = {'1044'};
-        refnum = '1056';
+        fnums = {'1056'};
+        refnum = '1044';
         fixedpt = [113,16,16];
         maskparam = 900;
         disp_corr = -2; % Motor went from 3mm to 1mm wiggles
@@ -258,6 +258,37 @@ for hidx = 1:length(hfilts)
                 mask(ranget,:,:) = NaN;
                 mask(:,rangew,:) = NaN;
                 mask(:,:,rangel) = NaN;
+            case '20230627-eco_biaxial'
+                R = 5.08; % Radius around center
+                x_center = ax(63,18,12);
+                z_center = ay(63,18,12);
+                mask_shape = ones(size(hCI_mag));
+                for i = 1:size(ax,1)
+                    for j = 1:size(ax,2)
+                        for k = 11:25
+                            x_coord = ax(i,j,k);
+                            z_coord = ay(i,j,k);
+                            if ~(sqrt((x_coord-x_center)^2+(z_coord-z_center)^2)<R)
+                                mask_shape(i,j,k) = NaN;
+                            end
+                        end
+                        mask_shape(i,j,[1:10 26:32]) = NaN;
+                    end
+                end
+                mask = nan(size(hCI_mag)); %mask(hires_mag>2E4) = 1;
+                %start with some baseline thresholding
+                mask(log10(hCI_mag/max(hCI_mag(:)))>maskthresh) = 1; %e.g. -0.6 for Dragon Skin, -1.4 for ligs
+                for i = 1:size(ax,1)
+                    for j = 1:size(ax,2)
+                        for k = 1:size(ax,3)
+                            if isnan(mask_shape(i,j,k))
+                                mask(i,j,k) = mask(i,j,k);
+                            else
+                                mask(i,j,k) = mask_shape(i,j,k);
+                            end
+                        end
+                    end
+                end
             otherwise
                 mask = nan(size(hCI_mag)); %mask(hires_mag>2E4) = 1;
                 %start with some baseline thresholding
@@ -712,7 +743,7 @@ for hidx = 1:length(hfilts)
             end
         end
         
-        if ~pl3d
+        if pl3d
             view3dgui(ui{1})
             view3dgui(ui{2})
             view3dgui(ui{3})
@@ -853,6 +884,10 @@ for hidx = 1:length(hfilts)
     
 end
 X = {ax;ay;az};
+
+if exist('mask_shape')
+    mask = mask_shape;
+end
 
 % Save mask_data_***.mat
 
