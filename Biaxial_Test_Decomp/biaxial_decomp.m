@@ -7,11 +7,11 @@ calc_xref = false;
 change_inp = false;
 run_abaqus = false;
 read_dat = false;
-calc_decomp = true;
+calc_decomp = false;
 calc_goodness = 'criscione'; % 'k_lam' or 'criscione'
 
 R = 5.08; % Radius from center is 5.08mm
-mask_shape = false; % Cut out a central piece of the biaxial specimen
+mask_shape = true; % Cut out a central piece of the biaxial specimen
 parallel = false; % parfor loop for the decomposition (timing is the same)
 bin_res = 0.01; % Bin resolution for histograms
 maxLam = 2; % Maximum limit for lambda in plots
@@ -236,7 +236,7 @@ switch calc_goodness
     case 'criscione'
         % Sensitivity and goodness metric calcs (k2 and k3)
         k_2 = 0:bin_res:floor(log(maxLam)/sqrt(2/3)/bin_res)*bin_res;
-        k_3=-1:bin_res:1;
+        k_3=-1:2*bin_res:1;
         
         g1 = @(k_3) sqrt(2/3)*sin(-asin(k_3)/3+(2*pi/3));
         g2 = @(k_3) sqrt(2/3)*sin(-asin(k_3)/3);
@@ -259,7 +259,7 @@ switch calc_goodness
 
         for i = 1:length(output.k3)
             figure()
-            [~,~,h] = ndhist(output.k2{i}(:),output.k3{i}(:),'axis',[min(k_2) max(k_2) min(k_3) max(k_3)],'fixed_bin_res',bin_res);
+            [~,~,h] = ndhist(output.k2{i}(:),output.k3{i}(:),'axis',[min(k_2) max(k_2) min(k_3) max(k_3)],'fixed_bin_res',bin_res,'scale_y',2);
             output.H{i} = h';
             imagesc([min(k_2) max(k_2)],[min(k_3) max(k_3)],log10(h/sum(h(:))));
             axis square

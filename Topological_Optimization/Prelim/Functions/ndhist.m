@@ -204,6 +204,7 @@ maxisFlag = 0; % If you choose this then no data will fall off the screen
 logColorFlag = 0; % plot the logarithm of the counts instead to get more contrast
 
 fixed_bins = 0;
+scale_y = 0;
 
 %% calculate some defaults
 % for a radial plot use this: ... maybe use the same bounds for even a
@@ -327,6 +328,10 @@ while k <= nargin-1
             bin_res=varargin{k+1};
             fixed_bins = 1;
             k = k + 1;
+        case {'scale_y'}
+            scale_factor = varargin{k+1};
+            scale_y = 1;
+            k = k + 1;
         case 'stdtimes' % the number of times the standard deviation to set the upper end of the axis to be.
 %             Note, this is non-functional in this NDHist
             stdTimes = varargin{k + 1};
@@ -401,7 +406,11 @@ if intbinsFlagY
 end
 
 if fixed_bins
-    binWidthX = bin_res; binWidthY = bin_res;
+    if scale_y
+        binWidthX = bin_res; binWidthY = scale_factor*bin_res;
+    else
+        binWidthX = bin_res; binWidthY = bin_res;
+    end
 end
 
 % finally set the bins
