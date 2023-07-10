@@ -22,9 +22,13 @@ def ufl_simplicial_order(P):
     return np.sort(np.array(P), axis=None).tolist()	 # sorts vector P in ascending order
 
 # loadPath = "./"
-loadPath = "./sq-8mm_sin-per-4_sin-amp-2mm_tet/"  
-savePath = "."
-filename = "sq-8mm_sin-per-4_sin-amp-2mm_tet"
+# loadPath = "./sq-8mm_sin-per-4_sin-amp-2mm_tet/"  
+# savePath = "."
+# filename = "sq-8mm_sin-per-4_sin-amp-2mm_tet"
+
+filenames = ["sq-8mm_sin-per-2_sin-amp-1mm_tet","sq-8mm_sin-per-2_sin-amp-2mm_tet","sq-8mm_sin-per-2_sin-amp-3mm_tet","sq-8mm_sin-per-4_sin-amp-1mm_tet","sq-8mm_sin-per-4_sin-amp-2mm_tet","sq-8mm_sin-per-4_sin-amp-3mm_tet"]
+loadPath = "/home/fenics/shared/ogdenShearVSI-data/sensitivity_data/"
+savePath = "/home/fenics/shared/ogdenShearVSI-data/sensitivity_data/"
 
 # Convert quad tet mesh (.inp) to a linear tet python mesh (.xdmf/.h5)
 def inp2xdmf(loadPath,savePath,filename):
@@ -109,4 +113,9 @@ def inp2xdmf(loadPath,savePath,filename):
 #     savePath_loop = loadPath_loop + "VSI/"
 #     inp2xdmf(loadPath_loop,savePath_loop,str(filenames[i]))
 
-inp2xdmf(loadPath,savePath,filename)
+# SINGLE CODE: comment out if running batch code
+# inp2xdmf(loadPath,savePath,filename)
+
+# BATCH CODE:
+for i in range(len(filenames)):
+    inp2xdmf(loadPath+filenames[i]+'/',loadPath+filenames[i]+'/VSI/',filenames[i])
