@@ -28,6 +28,7 @@ switch test
         load('test_settings_10000.mat');
         settings.params = 'neo-hooke-eco';
         settings.save = 'eco';
+        output = sin_shear_opt(8,0,0,settings);
         for i = 1:3
             for j = 1:2
                 output = sin_shear_opt(8,2*j,i,settings);
