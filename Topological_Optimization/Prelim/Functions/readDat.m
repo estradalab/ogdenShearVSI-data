@@ -1,6 +1,6 @@
 function [U,F,S12,sig] = readDat(fileName,nodeLength,sigma_calc)
 % Stores .dat file into MatLab cell array, A
-fid = fopen([fileName '_test.dat'],'r');
+fid = fopen([fileName '/' fileName '_test.dat'],'r');
 i=1;
 tline = fgetl(fid);
 A{i} = tline;

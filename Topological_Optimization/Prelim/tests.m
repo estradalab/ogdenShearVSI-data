@@ -1,6 +1,6 @@
 % test = 'test_100'; % Approximately 100 elements
-% test = 'test_10000'; % Approximately 10000 elements
-test = 'test_sweep_NH'; % Neo-hookean parameters
+test = 'test_10000'; % Approximately 10000 elements
+% test = 'test_sweep_NH'; % Neo-hookean parameters
 % test = 'cost_function'; % Cost function space w/ fixed periods
 % test = 'sin_sweep'; % Sweep between periods
 % test = 'element_test'; % Change number of elements for single trial
