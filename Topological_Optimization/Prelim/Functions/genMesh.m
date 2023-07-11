@@ -28,7 +28,80 @@ edge.func{1} = @(x) edge.coef{1}*sin(2*pi*edge.period*x/abs(l)) + w/2;
 edge.func{3} = @(x) edge.coef{3}*sin(2*pi*edge.period*x/abs(l)) - w/2;
 
 % Create the mesh given geometric parameters
-model_3D = createGeometry(l,w,h,line_res,edge,mesh_ref);
+if mesh_ref.exact
+    model_3D = createGeometry(l,w,h,line_res,edge,mesh_ref);
+
+%     Percent change by volume of element
+%     change_vol = size(model_3D.Mesh.Elements,2)/mesh_ref.num_of_el-1;
+%     mesh_ref.maxelsize = (1+change_vol)*model_3D.Mesh.MaxElementSize;
+%     model_3D = createGeometry(l,w,h,line_res,edge,mesh_ref);
+
+%     Percent change by elements (works the best but is not perfect)
+%     mesh_ref.maxelsize = model_3D.Mesh.MaxElementSize + (size(model_3D.Mesh.Elements,2)-mesh_ref.num_of_el)*model_3D.Mesh.MaxElementSize/mesh_ref.num_of_el;
+%     model_3D = createGeometry(l,w,h,line_res,edge,mesh_ref);
+%       To do: include Criscione
+%       decomposition pipeline (both FtoK2andK3 and galaxy plots)
+
+%     Fminunc implementation (sometimes does not converge)
+%     mesh_ref = optimize_mesh(model_3D,mesh_ref,l,w,h,line_res,edge);
+    temp = [size(model_3D.Mesh.Elements,2) model_3D.Mesh.MaxElementSize 0];
+    i = 1; j = false;
+    init = 0.025; % Initial percentage decrement
+    breakFlag = false;
+
+    % Step 1 mesh optimization: while loop iterations (until it's within 0.5% of desired mesh elements)
+    while (size(model_3D.Mesh.Elements,2) < mesh_ref.num_of_el*0.995 || size(model_3D.Mesh.Elements,2) > mesh_ref.num_of_el*1.005)
+        if i == 1
+            incr = init;
+        else
+            if ~j
+                if ((temp(i,1) > mesh_ref.num_of_el) == (temp(i-1,1) > mesh_ref.num_of_el)) && (abs(temp(i,1)-mesh_ref.num_of_el) > 0.03*mesh_ref.num_of_el)
+                    incr = temp(i,3);
+                elseif ~((temp(i,1) > mesh_ref.num_of_el) == (temp(i-1,1) > mesh_ref.num_of_el)) && (abs(temp(i,1)-mesh_ref.num_of_el) > abs(temp(i-1,1)-mesh_ref.num_of_el))
+                    incr = temp(i,3)/2;
+                else
+                    incr = temp(i,3)/2;
+                    j = true;
+                end
+            else
+                incr = temp(i,3)/2;
+            end
+        end
+        if size(model_3D.Mesh.Elements,2) > mesh_ref.num_of_el
+            mesh_ref.maxelsize = mesh_ref.maxelsize*(1+incr);
+        else
+            mesh_ref.maxelsize = mesh_ref.maxelsize*(1-incr);
+        end
+        model_3D = createGeometry(l,w,h,line_res,edge,mesh_ref);
+        
+        i = i + 1;
+        temp = [temp;size(model_3D.Mesh.Elements,2) model_3D.Mesh.MaxElementSize incr];
+        if incr < init/2^15
+            breakFlag = true;
+            break
+        end
+    end
+    
+    % Step 2 optimization: Sweep in range centered around best point in Step 1
+    if breakFlag
+        [~,idx]=min(abs(temp(:,1)-mesh_ref.num_of_el));
+        minVal=temp(idx,:);
+    else
+        minVal=temp(end,:);
+    end
+    sweep = linspace(minVal(2)-minVal(2)*init/8,minVal(2)+minVal(2)*init/8,30);
+    for i = 1:length(sweep)
+        mesh_ref.maxelsize = sweep(i);
+        model_3D = createGeometry(l,w,h,line_res,edge,mesh_ref);
+        temp = [temp;size(model_3D.Mesh.Elements,2) model_3D.Mesh.MaxElementSize init/8];
+    end
+    [~,idx]=min(abs(temp(:,1)-mesh_ref.num_of_el));
+    minVal=temp(idx,:);
+    mesh_ref.maxelsize = minVal(2);
+    model_3D = createGeometry(l,w,h,line_res,edge,mesh_ref);
+else
+    model_3D = createGeometry(l,w,h,line_res,edge,mesh_ref);
+end
 x = model_3D.Mesh.Nodes(1,:)'; y = model_3D.Mesh.Nodes(2,:)'; 
 z = model_3D.Mesh.Nodes(3,:)';
 TRI = model_3D.Mesh.Elements';

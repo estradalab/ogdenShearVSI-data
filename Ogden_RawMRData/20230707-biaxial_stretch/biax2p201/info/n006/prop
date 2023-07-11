@@ -1,0 +1,8 @@
+type LIB
+status Completed
+title lig_ge3d double RO FOV
+exp lig_ge3d
+lock on
+time null
+macro xmrtpar
+data 0950_lig_ge3d_double_RO_FOV01

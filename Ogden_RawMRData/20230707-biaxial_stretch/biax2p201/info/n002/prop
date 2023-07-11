@@ -1,0 +1,8 @@
+type LIB
+status Error
+title scout
+exp scout
+lock on
+time null
+macro xmrtpar
+data null

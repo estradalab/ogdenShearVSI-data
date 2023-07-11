@@ -19,8 +19,9 @@ end
 % sampleName = '20211012-ogdenss';
 % sampleName = '20220124-ogdenss_5MMH_apod_64_16'; % Most optimal
 % sampleName = '20220209-ogdenss_2moreloadsteps';
-sampleName = '20230627-eco_biaxial';
+% sampleName = '20230627-eco_biaxial';
 % sampleName = '20230627-eco_uniaxial';
+sampleName = '20230707-eco_biaxial2_4.5mm_9mm';
 cd(sampleName)
 
 switch sampleName
@@ -51,6 +52,14 @@ switch sampleName
         fixedpt = [113,16,16];
         maskparam = 900;
         disp_corr = -2; % Motor went from 3mm to 1mm wiggles
+    case '20230707-eco_biaxial2_4.5mm_9mm'
+        fnums = {'0916','1007'}; % 2 load steps [1 - 2.25 mm (4.5 total); 2 - 4.5 mm (9 total)]
+        refnum = '0947';
+        fixedpt = [113,15,15]; % Determine fixed point
+        maskparam = 900;
+        disp_corr(1) = -0.375; % 0.375 mm lost (1.875 mm actual [3.75 total])
+        disp_corr(2) = -0.375; % 0.375 mm lost (4.125 mm actual [8.25 total])
+        % disp_corr = -2; % If raw data needs to be fixed
 end
 
 % hfilts = {[0 0 0],[1 1 1],[2 2 2],[3 3 3],[4 4 4],[8 8 8]};
@@ -273,6 +282,37 @@ for hidx = 1:length(hfilts)
                             end
                         end
                         mask_shape(i,j,[1:10 26:32]) = NaN;
+                    end
+                end
+                mask = nan(size(hCI_mag)); %mask(hires_mag>2E4) = 1;
+                %start with some baseline thresholding
+                mask(log10(hCI_mag/max(hCI_mag(:)))>maskthresh) = 1; %e.g. -0.6 for Dragon Skin, -1.4 for ligs
+                for i = 1:size(ax,1)
+                    for j = 1:size(ax,2)
+                        for k = 1:size(ax,3)
+                            if isnan(mask_shape(i,j,k))
+                                mask(i,j,k) = mask(i,j,k);
+                            else
+                                mask(i,j,k) = mask_shape(i,j,k);
+                            end
+                        end
+                    end
+                end
+            case '20230707-eco_biaxial2_4.5mm_9mm'
+                R = 5.08; % Radius around center
+                x_center = ax(63,18,20);
+                z_center = ay(63,18,20);
+                mask_shape = ones(size(hCI_mag));
+                for i = 1:size(ax,1)
+                    for j = 1:size(ax,2)
+                        for k = 10:25
+                            x_coord = ax(i,j,k);
+                            z_coord = ay(i,j,k);
+                            if ~(sqrt((x_coord-x_center)^2+(z_coord-z_center)^2)<R)
+                                mask_shape(i,j,k) = NaN;
+                            end
+                        end
+                        mask_shape(i,j,[1:9 26:32]) = NaN;
                     end
                 end
                 mask = nan(size(hCI_mag)); %mask(hires_mag>2E4) = 1;
@@ -781,7 +821,7 @@ for hidx = 1:length(hfilts)
         end
 
         if exist('disp_corr')
-            prescribedU(idx) = wiggle(1)+disp_corr;
+            prescribedU(idx) = wiggle(1)+disp_corr(idx);
         else
             prescribedU(idx) = wiggle(1);
         end

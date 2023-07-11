@@ -6,7 +6,7 @@ addpath(genpath('Functions'))
 addpath(genpath('Data'))
 
 % Name: Select a description for your code (for each time you run main)
-desc_name = '10000el_x0_18_9_6';
+desc_name = '10000el_optimMesh_x0_6_9_1.4';
 
 % There are several options for function optimization to chose from
 % func = 'test'; % Sample Rosenbrock function f(x) = 100*(x2-x1^2)^2 + (1-x1)^2
@@ -28,14 +28,16 @@ switch func
         xsol = fminsearchbnd(rosen,x0,LB,UB,opts);
     case 'sin'
         % If you'd like to establish settings, open sin_shear_opt.m
-        x0 = [18 9 6];
+        x0 = [6 9 1.4];
         LB = [6 0 0];
         UB = [20 10 8];
-        A = [-1 0 2]; % Ensures that there is atleast 4mm thickness of material between sine wave valleys
-        b = -4;
+        A = [-1 0 2]; % Ensures that there is atleast 3mm thickness of material between sine wave valleys
+        b = -3;
         tStart = tic;
         xsol = fminsearchcon(@ (x) sin_shear_opt_fun(x),x0,LB,UB,A,b,[],opts);
+        xsol(1) = ceil(xsol(1));
         xsol(2) = round(xsol(2));
+        xsol(3) = floor(xsol(3)*10^1)/10^1;
         tEnd = toc(tStart);
         optimization_folder = ['Data/' datestr(datetime(now,'ConvertFrom','datenum'),'yyyymmddTHHMMSS')];
         optimization_folder = [optimization_folder '_' desc_name];
@@ -46,7 +48,7 @@ end
 
 % Calling sinusoidal geometry function
 function f = sin_shear_opt_fun(x)
-output = sin_shear_opt(x(1),round(x(2)),x(3));
+output = sin_shear_opt(ceil(x(1)),round(x(2)),floor(x(3)*10^1)/10^1);
 % The single selected output is the inverse alpha goodness metric (trying to maximize)
 f = 1/output.S(1);
 end

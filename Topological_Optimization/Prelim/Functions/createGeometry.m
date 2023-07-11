@@ -35,7 +35,7 @@ model_3D.Geometry = extrude(model_3D.Geometry,h);
 generateMesh(model_3D);
 hmax = model_3D.Mesh.MaxElementSize;
 if exist('maxelsize','var') == 1
-    generateMesh(model_3D,'Hmax',maxelsize);
+    generateMesh(model_3D,'Hmax',maxelsize,'Hmin',maxelsize);
 else
-    generateMesh(model_3D,'Hmax',hmax*mesh_ref.defsize);
+    generateMesh(model_3D,'Hmax',hmax*mesh_ref.defsize,'Hmin',maxelsize);
 end

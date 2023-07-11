@@ -1,0 +1,8 @@
+type LIB
+status Completed
+title lig_stems_noalt_PE PE wiggle=2.25mm lambda=1mm
+exp lig_stems_noalt_PE
+lock on
+time null
+macro xmrtpar
+data 0931_lig_stems_noalt_PE_PE_wiggle_2.25mm_lambda_1mm01

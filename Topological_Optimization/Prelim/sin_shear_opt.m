@@ -65,6 +65,7 @@ if isempty(varargin)
     settings.parallel = false; % Uses parfor loop in decomposition loop. Required as false for optimization
     settings.sigma_calc = false; % Optional acquisition of sigma tensor for entire sample
     settings.save = 'optim'; % 'none' - doesn't save data; 'test' - saves data for test; 'optim' - saves data for optimization runs
+    settings.mesh_ref.exact = true; % Iterates size of mesh element until number of elements is exact (Works for 10000)
 else
     settings = varargin{1};
 end
@@ -134,6 +135,8 @@ output.S(2) = sum(output.H(:).*mat_temp2(:))/nrmlz;
 
 switch settings.save
     case 'none'
+    case 'delete'
+        rmdir 'Data/sq*' s
     case 'test'
         writematrix(output.X_ref.node,['Data/' fileName '/x_ref_' fileName '.csv']); 
         writematrix(output.U,['Data/' fileName '/node_disp_' fileName '.csv']); 

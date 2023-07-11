@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE template>
+<template>
+    <action type="LIB" id="n002" status="Error" lock="on" title="scout" exp="scout" time="null" macro="xmrtpar" data="null" />
+    <action type="LIB" id="n005" status="Completed" lock="on" title="scout" exp="scout" time="null" macro="xmrtpar" data="0851_scout_02" />
+    <action type="LIB" id="n001" status="Completed" lock="on" title="spuls" exp="spuls" time="null" macro="xmrtpar" data="0855_spuls_01" />
+    <action type="LIB" id="n003" status="Completed" lock="on" title="lig_gems" exp="lig_gems" time="null" macro="xmrtpar" data="0858_lig_gems_01" />
+    <action type="LIB" id="n008" status="Completed" lock="on" title="lig_stems_noalt_RO RO wiggle=2.25mm lambda=1mm" exp="lig_stems_noalt_RO" time="null" macro="xmrtpar" data="0916_lig_stems_noalt_RO_RO_wiggle_2.25mm_lambda_1mm01" />
+    <action type="LIB" id="n009" status="Completed" lock="on" title="lig_stems_noalt_PE PE wiggle=2.25mm lambda=1mm" exp="lig_stems_noalt_PE" time="null" macro="xmrtpar" data="0931_lig_stems_noalt_PE_PE_wiggle_2.25mm_lambda_1mm01" />
+    <action type="LIB" id="n010" status="Completed" lock="on" title="lig_stems_noalt_SL SL wiggle=2.25mm lambda=1mm" exp="lig_stems_noalt_SL" time="null" macro="xmrtpar" data="0946_lig_stems_noalt_SL_SL_wiggle_2.25mm_lambda_1mm01" />
+    <action type="LIB" id="n004" status="Completed" lock="on" title="lig_ge3d ref" exp="lig_ge3d" time="null" macro="xmrtpar" data="0947_lig_ge3d_ref01" />
+    <action type="LIB" id="n006" status="Completed" lock="on" title="lig_ge3d double RO FOV" exp="lig_ge3d" time="null" macro="xmrtpar" data="0950_lig_ge3d_double_RO_FOV01" />
+    <action type="LIB" id="n013" status="Completed" lock="on" title="lig_ge3d double RO FOV stretch" exp="lig_ge3d" time="null" macro="xmrtpar" data="0951_lig_ge3d_double_RO_FOV_stretch01" />
+    <action type="LIB" id="n007" status="Completed" lock="on" title="lig_stems_noalt_RO RO wiggle=4.5mm lambda=2mm TS=700ms" exp="lig_stems_noalt_RO" time="null" macro="xmrtpar" data="1007_lig_stems_noalt_RO_RO_wiggle_4.5mm_lambda_2mm_TS_700ms01" />
+    <action type="LIB" id="n011" status="Completed" lock="on" title="lig_stems_noalt_PE PE wiggle=4.5mm lambda=2mm TS=700ms" exp="lig_stems_noalt_PE" time="null" macro="xmrtpar" data="1022_lig_stems_noalt_PE_PE_wiggle_4.5mm_lambda_2mm_TS_700ms01" />
+    <action type="LIB" id="n012" status="Completed" lock="on" title="lig_stems_noalt_SL SL wiggle=4.5mm lambda=2mm TS=700ms" exp="lig_stems_noalt_SL" time="null" macro="xmrtpar" data="1037_lig_stems_noalt_SL_SL_wiggle_4.5mm_lambda_2mm_TS_700ms01" />
+</template>
