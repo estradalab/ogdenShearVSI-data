@@ -147,6 +147,11 @@ switch settings.save
         writematrix(output.U,['Data/' fileName '/node_disp_' fileName '.csv']); 
         save(['Data/' fileName '/output.mat'],'output');
         movefile(['Data/' fileName],['Data/Iter' num2str(length(dir('Data/Iter*'))+1) '_' fileName]);
+    case 'eco'
+        writematrix(output.X_ref.node,['Data/' fileName '/x_ref_' fileName '.csv']); 
+        writematrix(output.U,['Data/' fileName '/node_disp_' fileName '.csv']); 
+        save(['Data/' fileName '/output.mat'],'output');
+        movefile(['Data/' fileName],['Data/Eco_' fileName]);
 end
 
 end

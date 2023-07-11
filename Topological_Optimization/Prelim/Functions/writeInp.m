@@ -72,6 +72,10 @@ switch coef.model
                 fprintf(fileID,[regexprep(num2str(coef.val(1+(8*(i-1)):8+(8*(i-1)))), ' +', ', ') '\n']);
             end
         end
+    case 'NH_Eco'
+        % To Do: Write the code
+        fprintf(fileID,'*Hyperelastic, neo hooke\n');
+        fprintf(fileID,[regexprep(num2str(coef.val(1:2)), ' +', ', ') '\n']);
 end
 
 fprintf(fileID,['** ----------------------------------------------------------------\n' ...

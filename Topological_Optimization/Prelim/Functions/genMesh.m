@@ -124,6 +124,9 @@ switch params
                       % model. For the Abaqus formulation, all mu_i values
                       % should be positive (https://polymerfem.com/4-things-you-didnt-know-about-the-ogden-model/).
                       % Correction factor: mu_i =a_i*mu_orig_i/2;
+    case 'neo-hooke-eco'
+        coef.model = 'NH_Eco';
+        coef.val = [0.040 0];
 end
 
 % Set all node coordinates as a matrix
