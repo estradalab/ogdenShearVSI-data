@@ -3,10 +3,10 @@ function output = biaxial_decomp_0707()
 % Note that all length parameters are in mm.
 warning off
 
-calc_goodness = 'k_lam'; % 'k_lam' or 'criscione'
+calc_goodness = 'criscione'; % 'k_lam' or 'criscione'
 
 R = 5.08; % Radius from center is 5.08mm
-mask_shape = true; % Cut out a central piece of the biaxial specimen
+mask_shape = false; % Cut out a central piece of the biaxial specimen
 parallel = false; % parfor loop for the decomposition (timing is the same)
 bin_res = 0.01; % Bin resolution for histograms
 maxLam = 2; % Maximum limit for lambda in plots
