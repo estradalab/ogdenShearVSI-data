@@ -57,8 +57,6 @@ switch sampleName
         refnum = '0947';
         fixedpt = [113,15,15]; % Determine fixed point
         maskparam = 900;
-        disp_corr(1) = -0.375; % 0.375 mm lost (1.875 mm actual [3.75 total])
-        disp_corr(2) = -0.375; % 0.375 mm lost (4.125 mm actual [8.25 total])
         % disp_corr = -2; % If raw data needs to be fixed
 end
 

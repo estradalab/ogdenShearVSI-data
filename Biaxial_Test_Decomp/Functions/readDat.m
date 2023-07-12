@@ -1,6 +1,10 @@
 function [U,F] = readDat(fileName,nodeLength)
 % Stores .dat file into MatLab cell array, A
-fid = fopen([fileName '_test.dat'],'r');
+if fileName == 'Data/23-0712-Biaxial_Simple-sim/Biaxial_Simple'
+    fid = fopen([fileName '.dat'],'r');
+else
+    fid = fopen([fileName '_test.dat'],'r');
+end
 i=1;
 tline = fgetl(fid);
 A{i} = tline;
