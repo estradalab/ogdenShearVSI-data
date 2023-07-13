@@ -2,6 +2,8 @@ function output = biaxial_decomp_0707()
 % Decomposes an input file for biaxial test into K2/K3 data.
 % Note that all length parameters are in mm.
 warning off
+addpath(genpath('Data'))
+addpath(genpath('Functions'))
 
 calc_goodness = 'criscione'; % 'k_lam' or 'criscione'
 
