@@ -83,11 +83,18 @@ switch test
         
 
         sin_sweep = linspace(0,0.33,100);
+        tStart = tic;
+        h = waitbar(0,'Progress: 0%');
         for i = 1:length(sin_sweep)
             output = sin_shear_opt(6,3,sin_sweep(i)*6,settings);
             S(i,1) = output.S(1);
             S(i,2) = output.S(2);
+            T = seconds(toc(tStart));
+            T.Format = 'hh:mm:ss';
+            waitbar(i/length(sin_sweep),h,['Progress: ',num2str(floor(100*i/length(sin_sweep))),'% (Time Elapsed: ' char(T) ')'])
         end
+        tEnd = toc(tStart);
+        close(h)
         save('Data/Cost_data/sin_sweep.mat','S','sin_sweep')
         plot(sin_sweep,S(:,1))
         xlabel('A/d [-], Normalized sinusoidal amplitude','interpreter','latex')
