@@ -1,8 +1,8 @@
 % test = 'test_100'; % Approximately 100 elements
 % test = 'test_10000'; % Approximately 10000 elements
-% test = 'test_sweep_NH'; % Neo-hookean parameters
+test = 'test_sweep_NH'; % Neo-hookean parameters
 % test = 'cost_function'; % Cost function space w/ fixed periods
-test = 'sin_sweep'; % Sweep between periods
+% test = 'sin_sweep'; % Sweep between periods
 % test = 'element_test'; % Change number of elements for single trial
 
 switch test
@@ -26,6 +26,7 @@ switch test
         addpath(genpath('Functions'));
         addpath(genpath('Data'));
         load('test_settings_10000.mat');
+        settings.mesh_ref.num_of_el = 30000;
         settings.params = 'neo-hooke-eco';
         settings.save = 'eco';
         output = sin_shear_opt(8,0,0,settings);
