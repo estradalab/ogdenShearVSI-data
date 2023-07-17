@@ -26,10 +26,11 @@ switch test
         addpath(genpath('Functions'));
         addpath(genpath('Data'));
         load('test_settings_10000.mat');
-        settings.mesh_ref.num_of_el = 30000;
+        settings.mesh_ref.num_of_el = 10000;
         settings.params = 'neo-hooke-eco';
         settings.save = 'eco';
-        output = sin_shear_opt(8,0,0,settings);
+        % output = sin_shear_opt(8,0,0,settings);
+        output = sin_shear_opt(8,6,1,settings);
         for i = 1:3
             for j = 1:2
                 output = sin_shear_opt(8,2*j,i,settings);
