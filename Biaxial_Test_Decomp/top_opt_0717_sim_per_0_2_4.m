@@ -11,7 +11,7 @@ maxLam = 2; % Maximum limit for lambda in plots
 clim = [-5 -1.5]; % Colorbar limits for galaxy plots
 
 % Def grad storage
-for i = 1:3
+for i = 1:4
     if i == 1
         load('Data/23-0717-sim-Sinwaves/Eco_sq-8mm_sin-per-0_sin-amp-0mm_tet.mat');
         [k3_temp,k2_temp,~] = param_decoup_main(output.F_t,parallel,'ftok2andk3');
@@ -20,6 +20,9 @@ for i = 1:3
         [k3_temp,k2_temp,~] = param_decoup_main(output.F_t,parallel,'ftok2andk3');
     elseif i == 3
         load('Data/23-0717-sim-Sinwaves/Eco_sq-8mm_sin-per-4_sin-amp-1mm_tet.mat');
+        [k3_temp,k2_temp,~] = param_decoup_main(output.F_t,parallel,'ftok2andk3');
+    elseif i == 4
+        load('Data/23-0717-sim-Sinwaves/Eco_sq-8mm_sin-per-6_sin-amp-1mm_tet.mat');
         [k3_temp,k2_temp,~] = param_decoup_main(output.F_t,parallel,'ftok2andk3');
     end
     k3{i} = k3_temp{1};
@@ -31,6 +34,7 @@ output.k3 = k3; output.k2 = k2;
 output.lbl{1} = 'd=8mm;N=0;A=0mm';
 output.lbl{2} = 'd=8mm;N=2;A=1mm';
 output.lbl{3} = 'd=8mm;N=4;A=1mm';
+output.lbl{4} = 'd=8mm;N=6;A=1mm';
 
 mu = 1; % Normalizing mu
 alpha = linspace(-5,5,1001);
@@ -80,6 +84,9 @@ for i = 1:length(output.k3)
     elseif i == 3
         saveas(gcf,'Data/23-0717-sim-Sinwaves/2Dhist_sq8_per4_amp1_k2_k3.png')
         saveas(gcf,'Data/23-0717-sim-Sinwaves/2Dhist_sq8_per4_amp1_k2_k3.pdf')
+    elseif i == 4
+        saveas(gcf,'Data/23-0717-sim-Sinwaves/2Dhist_sq8_per6_amp1_k2_k3.png')
+        saveas(gcf,'Data/23-0717-sim-Sinwaves/2Dhist_sq8_per6_amp1_k2_k3.pdf')
     end
 end
 
@@ -113,6 +120,6 @@ title('$S_{metric}$(test,$\alpha$)','interpreter','latex')
 xlabel('$\alpha$','interpreter','latex')
 ylabel('$S_{metric}=\sum_{i,j}\hat{hist}\left(k_i,\lambda_j,test\right)\;.*\;\hat{S}_\alpha\left(k_i,\lambda_j,\alpha\right)$',...
     'interpreter','latex')
-legend(output.lbl{1},output.lbl{2},output.lbl{3},'interpreter','latex')
+legend(output.lbl,'interpreter','latex')
 saveas(gcf,'Data/23-0717-sim-Sinwaves/goodness_curve.png')
 saveas(gcf,'Data/23-0717-sim-Sinwaves/goodness_curve.pdf')
