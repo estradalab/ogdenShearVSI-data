@@ -23,13 +23,13 @@ function output = sin_shear_opt(d,N,A,varargin)
 % traction - traction required to pull specimen in shear (units - Newtons)
 % F_t - deformation gradient for a single time step for all elements
 %       deformation gradient is in the form F_t{time}{i,j}(element)
-% k - stretch state decomposition for all elements
-% lam - maximum stretch amplitude decomposition for all elements
+% k/k3 - stretch state decomposition for all elements (custom decomp/criscione/decomp)
+% lam/k2 - maximum stretch amplitude decomposition for all elements (custom decomp/criscione/decomp)
 %       decomposition parameters are in the form k/lam{time}(element)
 % Salpha_all - alpha sensitivity map for pre-selected alpha parameter
 % Smu_all - mu sensitivity map for pre-selected alpha parameter
 %       sensitivity maps are in the form S_all(lambda,alpha,k)
-% H - 2D histogram of simulation
+% H - 2D histogram of simulation (custom decomp only, for criscione [in developement])
 %       histograms are in the form H(lambda,k)
 % S(1) - alpha goodness metric; S(2) - mu goodness metric
 
@@ -99,9 +99,10 @@ area = arc_l*d;
 output.traction = area*nanmean([nanmean(output.S12.bc1) nanmean(output.S12.bc2)]);
 
 % Approximate processing time for test settings decomposition calculation: 1 seconds
-% Carry out the decomposition of F to k/lambdabda
+% Carry out the decomposition of F to k/lambdabda and k3/k2
 output.F_t{1} = F;
-[output.k,output.lam,~] = param_decoup_main(output.F_t,settings.parallel);
+[output.k,output.lam,~] = param_decoup_main(output.F_t,settings.parallel,'ftolamandk');
+[output.k3,output.k2,~] = param_decoup_main(output.F_t,settings.parallel,'ftok2andk3');
 
 % Store the lambda as a column vector
 lambda = 1:settings.bin_res:settings.maxLam;
