@@ -15,11 +15,9 @@ function output = sin_shear_opt(d,N,A,varargin)
 %       reference position array is in the form X_ref.[node/el](node,dir_[1/2/3])
 % U - [U1,U2,U3] displacements in all three cartesian direction of all nodes
 %       displacement array is in the form U(node,dir_[1/2/3])
-% S12 - shear stress along boundary controlled surfaces
-%       S12.bc1 is displaced surface; S12.bc2 is encastered surface
+% RF1 - reaction force along boundary controlled surfaces
+%       RF1.bc1 is displaced surface; RF1.bc2 is encastered surface
 %       All other elements that are not of the boundary surfaces are NaN values
-% sig - stress tensor for all elements
-%       stress tensor is in the form sig{i,j}(element)
 % traction - traction required to pull specimen in shear (units - Newtons)
 % F_t - deformation gradient for a single time step for all elements
 %       deformation gradient is in the form F_t{time}{i,j}(element)
@@ -63,7 +61,7 @@ if isempty(varargin)
     settings.maxLam = 2; % Maximum lambda used for the 2D histogram and sensitivity plots (2 decimal point-limit)
     settings.bin_res = 0.01; % Bin resolution for 2D histogram and sensitivity plot
     settings.parallel = false; % Uses parfor loop in decomposition loop. Required as false for optimization
-    settings.sigma_calc = false; % Optional acquisition of sigma tensor for entire sample
+    settings.sigma_calc = false; % Optional acquisition of sigma tensor for entire sample (outdated)
     settings.save = 'optim'; % 'none' - doesn't save data; 'test' - saves data for test; 'optim' - saves data for optimization runs
     settings.mesh_ref.exact = true; % Iterates size of mesh element until number of elements is exact (Works for 10000)
 else
@@ -86,17 +84,11 @@ end
 
 % Approximate processing time for test settings simulation: 99 seconds
 % Output deformation gradient
-[output.U,F,output.S12,output.sig] = runAbaqus(fileName,X,settings.sigma_calc);
+[output.U,F,output.RF1] = runAbaqus(fileName,X);
 movefile([fileName '.inp'],['Data/' fileName]);
 
 % Calculation for traction force
-% First, calculate arc length of sine wave
-x = linspace(0,settings.l,100); dx = diff(x);
-y = A*sin(2*pi*N*x/settings.l); dy = diff(y);
-arc_l = sum(sqrt(dx.^2+dy.^2));
-% Then, backward calculate V = tau*A to determine shear force, and thus traction
-area = arc_l*d;
-output.traction = area*nanmean([nanmean(output.S12.bc1) nanmean(output.S12.bc2)]);
+output.traction = nansum(output.RF1.bc1);
 
 % Approximate processing time for test settings decomposition calculation: 1 seconds
 % Carry out the decomposition of F to k/lambdabda and k3/k2

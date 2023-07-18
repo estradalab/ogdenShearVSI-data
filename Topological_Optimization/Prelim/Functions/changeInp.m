@@ -1,4 +1,4 @@
-function changeInp(fileName,sigma_calc)
+function changeInp(fileName)
 % Stores .inp file into MatLab cell array, A
 fid = fopen([fileName '.inp'],'r');
 i=1;
@@ -34,13 +34,9 @@ end
 % displacements, U, DG, S12
 B = A;
 indx = find(strcmp(B,'*End Step')); % Only for 1-step files
-if sigma_calc
-    A_temp = {B{1:indx-1},'*EL PRINT, position = centroidal','S',B{indx:end}};
-    B = A_temp;
-end
-A_temp = {B{1:indx-1},'*EL PRINT, elset = bc-set-2, position = centroidal','S12',B{indx:end}};
+A_temp = {B{1:indx-1},'*NODE PRINT, nset = bc-set-2','RF1',B{indx:end}};
 B = A_temp;
-A_temp = {B{1:indx-1},'*EL PRINT, elset = bc-set-1, position = centroidal','S12',B{indx:end}};
+A_temp = {B{1:indx-1},'*NODE PRINT, nset = bc-set-1','RF1',B{indx:end}};
 B = A_temp;
 A_temp = {B{1:indx-1},'*EL PRINT, position = centroidal','DG',B{indx:end}};
 B = A_temp;

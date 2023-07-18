@@ -27661,8 +27661,8 @@ bc-set-2, ENCASTRE
 U
 *EL PRINT, position = centroidal
 DG
-*EL PRINT, elset = bc-set-1, position = centroidal
-S12
-*EL PRINT, elset = bc-set-2, position = centroidal
-S12
+*NODE PRINT, nset = bc-set-1
+RF1
+*NODE PRINT, nset = bc-set-2
+RF1
 *End Step

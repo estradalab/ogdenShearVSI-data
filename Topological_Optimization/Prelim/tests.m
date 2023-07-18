@@ -1,3 +1,8 @@
+clc;clear;
+warning off
+addpath(genpath('Functions'));
+addpath(genpath('Data'));
+
 % test = 'test_100'; % Approximately 100 elements
 % test = 'test_10000'; % Approximately 10000 elements
 test = 'test_sweep_NH'; % Neo-hookean parameters
@@ -7,26 +12,14 @@ test = 'test_sweep_NH'; % Neo-hookean parameters
 
 switch test
     case 'test_100'
-        clc;clear;
-        warning off
-        addpath(genpath('Functions'));
-        addpath(genpath('Data'));
         load('test_settings_100.mat');
         output = sin_shear_opt(8,4,0.6,settings);
     case 'test_10000'
-        clc;clear;
-        warning off
-        addpath(genpath('Functions'));
-        addpath(genpath('Data'));
         load('test_settings_10000.mat');
         output = sin_shear_opt(8,4,2,settings); 
     case 'test_sweep_NH'
-        clc;clear;
-        warning off
-        addpath(genpath('Functions'));
-        addpath(genpath('Data'));
         load('test_settings_10000.mat');
-        settings.mesh_ref.num_of_el = 30000; % 10000 or 30000 elements
+        settings.mesh_ref.num_of_el = 10000;
         settings.params = 'neo-hooke-eco';
         settings.save = 'eco';
         output = sin_shear_opt(8,0,0,settings);
@@ -36,11 +29,8 @@ switch test
                 output = sin_shear_opt(8,2*j,i,settings);
             end
         end
+        movefile('Data/Eco*',['Data/' num2str(settings.mesh_ref.num_of_el) 'el_Eco']);
     case 'cost_function'
-        clc;clear;
-        warning off
-        addpath(genpath('Functions'));
-        addpath(genpath('Data'));
         load('test_settings_10000.mat');
         settings.save = 'delete';
         settings.params = 'neo-hooke-eco';
@@ -75,10 +65,6 @@ switch test
         saveas(gcf,'Data/Cost_data/cost_function.png'); saveas(gcf,'Data/Cost_data/cost_function.pdf')
 
     case 'sin_sweep'
-        clc;clear;
-        warning off
-        addpath(genpath('Functions'));
-        addpath(genpath('Data'));
         load('test_settings_10000.mat');
         settings.save = 'delete';
         settings.params = 'neo-hooke-eco';
@@ -104,10 +90,6 @@ switch test
         title('Goodness metric (Fixed sine wave @ 3 periods, d = 6 mm)','interpreter','latex')
         saveas(gcf,'Data/Cost_data/amplitude_sweep.png'); saveas(gcf,'Data/Cost_data/amplitude_sweep.pdf')
     case 'element_test'
-        clc;clear;
-        warning off
-        addpath(genpath('Functions'));
-        addpath(genpath('Data'));
         load('test_settings_10000.mat');
         settings.save = 'delete';
         settings.params = 'neo-hooke-eco';

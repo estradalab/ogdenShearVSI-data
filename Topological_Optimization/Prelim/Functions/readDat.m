@@ -1,4 +1,4 @@
-function [U,F,S12,sig] = readDat(fileName,nodeLength,sigma_calc)
+function [U,F,RF1] = readDat(fileName,nodeLength)
 % Stores .dat file into MatLab cell array, A
 fid = fopen([fileName '/' fileName '_test.dat'],'r');
 i=1;
@@ -51,11 +51,11 @@ ii = indx(end)+5;
 
 while length(strsplit(A{ii})) > 1
     temp = strsplit(A{ii});
-    S12.bc1(str2double(temp{2})) = str2double(temp{3});
+    RF1.bc1(str2double(temp{2})) = str2double(temp{3});
     ii = ii + 1;
 end
-S12.bc1(S12.bc1==0) = NaN; % All non-bc elements are NaN values
-S12.bc1(length(S12.bc1)+1:length(F{1,2})) = NaN;
+RF1.bc1(RF1.bc1==0) = NaN; % All non-bc elements are NaN values
+RF1.bc1(length(RF1.bc1)+1:length(F{1,2})) = NaN;
 
 % Encastered surface
 idx_search = [];
@@ -70,37 +70,37 @@ ii = indx(end)+5;
 
 while length(strsplit(A{ii})) > 1
     temp = strsplit(A{ii});
-    S12.bc2(str2double(temp{2})) = str2double(temp{3});
+    RF1.bc2(str2double(temp{2})) = str2double(temp{3});
     ii = ii + 1;
 end
-S12.bc2(S12.bc2==0) = NaN; % All non-bc elements are NaN values
-S12.bc2(length(S12.bc2)+1:length(F{1,2})) = NaN;
+RF1.bc2(RF1.bc2==0) = NaN; % All non-bc elements are NaN values
+RF1.bc2(length(RF1.bc2)+1:length(F{1,2})) = NaN;
 
-% All stress elements
-if sigma_calc
-    idx_search = [];
-    for j = 1:length(A)-1
-        splitline = strsplit(A{j});
-        if ~isempty(find(strcmp(splitline, 'S11'),1)) && ~isempty(find(strcmp(splitline, 'S22'),1)) && ~isempty(find(strcmp(splitline, 'S33'),1))
-            idx_search = [idx_search j];
-        end
-    end
-    indx = max(idx_search);
-    ii = indx(end)+3;
-    
-    while length(strsplit(A{ii})) > 1
-        temp = strsplit(A{ii});
-        sig{1,1}(str2double(temp{2})) = str2double(temp{3});
-        sig{2,2}(str2double(temp{2})) = str2double(temp{4});
-        sig{3,3}(str2double(temp{2})) = str2double(temp{5});
-        sig{1,2}(str2double(temp{2})) = str2double(temp{6});
-        sig{1,3}(str2double(temp{2})) = str2double(temp{7});
-        sig{2,3}(str2double(temp{2})) = str2double(temp{8});
-        ii = ii + 1;
-    end
-else
-    sig = [];
-end
+% All stress elements (outdated)
+% if sigma_calc
+%     idx_search = [];
+%     for j = 1:length(A)-1
+%         splitline = strsplit(A{j});
+%         if ~isempty(find(strcmp(splitline, 'S11'),1)) && ~isempty(find(strcmp(splitline, 'S22'),1)) && ~isempty(find(strcmp(splitline, 'S33'),1))
+%             idx_search = [idx_search j];
+%         end
+%     end
+%     indx = max(idx_search);
+%     ii = indx(end)+3;
+%     
+%     while length(strsplit(A{ii})) > 1
+%         temp = strsplit(A{ii});
+%         sig{1,1}(str2double(temp{2})) = str2double(temp{3});
+%         sig{2,2}(str2double(temp{2})) = str2double(temp{4});
+%         sig{3,3}(str2double(temp{2})) = str2double(temp{5});
+%         sig{1,2}(str2double(temp{2})) = str2double(temp{6});
+%         sig{1,3}(str2double(temp{2})) = str2double(temp{7});
+%         sig{2,3}(str2double(temp{2})) = str2double(temp{8});
+%         ii = ii + 1;
+%     end
+% else
+%     sig = [];
+% end
 
 % Finds the locations that lists all nodal displacements (only for final
 % increment)
