@@ -63,7 +63,7 @@ if isempty(varargin)
     settings.parallel = false; % Uses parfor loop in decomposition loop. Required as false for optimization
     settings.sigma_calc = false; % Optional acquisition of sigma tensor for entire sample (outdated)
     settings.save = 'optim'; % 'none' - doesn't save data; 'test' - saves data for test; 'optim' - saves data for optimization runs
-    settings.mesh_ref.exact = true; % Iterates size of mesh element until number of elements is exact (Works for 10000)
+    settings.mesh_ref.exact = false; % Iterates size of mesh element until number of elements is exact (Works for 10000)
 else
     settings = varargin{1};
 end

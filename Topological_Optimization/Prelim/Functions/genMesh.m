@@ -9,6 +9,7 @@ w = d; h = d;
 % Determine maximum element size
 mesh_ref.maxelsize = nthroot(l*w*h*6*sqrt(2)/mesh_ref.num_of_el,3);
 sin_ref_scale = 3;
+sin_res = 10; % Points between vital sin points (zero, peak, trough)
 tol = 0.01;
 
 % Sinusoidal parameters
@@ -22,7 +23,11 @@ if A == 0 || N == 0
     line_res = [4 4 4 4];
 else
     edge.shape{1} = 'sin'; edge.shape{2} = 'line'; edge.shape{3} = 'sin'; edge.shape{4} = 'line';
-    line_res = [sin_ref_scale*round(l/mesh_ref.maxelsize)+4 4 sin_ref_scale*round(l/mesh_ref.maxelsize)+4 4]; 
+    if mesh_ref.exact
+        line_res = [sin_ref_scale*round(l/mesh_ref.maxelsize)+4 4 sin_ref_scale*round(l/mesh_ref.maxelsize)+4 4]; 
+    else
+        line_res = [1+4*edge.period*(1+sin_res) 4 1+4*edge.period*(1+sin_res) 4];
+    end
 end
 edge.func{1} = @(x) edge.coef{1}*sin(2*pi*edge.period*x/abs(l)) + w/2;
 edge.func{3} = @(x) edge.coef{3}*sin(2*pi*edge.period*x/abs(l)) - w/2;
@@ -39,8 +44,6 @@ if mesh_ref.exact
 %     Percent change by elements (works the best but is not perfect)
 %     mesh_ref.maxelsize = model_3D.Mesh.MaxElementSize + (size(model_3D.Mesh.Elements,2)-mesh_ref.num_of_el)*model_3D.Mesh.MaxElementSize/mesh_ref.num_of_el;
 %     model_3D = createGeometry(l,w,h,line_res,edge,mesh_ref);
-%       To do: include Criscione
-%       decomposition pipeline (both FtoK2andK3 and galaxy plots)
 
 %     Fminunc implementation (sometimes does not converge)
 %     mesh_ref = optimize_mesh(model_3D,mesh_ref,l,w,h,line_res,edge);

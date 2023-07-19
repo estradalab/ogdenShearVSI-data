@@ -35,9 +35,9 @@ switch func
         b = -3;
         tStart = tic;
         xsol = fminsearchcon(@ (x) sin_shear_opt_fun(x),x0,LB,UB,A,b,[],opts);
-        xsol(1) = ceil(xsol(1));
+        % xsol(1) = ceil(xsol(1));
         xsol(2) = round(xsol(2));
-        xsol(3) = floor(xsol(3)*10^1)/10^1;
+        % xsol(3) = floor(xsol(3)*10^1)/10^1;
         tEnd = toc(tStart);
         optimization_folder = ['Data/' datestr(datetime(now,'ConvertFrom','datenum'),'yyyymmddTHHMMSS')];
         optimization_folder = [optimization_folder '_' desc_name];
@@ -48,7 +48,8 @@ end
 
 % Calling sinusoidal geometry function
 function f = sin_shear_opt_fun(x)
-output = sin_shear_opt(ceil(x(1)),round(x(2)),floor(x(3)*10^1)/10^1);
+% output = sin_shear_opt(ceil(x(1)),round(x(2)),floor(x(3)*10^1)/10^1); % Rounding
+output = sin_shear_opt(x(1),round(x(2)),x(3));
 % The single selected output is the inverse alpha goodness metric (trying to maximize)
 f = 1/output.S(1);
 end
