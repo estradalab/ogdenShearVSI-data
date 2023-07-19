@@ -5,7 +5,8 @@ addpath(genpath('Data'));
 
 % test = 'test_100'; % Approximately 100 elements
 % test = 'test_10000'; % Approximately 10000 elements
-test = 'test_sweep_NH'; % Neo-hookean parameters
+% test = 'test_sweep_NH'; % Neo-hookean parameters
+test = 'test_sweep_NH_uniaxial'; % Uniaxial extension study
 % test = 'cost_function'; % Cost function space w/ fixed periods
 % test = 'sin_sweep'; % Sweep between periods
 % test = 'element_test'; % Change number of elements for single trial
@@ -17,6 +18,22 @@ switch test
     case 'test_10000'
         load('test_settings_10000.mat');
         output = sin_shear_opt(8,4,2,settings); 
+    case 'test_sweep_NH_uniaxial'
+        load('test_settings_10000.mat');
+        settings.mesh_ref.num_of_el = 10000;
+        settings.params = 'neo-hooke-eco';
+        settings.save = 'eco';
+        settings.pres_disp = 8;
+        settings.stretch = 'uniaxial';
+        output = sin_shear_opt(8,0,0,settings);
+        output = sin_shear_opt(8,2,0.25,settings);
+        output = sin_shear_opt(8,2,0.5,settings);
+        for i = 1
+            for j = 1:3
+                output = sin_shear_opt(8,2*j,i,settings);
+            end
+        end
+        movefile('Data/Eco*',['Data/uniaxial_' num2str(settings.mesh_ref.num_of_el) 'el_Eco']);
     case 'test_sweep_NH'
         load('test_settings_10000.mat');
         settings.mesh_ref.num_of_el = 10000;

@@ -50,7 +50,7 @@ function output = sin_shear_opt(d,N,A,varargin)
 % Set parameters
 if isempty(varargin)
     % Current settings are meant for the Nelder-Mead optimizer
-    settings.params = 'ogden-treloar'; % Utilizing treloar data for ogden model parameters
+    settings.params = 'neo-hooke-eco'; % Utilizing treloar data for ogden model parameters
     settings.mesh_ref.num_of_el = 10000; % Sets approximate number of elements of the mesh
     settings.pres_disp = 3; % Prescribed displacement of 3 mm
     settings.mesh = 'tet'; % Quadratic tetrahedral elements (other element types are in progress)
@@ -64,6 +64,7 @@ if isempty(varargin)
     settings.sigma_calc = false; % Optional acquisition of sigma tensor for entire sample (outdated)
     settings.save = 'optim'; % 'none' - doesn't save data; 'test' - saves data for test; 'optim' - saves data for optimization runs
     settings.mesh_ref.exact = false; % Iterates size of mesh element until number of elements is exact (Works for 10000)
+    settings.stretch = 'shear'; % 'shear' is to pull specimen in shear on the sinusoidal profile, and 'uniaxial' is to pull it in uniaxial extension
 else
     settings = varargin{1};
 end
@@ -72,7 +73,7 @@ fileName = ['sq-' num2str(d) 'mm_sin-per-' num2str(N) '_sin-amp-' num2str(A) 'mm
 
 % Approximate processing time for test settings mesh generation: 23 seconds
 [X,Y,Z,ElNode] = genMesh(fileName,settings.mesh,settings.params,settings.pres_disp,...
-    settings.mesh_ref,settings.abaqus_ver,settings.elementType,d,N,A,settings.l);
+    settings.mesh_ref,settings.abaqus_ver,settings.elementType,d,N,A,settings.l,settings.stretch);
 output.X_ref.node = [X,Y,Z]; % Nodal positions
 % Element centroidal positions
 for idx = 1:length(ElNode)

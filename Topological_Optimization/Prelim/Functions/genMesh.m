@@ -1,5 +1,5 @@
 function  [x,y,z,TRI] = genMesh(fileName,mesh,params,pres_disp,...
-    mesh_ref,abaqus_ver,elementType,d,N,A,l)
+    mesh_ref,abaqus_ver,elementType,d,N,A,l,stretch)
 
 fN = erase(fileName,['_' mesh]);
 
@@ -155,8 +155,14 @@ else % For sinusoidal surfaces
 end
 
 % Declare boundary conditions (may be parameterized)
-Nodes.bc1 = Surf.y1;
-Nodes.bc2 = Surf.y2;
+switch stretch
+    case 'uniaxial'
+        Nodes.bc1 = Surf.x1;
+        Nodes.bc2 = Surf.x2;
+    case 'shear'
+        Nodes.bc1 = Surf.y1;
+        Nodes.bc2 = Surf.y2;
+end
 Nodes.presDisp.dir = 'x';
 Nodes.presDisp.mag = pres_disp;
 

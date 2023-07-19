@@ -6,7 +6,7 @@ addpath(genpath('Functions'))
 addpath(genpath('Data'))
 
 % Name: Select a description for your code (for each time you run main)
-desc_name = '10000el_optimMesh_x0_6_9_1.4';
+desc_name = '10000el_fixedMeshRes_ecoFlex_x0_6_1_1.4';
 
 % There are several options for function optimization to chose from
 % func = 'test'; % Sample Rosenbrock function f(x) = 100*(x2-x1^2)^2 + (1-x1)^2
@@ -28,7 +28,7 @@ switch func
         xsol = fminsearchbnd(rosen,x0,LB,UB,opts);
     case 'sin'
         % If you'd like to establish settings, open sin_shear_opt.m
-        x0 = [6 9 1.4];
+        x0 = [6 1 1.4];
         LB = [6 0 0];
         UB = [20 10 8];
         A = [-1 0 2]; % Ensures that there is atleast 3mm thickness of material between sine wave valleys
