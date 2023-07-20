@@ -34,16 +34,16 @@ edge.func{3} = @(x) edge.coef{3}*sin(2*pi*edge.period*x/abs(l)) - w/2;
 
 % Create the mesh given geometric parameters
 if mesh_ref.exact
-    model_3D = createGeometry(l,w,h,line_res,edge,mesh_ref);
+    model_3D = createGeometry(l,w,h,line_res,edge,mesh_ref,elementType);
 
 %     Percent change by volume of element
 %     change_vol = size(model_3D.Mesh.Elements,2)/mesh_ref.num_of_el-1;
 %     mesh_ref.maxelsize = (1+change_vol)*model_3D.Mesh.MaxElementSize;
-%     model_3D = createGeometry(l,w,h,line_res,edge,mesh_ref);
+%     model_3D = createGeometry(l,w,h,line_res,edge,mesh_ref,elementType);
 
 %     Percent change by elements (works the best but is not perfect)
 %     mesh_ref.maxelsize = model_3D.Mesh.MaxElementSize + (size(model_3D.Mesh.Elements,2)-mesh_ref.num_of_el)*model_3D.Mesh.MaxElementSize/mesh_ref.num_of_el;
-%     model_3D = createGeometry(l,w,h,line_res,edge,mesh_ref);
+%     model_3D = createGeometry(l,w,h,line_res,edge,mesh_ref,elementType);
 
 %     Fminunc implementation (sometimes does not converge)
 %     mesh_ref = optimize_mesh(model_3D,mesh_ref,l,w,h,line_res,edge);
@@ -75,7 +75,7 @@ if mesh_ref.exact
         else
             mesh_ref.maxelsize = mesh_ref.maxelsize*(1-incr);
         end
-        model_3D = createGeometry(l,w,h,line_res,edge,mesh_ref);
+        model_3D = createGeometry(l,w,h,line_res,edge,mesh_ref,elementType);
         
         i = i + 1;
         temp = [temp;size(model_3D.Mesh.Elements,2) model_3D.Mesh.MaxElementSize incr];
@@ -95,15 +95,15 @@ if mesh_ref.exact
     sweep = linspace(minVal(2)-minVal(2)*init/8,minVal(2)+minVal(2)*init/8,30);
     for i = 1:length(sweep)
         mesh_ref.maxelsize = sweep(i);
-        model_3D = createGeometry(l,w,h,line_res,edge,mesh_ref);
+        model_3D = createGeometry(l,w,h,line_res,edge,mesh_ref,elementType);
         temp = [temp;size(model_3D.Mesh.Elements,2) model_3D.Mesh.MaxElementSize init/8];
     end
     [~,idx]=min(abs(temp(:,1)-mesh_ref.num_of_el));
     minVal=temp(idx,:);
     mesh_ref.maxelsize = minVal(2);
-    model_3D = createGeometry(l,w,h,line_res,edge,mesh_ref);
+    model_3D = createGeometry(l,w,h,line_res,edge,mesh_ref,elementType);
 else
-    model_3D = createGeometry(l,w,h,line_res,edge,mesh_ref);
+    model_3D = createGeometry(l,w,h,line_res,edge,mesh_ref,elementType);
 end
 x = model_3D.Mesh.Nodes(1,:)'; y = model_3D.Mesh.Nodes(2,:)'; 
 z = model_3D.Mesh.Nodes(3,:)';
@@ -130,6 +130,15 @@ switch params
     case 'neo-hooke-eco'
         coef.model = 'NH_Eco';
         coef.val = [0.001724 60];
+        % E = 10 kPa;             nu = 0.45
+        % C10 = mu/2;           D1 = 2/K
+        % mu = E/2/(1+nu);   K = E/3/(1-2nu)
+    case 'neo-hooke-eco-compr'
+        coef.model = 'NH_Eco';
+        coef.val = [0.002 300];
+        % E = 10 kPa;             nu = 0.25
+        % C10 = mu/2;           D1 = 2/K
+        % mu = E/2/(1+nu);   K = E/3/(1-2nu)
 end
 
 % Set all node coordinates as a matrix

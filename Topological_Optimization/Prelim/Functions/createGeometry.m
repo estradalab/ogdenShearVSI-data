@@ -1,4 +1,4 @@
-function [model_3D] = createGeometry(l,w,h,line_res,edge,mesh_ref) % line_res >3
+function [model_3D] = createGeometry(l,w,h,line_res,edge,mesh_ref,elementType) % line_res >3
 
 maxelsize = mesh_ref.maxelsize;
 
@@ -32,10 +32,25 @@ geometryFromEdges(model,g);
 model_3D = model;
 model_3D.Geometry = extrude(model_3D.Geometry,h);
 
-generateMesh(model_3D);
+switch elementType
+    case 'C3D4H'
+        generateMesh(model_3D,'GeometricOrder','linear');
+    case 'C3D10H'
+        generateMesh(model_3D);
+end
 hmax = model_3D.Mesh.MaxElementSize;
-if exist('maxelsize','var') == 1
-    generateMesh(model_3D,'Hmax',maxelsize,'Hmin',maxelsize);
-else
-    generateMesh(model_3D,'Hmax',hmax*mesh_ref.defsize,'Hmin',maxelsize);
+
+switch elementType
+    case 'C3D4H'
+        if exist('maxelsize','var') == 1
+            generateMesh(model_3D,'Hmax',maxelsize,'Hmin',maxelsize,'GeometricOrder','linear');
+        else
+            generateMesh(model_3D,'Hmax',hmax*mesh_ref.defsize,'Hmin',maxelsize,'GeometricOrder','linear');
+        end
+    case 'C3D10H'
+        if exist('maxelsize','var') == 1
+            generateMesh(model_3D,'Hmax',maxelsize,'Hmin',maxelsize);
+        else
+            generateMesh(model_3D,'Hmax',hmax*mesh_ref.defsize,'Hmin',maxelsize);
+        end
 end

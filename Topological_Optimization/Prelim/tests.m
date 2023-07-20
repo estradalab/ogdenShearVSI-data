@@ -5,7 +5,13 @@ addpath(genpath('Data'));
 
 % test = 'test_100'; % Approximately 100 elements
 % test = 'test_10000'; % Approximately 10000 elements
-test = 'test_sweep_NH'; % Neo-hookean parameters
+
+% Neo-hookean parameters and lin/quad tets
+% test = 'test_sweep_NH_nu_0.45_quad';
+% test = 'test_sweep_NH_nu_0.25_quad';
+% test = 'test_sweep_NH_nu_0.45_lin';
+test = 'test_sweep_NH_nu_0.25_lin';
+
 % test = 'test_sweep_NH_uniaxial'; % Uniaxial extension study
 % test = 'cost_function'; % Cost function space w/ fixed periods
 % test = 'sin_sweep'; % Sweep between periods
@@ -34,11 +40,20 @@ switch test
             end
         end
         movefile('Data/Eco*',['Data/uniaxial_' num2str(settings.mesh_ref.num_of_el) 'el_Eco']);
-    case 'test_sweep_NH'
+    case {'test_sweep_NH_nu_0.45_quad','test_sweep_NH_nu_0.25_quad','test_sweep_NH_nu_0.45_lin','test_sweep_NH_nu_0.25_lin'}
         load('test_settings_10000.mat');
         settings.mesh_ref.num_of_el = 10000;
-        settings.params = 'neo-hooke-eco';
+        switch test
+            case {'test_sweep_NH_nu_0.45_quad','test_sweep_NH_nu_0.45_lin'}
+                settings.params = 'neo-hooke-eco';
+            case {'test_sweep_NH_nu_0.25_quad','test_sweep_NH_nu_0.25_lin'}
+                settings.params = 'neo-hooke-eco-compr';
+        end
         settings.save = 'eco';
+        switch test
+            case {'test_sweep_NH_nu_0.45_lin','test_sweep_NH_nu_0.25_lin'}
+                settings.elementType = 'C3D4H';
+        end
         output = sin_shear_opt(8,0,0,settings);
         output = sin_shear_opt(8,2,0.25,settings);
         output = sin_shear_opt(8,2,0.5,settings);
@@ -48,7 +63,7 @@ switch test
                 output = sin_shear_opt(8,2*j,i,settings);
             end
         end
-        movefile('Data/Eco*',['Data/' num2str(settings.mesh_ref.num_of_el) 'el_Eco']);
+        movefile('Data/Eco*',['Data/' erase(test,'test_sweep_NH_') num2str(settings.mesh_ref.num_of_el) 'el_Eco']);
     case 'cost_function'
         load('test_settings_10000.mat');
         settings.save = 'delete';

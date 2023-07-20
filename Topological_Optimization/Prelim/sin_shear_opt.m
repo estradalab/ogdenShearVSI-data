@@ -56,7 +56,7 @@ if isempty(varargin)
     settings.mesh = 'tet'; % Quadratic tetrahedral elements (other element types are in progress)
     settings.l = 40; % Sample length is 40 mm
     settings.abaqus_ver = '2021'; % Abaqus version
-    settings.elementType = 'C3D10H'; % Element type: C3D10H is quadratic hybrid tet elements
+    settings.elementType = 'C3D10H'; % Element type: C3D10H is quadratic hybrid tet elements, C3D4H is linear hybrid tet elements
     settings.alpha = 2; % Alpha parameter of Ogden model used to calculate sensitivity mapping
     settings.maxLam = 2; % Maximum lambda used for the 2D histogram and sensitivity plots (2 decimal point-limit)
     settings.bin_res = 0.01; % Bin resolution for 2D histogram and sensitivity plot
@@ -76,8 +76,14 @@ fileName = ['sq-' num2str(d) 'mm_sin-per-' num2str(N) '_sin-amp-' num2str(A) 'mm
     settings.mesh_ref,settings.abaqus_ver,settings.elementType,d,N,A,settings.l,settings.stretch);
 output.X_ref.node = [X,Y,Z]; % Nodal positions
 % Element centroidal positions
+switch settings.elementType
+    case 'C3D10H'
+        num_of_nodes = 10;
+    case 'C3D4H'
+        num_of_nodes = 4;
+end
 for idx = 1:length(ElNode)
-    for i = 1:8
+    for i = 1:num_of_nodes
         n(i) = ElNode(idx,i);
     end
     output.X_ref.el(idx,:) = [mean(X(n(:))),mean(Y(n(:))),mean(Z(n(:)))];
