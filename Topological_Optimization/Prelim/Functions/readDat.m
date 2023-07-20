@@ -104,7 +104,7 @@ RF1.bc2(length(RF1.bc2)+1:length(F{1,2})) = NaN;
 
 % Finds the locations that lists all nodal displacements (only for final
 % increment)
-for j = indx:length(A)-1
+for j = 1:length(A)-1
     if ~isempty(find(strcmp(A{j},'                                       N O D E   O U T P U T'),1))
         ii = j+10;
         break
