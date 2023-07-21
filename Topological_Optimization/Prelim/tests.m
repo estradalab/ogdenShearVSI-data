@@ -5,12 +5,13 @@ addpath(genpath('Data'));
 
 % test = 'test_100'; % Approximately 100 elements
 % test = 'test_10000'; % Approximately 10000 elements
+test = 'treloar_test'; % Test if treloar data works for material parameters
 
 % Neo-hookean parameters and lin/quad tets
 % test = 'test_sweep_NH_nu_0.45_quad';
 % test = 'test_sweep_NH_nu_0.25_quad';
 % test = 'test_sweep_NH_nu_0.45_lin';
-test = 'test_sweep_NH_nu_0.25_lin';
+% test = 'test_sweep_NH_nu_0.25_lin';
 
 % test = 'test_sweep_NH_uniaxial'; % Uniaxial extension study
 % test = 'cost_function'; % Cost function space w/ fixed periods
@@ -24,6 +25,16 @@ switch test
     case 'test_10000'
         load('test_settings_10000.mat');
         output = sin_shear_opt(8,4,2,settings); 
+    case 'treloar_test'
+        load('test_settings_10000.mat');
+        settings.save = 'treloar';
+        settings.params = 'Arr-B-treloar';
+        output = sin_shear_opt(8,2,2,settings);
+        settings.params = 'NH-treloar';
+        output = sin_shear_opt(8,2,2,settings);
+        settings.params = 'M-R-treloar';
+        output = sin_shear_opt(8,2,2,settings);
+        movefile('Data/*treloar*',['Data/default_' num2str(settings.mesh_ref.num_of_el) 'el_Treloar']);
     case 'test_sweep_NH_uniaxial'
         load('test_settings_10000.mat');
         settings.mesh_ref.num_of_el = 10000;

@@ -62,20 +62,37 @@ fprintf(fileID,['*End Assembly\n**\n** ELEMENT CONTROLS\n**\n*Section' ...
     '**\n*Material, name=Material-1\n']);
 
 % Material model coefficients
+%     Use this for models that have more than 8 coefficients
+%         for i = 1:floor(length(coef.val)/8)+1
+%             if i == floor(length(coef.val)/8)+1
+%                 fprintf(fileID,[regexprep(num2str(coef.val(1+(8*(i-1)):end)), ' +', ', ') ',\n']);
+%             else
+%                 fprintf(fileID,[regexprep(num2str(coef.val(1+(8*(i-1)):8+(8*(i-1)))), ' +', ', ') '\n']);
+%             end
+%         end
 switch coef.model
     case 'Og_3'
         fprintf(fileID,'*Hyperelastic, n=3, ogden\n');
-        for i = 1:floor(length(coef.val)/8)+1
-            if i == floor(length(coef.val)/8)+1
-                fprintf(fileID,[regexprep(num2str(coef.val(1+(8*(i-1)):end)), ' +', ', ') ',\n']);
-            else
-                fprintf(fileID,[regexprep(num2str(coef.val(1+(8*(i-1)):8+(8*(i-1)))), ' +', ', ') '\n']);
-            end
-        end
-    case 'NH_Eco'
-        % To Do: Write the code
+        fprintf(fileID,[regexprep(num2str(coef.val(1:8)), ' +', ', ') '\n']);
+        fprintf(fileID,[regexprep(num2str(coef.val(9)), ' +', ', ') ',\n']);
+    case 'N-H'
         fprintf(fileID,'*Hyperelastic, neo hooke\n');
-        fprintf(fileID,[regexprep(num2str(coef.val(1:2)), ' +', ', ') '\n']);
+        fprintf(fileID,[regexprep(num2str(coef.val), ' +', ', ') '\n']);
+    case 'Og_2'
+        fprintf(fileID,'*Hyperelastic, n=2, ogden\n');
+        fprintf(fileID,[regexprep(num2str(coef.val), ' +', ', ') '\n']);
+    case 'Og_1'
+        fprintf(fileID,'*Hyperelastic, n=1, ogden\n');
+        fprintf(fileID,[regexprep(num2str(coef.val), ' +', ', ') '\n']);
+    case 'Arr-B'
+        fprintf(fileID,'*Hyperelastic, arruda-boyce\n');
+        fprintf(fileID,[regexprep(num2str(coef.val), ' +', ', ') '\n']);
+    case 'M-R'
+        fprintf(fileID,'*Hyperelastic, mooney-rivlin\n');
+        fprintf(fileID,[regexprep(num2str(coef.val), ' +', ', ') '\n']);
+    case 'Yeoh'
+        fprintf(fileID,'*Hyperelastic, yeoh\n');
+        fprintf(fileID,[regexprep(num2str(coef.val), ' +', ', ') '\n']);
 end
 
 fprintf(fileID,['** ----------------------------------------------------------------\n' ...

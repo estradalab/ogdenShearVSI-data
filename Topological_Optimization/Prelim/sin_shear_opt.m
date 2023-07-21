@@ -50,7 +50,7 @@ function output = sin_shear_opt(d,N,A,varargin)
 % Set parameters
 if isempty(varargin)
     % Current settings are meant for the Nelder-Mead optimizer
-    settings.params = 'neo-hooke-eco'; % Utilizing treloar data for ogden model parameters
+    settings.params = 'neo-hooke-eco'; % Material properties (see below for options and how to make your own parameters)
     settings.mesh_ref.num_of_el = 10000; % Sets approximate number of elements of the mesh
     settings.pres_disp = 3; % Prescribed displacement of 3 mm
     settings.mesh = 'tet'; % Quadratic tetrahedral elements (other element types are in progress)
@@ -62,17 +62,67 @@ if isempty(varargin)
     settings.bin_res = 0.01; % Bin resolution for 2D histogram and sensitivity plot
     settings.parallel = false; % Uses parfor loop in decomposition loop. Required as false for optimization
     settings.sigma_calc = false; % Optional acquisition of sigma tensor for entire sample (outdated)
-    settings.save = 'optim'; % 'none' - doesn't save data; 'test' - saves data for test; 'optim' - saves data for optimization runs
+    settings.save = 'optim'; % 'none' - doesn't save data; 'test' - saves data for test; 'optim' - saves data for optimization runs; 'eco' - for eco material; 'treloar' - for treloar data rubber material
     settings.mesh_ref.exact = false; % Iterates size of mesh element until number of elements is exact (Works for 10000)
     settings.stretch = 'shear'; % 'shear' is to pull specimen in shear on the sinusoidal profile, and 'uniaxial' is to pull it in uniaxial extension
 else
     settings = varargin{1};
 end
 
+% Set the material parameters (Units are in MPa)
+% For Abaqus model parameters, see https://classes.engineering.wustl.edu/2009/spring/mase5513/abaqus/docs/v6.6/books/stm/default.htm?startat=ch04s06ath123.html
+% coef.model:
+%   Og_n - Ogden model of nth order with 3*n parameters (u_n, alpha_n, D_n)
+%       up to n = 3 only
+%   N-H - Neo-Hookean model (C10, D1)
+%   Arr-B - Arruda boyce model (mu, lambda_m, D)
+%   M-R - Mooney-Rivlin model (C10, C01, D1)
+%   Yeoh - Yeoh Model (C10, C20, C30, D1, D2, D3)
+%   User-defined - [In developement]
+
+switch settings.params
+    % See https://solidmechanics.org/text/Chapter3_5/Chapter3_5.htm for
+    % Treloar data and models used in literature (must be converted to Abaqus model parameters)
+    case 'ogden-treloar'
+        coef.model = 'Og_3';
+        mu1 = 0.62; mu2 = 0.00118; mu3 = -0.00981;
+        a1 = 1.3; a2 = 5; a3 = -2;
+        coef.val = [a1*mu1/2 a1 a2*mu2/2 a2 a3*mu3/2 a3 0 0 0]; % Correction factor: mu_i =a_i*mu_orig_i/2;
+        % Note the correction from the original Treloar data
+        % factors. This is due to the original paper
+        % utilizing the original formulation of the Ogden
+        % model. For the Abaqus formulation, all mu_i values
+        % should be positive (https://polymerfem.com/4-things-you-didnt-know-about-the-ogden-model/).
+    case 'NH-treloar'
+        coef.model = 'N-H';
+        mu1 = 0.4;
+        coef.val = [mu1/2 0];
+    case 'M-R-treloar'
+        coef.model = 'M-R';
+        mu1 = 0.39; mu2 = 0.015;
+        coef.val = [mu1/2 mu2/2 0];
+    case 'Arr-B-treloar'
+        coef.model = 'Arr-B';
+        mu1 = 0.4; B = 10;
+        coef.val = [mu1 B 0];
+    case {'neo-hooke-eco','neo-hooke-eco-compr'}
+        coef.model = 'N-H';
+        E = 0.01; 
+        switch settings.params
+            case 'neo-hooke-eco'
+                nu = 0.45;
+            case 'neo-hooke-eco-compr'
+                nu = 0.25;
+        end
+        mu = E/2/(1+nu); K = E/3/(1-2*nu);
+        C10 = mu/2; D1 = 2/K;
+        coef.val = [C10 D1];
+end
+
 fileName = ['sq-' num2str(d) 'mm_sin-per-' num2str(N) '_sin-amp-' num2str(A) 'mm_' settings.mesh];
 
 % Approximate processing time for test settings mesh generation: 23 seconds
-[X,Y,Z,ElNode] = genMesh(fileName,settings.mesh,settings.params,settings.pres_disp,...
+[X,Y,Z,ElNode] = genMesh(fileName,settings.mesh,coef,settings.pres_disp,...
     settings.mesh_ref,settings.abaqus_ver,settings.elementType,d,N,A,settings.l,settings.stretch);
 output.X_ref.node = [X,Y,Z]; % Nodal positions
 % Element centroidal positions
@@ -152,6 +202,11 @@ switch settings.save
         writematrix(output.U,['Data/' fileName '/node_disp_' fileName '.csv']); 
         save(['Data/' fileName '/output.mat'],'output');
         movefile(['Data/' fileName],['Data/Eco_' fileName]);
+    case 'treloar'
+        writematrix(output.X_ref.node,['Data/' fileName '/x_ref_' fileName '.csv']); 
+        writematrix(output.U,['Data/' fileName '/node_disp_' fileName '.csv']); 
+        save(['Data/' fileName '/output.mat'],'output');
+        movefile(['Data/' fileName],['Data/' settings.params '_' fileName]);
 end
 
 end

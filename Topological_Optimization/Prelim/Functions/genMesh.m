@@ -1,4 +1,4 @@
-function  [x,y,z,TRI] = genMesh(fileName,mesh,params,pres_disp,...
+function  [x,y,z,TRI] = genMesh(fileName,mesh,coef,pres_disp,...
     mesh_ref,abaqus_ver,elementType,d,N,A,l,stretch)
 
 fN = erase(fileName,['_' mesh]);
@@ -112,34 +112,6 @@ TRI = model_3D.Mesh.Elements';
 % To view the 3D model, set breakpoint here and type the following commands
 % pdeplot3D(model_3D)
 % axis off
-
-% Set the material parameters
-switch params
-    case 'ogden-treloar'
-        coef.model = 'Og_3';
-        coef.val = [0.4017 1.3 0.00295 5 0.00981 -2 0 0 0];
-                      % [mu_1 a_1 mu_2 a_2 mu_3 a_3 k_1 k_2 k_3]
-                      % Units are in MPa
-                      % See https://solidmechanics.org/text/Chapter3_5/Chapter3_5.htm
-                      % Note the correction from the original Treloar data
-                      % factors. This is due to the original paper
-                      % utilizing the original formulation of the Ogden
-                      % model. For the Abaqus formulation, all mu_i values
-                      % should be positive (https://polymerfem.com/4-things-you-didnt-know-about-the-ogden-model/).
-                      % Correction factor: mu_i =a_i*mu_orig_i/2;
-    case 'neo-hooke-eco'
-        coef.model = 'NH_Eco';
-        coef.val = [0.001724 60];
-        % E = 10 kPa;             nu = 0.45
-        % C10 = mu/2;           D1 = 2/K
-        % mu = E/2/(1+nu);   K = E/3/(1-2nu)
-    case 'neo-hooke-eco-compr'
-        coef.model = 'NH_Eco';
-        coef.val = [0.002 300];
-        % E = 10 kPa;             nu = 0.25
-        % C10 = mu/2;           D1 = 2/K
-        % mu = E/2/(1+nu);   K = E/3/(1-2nu)
-end
 
 % Set all node coordinates as a matrix
 Nodes.gen=[x y z];
