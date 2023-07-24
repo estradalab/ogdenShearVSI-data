@@ -245,7 +245,8 @@ def VSI(in_mesh,result_dir,traction,period,amplitude,E,nu):
 	invC = inv(C)
 
 	## Compressible Neo-Hookean Model
-	psi = 0.25*lmbda*(Jc-1)-0.5*(lmbda/2+mu)*ln(Jc)+0.5*mu*(inner(F,F)-3)
+	# psi = 0.25*lmbda*(Jc-1)-0.5*(lmbda/2+mu)*ln(Jc)+0.5*mu*(inner(F,F)-3)
+	psi = 0.5*mu*(inner(F,F)-3) + 0.5*(lmbda +(2/3)*mu)*(Jc-1)**2
 	Pi = psi*dx_
 
 	S = 0.5*lmbda*Jc*invC-(0.5*lmbda+mu)*invC+mu*I
@@ -376,17 +377,17 @@ def VSI(in_mesh,result_dir,traction,period,amplitude,E,nu):
 		print('Adjoint solve time: %f seconds'%(float(end_adjoint)-float(start_adjoint)))
 
 
-filenames = ["sq-8mm_sin-per-2_sin-amp-1mm_tet","sq-8mm_sin-per-2_sin-amp-2mm_tet","sq-8mm_sin-per-2_sin-amp-3mm_tet","sq-8mm_sin-per-4_sin-amp-1mm_tet","sq-8mm_sin-per-4_sin-amp-2mm_tet","sq-8mm_sin-per-4_sin-amp-3mm_tet","sq-8mm_sin-per-0_sin-amp-0mm_tet"]
-period = [2, 2, 2, 4, 4, 4, 0]
-amplitude = [1, 2, 3, 1, 2, 3, 0]
+filenames = ["sq-8mm_sin-per-2_sin-amp-1mm_tet","sq-8mm_sin-per-2_sin-amp-2mm_tet","sq-8mm_sin-per-2_sin-amp-3mm_tet","sq-8mm_sin-per-4_sin-amp-1mm_tet","sq-8mm_sin-per-4_sin-amp-2mm_tet","sq-8mm_sin-per-4_sin-amp-3mm_tet","sq-8mm_sin-per-0_sin-amp-0mm_tet","sq-8mm_sin-per-6_sin-amp-1mm_tet"]
+period = [2, 2, 2, 4, 4, 4, 0, 6]
+amplitude = [1, 2, 3, 1, 2, 3, 0, 1]
 # filenames = ["sq-8mm_sin-per-4_sin-amp-2mm_tet","test"]
 # datadirs = "/home/fenics/shared/ogdenShearVSI-data/sensitivity_data/"
-meshdirs = "/home/fenics/shared/ogdenShearVSI-data/sensitivity_data/Eco_30000_elements/" # 30k
-# meshdirs = "/home/fenics/shared/ogdenShearVSI-data/sensitivity_data/" # 10k
+# meshdirs = "/home/fenics/shared/ogdenShearVSI-data/sensitivity_data/Eco_30000_elements/" # 30k
+meshdirs = "/home/fenics/shared/ogdenShearVSI-data/sensitivity_data/" # 10k
 
 # meshdirs = "home/fenics/shared/ogdenShearVSI-data/VSI_Incoporation-testing/Step1-Read+Mesh/"
-# traction = [0.3822,0.3827,0.4772,0.3420,0.3477,0.5332,0.3904] # 10k
-traction = [0.3783, 0.3736,0.4562,0.3269,0.3229, 0.5032,0.3915] # 30k
+traction = [0.3822,0.3827,0.4772,0.3420,0.3477,0.5332,0.3904,0.3218] # 10k
+# traction = [0.3783, 0.3736,0.4562,0.3269,0.3229, 0.5032,0.3915] # 30k
 # traction = [0.3477,8675309]
 
 # E_true = 6.058893e-1
@@ -399,8 +400,8 @@ nu_true = 0.45 # non-dimensional
 
 # mu = np.logspace(np.log10(mu_true),np.log10(mu_true*1),2)
 # K = np.logspace(np.log10(K_true),np.log10(K_true*1),2)
-E = np.logspace(np.log10(E_true*0.1),np.log10(E_true*10),10) # good
-nu = np.linspace(0.4,0.47,10) # good 
+E = np.logspace(np.log10(E_true*0.1),np.log10(E_true*10),20) # good
+nu = np.linspace(0.1,0.47,20) # good 
 # E = np.array([E_true]) # good
 # nu = np.array([0.45]) # good 
 # E = [E_true, E_true]
@@ -410,9 +411,9 @@ nu = np.linspace(0.4,0.47,10) # good
 # print(mu)
 # print(K)
 
-for i in range(len(filenames)):
-	i = 4
-	if i in [7,8]:
+# for i in range(len(filenames)):
+for i in [0]:
+	if i in [8,9]:
 		print("skipped",i)
 	else:
 		print('Starting sensitivity study for',filenames[i])
@@ -453,4 +454,4 @@ for i in range(len(filenames)):
 				print(Adjoint_sol)
 				# input()
 		np.savetxt(result_dir+'SensitivityStudy.csv',Adjoint_sol, delimiter=',')
-		exit()
+		# exit()
