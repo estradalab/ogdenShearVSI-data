@@ -53,7 +53,7 @@ if isempty(varargin)
     settings.params = 'neo-hooke-eco'; % Material properties (see below for options and how to make your own parameters)
     settings.mesh_ref.num_of_el = 10000; % Sets approximate number of elements of the mesh
     settings.pres_disp = 3; % Prescribed displacement of 3 mm
-    settings.mesh = 'tet'; % Quadratic tetrahedral elements (other element types are in progress)
+    settings.mesh = 'tet'; % Tetrahedral elements (other element types are in progress)
     settings.l = 40; % Sample length is 40 mm
     settings.abaqus_ver = '2021'; % Abaqus version
     settings.elementType = 'C3D10H'; % Element type: C3D10H is quadratic hybrid tet elements, C3D4H is linear hybrid tet elements
@@ -61,7 +61,7 @@ if isempty(varargin)
     settings.maxLam = 2; % Maximum lambda used for the 2D histogram and sensitivity plots (2 decimal point-limit)
     settings.bin_res = 0.01; % Bin resolution for 2D histogram and sensitivity plot
     settings.parallel = false; % Uses parfor loop in decomposition loop. Required as false for optimization
-    settings.sigma_calc = false; % Optional acquisition of sigma tensor for entire sample (outdated)
+    settings.sigma_calc = false; % Optional acquisition of sigma tensor for entire sample (outdated - just type out false)
     settings.save = 'optim'; % 'none' - doesn't save data; 'test' - saves data for test; 'optim' - saves data for optimization runs; 'eco' - for eco material; 'treloar' - for treloar data rubber material
     settings.mesh_ref.exact = false; % Iterates size of mesh element until number of elements is exact (Works for 10000)
     settings.stretch = 'shear'; % 'shear' is to pull specimen in shear on the sinusoidal profile, and 'uniaxial' is to pull it in uniaxial extension
