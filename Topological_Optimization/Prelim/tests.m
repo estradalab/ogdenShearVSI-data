@@ -5,7 +5,7 @@ addpath(genpath('Data'));
 
 % test = 'test_100'; % Approximately 100 elements
 % test = 'test_10000'; % Approximately 10000 elements
-test = 'treloar_test'; % Test if treloar data works for material parameters
+% test = 'treloar_test'; % Test if treloar data works for material parameters
 
 % Neo-hookean parameters and lin/quad tets
 % test = 'test_sweep_NH_nu_0.45_quad';
@@ -15,7 +15,8 @@ test = 'treloar_test'; % Test if treloar data works for material parameters
 
 % test = 'test_sweep_NH_uniaxial'; % Uniaxial extension study
 % test = 'cost_function'; % Cost function space w/ fixed periods
-% test = 'sin_sweep'; % Sweep between periods
+% test = 'amp_sweep'; % Sweep between amplitudes
+test = 'per_sweep'; % Sweep between periods
 % test = 'element_test'; % Change number of elements for single trial
 
 switch test
@@ -102,14 +103,38 @@ switch test
         save('Data/Cost_data/cost_function.mat','S','d','A','tEnd')
         
         %% Visualization
-        contourf(d/settings.l,A,S(:,:,1)')
+        contourf(d/settings.l,A,S(:,:,1)',10)
         colorbar
         xlabel('d/L [-], Normalized square cross section length','interpreter','latex')
         ylabel('A/d [-], Normalized sinusoidal amplitude','interpreter','latex')
         title('Goodness metric (Fixed sine wave @ 3 periods)','interpreter','latex')
         saveas(gcf,'Data/Cost_data/cost_function.png'); saveas(gcf,'Data/Cost_data/cost_function.pdf')
 
-    case 'sin_sweep'
+    case 'per_sweep'
+        load('test_settings_10000.mat');
+        settings.save = 'delete';
+        settings.params = 'neo-hooke-eco';
+
+        sin_sweep = 0:10;
+        tStart = tic;
+        h = waitbar(0,'Progress: 0%');
+        for i = 1:length(sin_sweep)
+            output = sin_shear_opt(6,sin_sweep(i),2,settings);
+            S(i,1) = output.S(1);
+            S(i,2) = output.S(2);
+            T = seconds(toc(tStart));
+            T.Format = 'hh:mm:ss';
+            waitbar(i/length(sin_sweep),h,['Progress: ',num2str(floor(100*i/length(sin_sweep))),'% (Time Elapsed: ' char(T) ')'])
+        end
+        tEnd = toc(tStart);
+        close(h)
+        save('Data/Sin_data/per_sweep.mat','S','sin_sweep')
+        plot(sin_sweep,S(:,1))
+        xlabel('N [-], Sinusoidal periods','interpreter','latex')
+        ylabel('S [-], Normalized goodness metric','interpreter','latex')
+        title('Goodness metric (Varied sine wave @ A = 2 mm, d = 6 mm)','interpreter','latex')
+        saveas(gcf,'Data/Sin_data/per_sweep.png'); saveas(gcf,'Data/Sin_data/per_sweep.pdf')
+    case 'amp_sweep'
         load('test_settings_10000.mat');
         settings.save = 'delete';
         settings.params = 'neo-hooke-eco';
